@@ -1,0 +1,49 @@
+{
+  "name": "adonis_react",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ace serve --watch",
+    "build": "node ace build --production",
+    "start": "node server.js",
+    "test": "node ace test"
+  },
+  "devDependencies": {
+    "@adonisjs/assembler": "^5.9.6",
+    "@babel/core": "^7.17.0",
+    "@babel/preset-env": "^7.16.0",
+    "@japa/preset-adonis": "^1.2.0",
+    "@japa/runner": "2.5.1",
+    "@symfony/webpack-encore": "4.1.1",
+    "@types/proxy-addr": "^2.0.3",
+    "@types/source-map-support": "^0.5.10",
+    "adonis-preset-ts": "^2.1.0",
+    "pino-pretty": "^10.2.3",
+    "typescript": "~4.6",
+    "webpack": "^5.72",
+    "webpack-cli": "^4.9.1",
+    "youch": "^3.3.3",
+    "youch-terminal": "^2.2.3"
+  },
+  "dependencies": {
+    "@adonisjs/core": "^5.8.0",
+    "@adonisjs/repl": "^3.1.0",
+    "@adonisjs/session": "^6.2.0",
+    "@adonisjs/shield": "^7.0.0",
+    "@adonisjs/view": "^6.1.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-syntax-jsx": "^7.22.5",
+    "@babel/preset-react": "^7.22.15",
+    "@eidellev/inertia-adonisjs": "^8.1.0",
+    "@inertiajs/inertia-react": "^0.8.1",
+    "@inertiajs/react": "^1.0.14",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "proxy-addr": "^2.0.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "reflect-metadata": "^0.1.13",
+    "source-map-support": "^0.5.21",
+    "ts-loader": "^8.0.1"
+  }
+}
