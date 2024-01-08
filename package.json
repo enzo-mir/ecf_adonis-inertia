@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@adonisjs/core": "^5.8.0",
+    "@adonisjs/lucid": "^18.4.2",
     "@adonisjs/repl": "^3.1.0",
     "@adonisjs/session": "^6.2.0",
     "@adonisjs/shield": "^7.0.0",
@@ -35,15 +36,25 @@
     "@babel/plugin-syntax-jsx": "^7.22.5",
     "@babel/preset-react": "^7.22.15",
     "@eidellev/inertia-adonisjs": "^8.1.0",
+    "@hookform/resolvers": "^3.3.4",
     "@inertiajs/inertia-react": "^0.8.1",
     "@inertiajs/react": "^1.0.14",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
+    "framer-motion": "^10.17.9",
+    "luxon": "^3.4.4",
+    "mysql2": "^3.7.0",
     "proxy-addr": "^2.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.49.2",
+    "react-icons": "^4.12.0",
+    "react-router-dom": "^6.21.1",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21",
-    "ts-loader": "^8.0.1"
+    "styled-components": "^6.1.6",
+    "ts-loader": "^8.0.1",
+    "zod": "^3.22.4",
+    "zustand": "^4.4.7"
   }
 }
