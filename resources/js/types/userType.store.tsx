@@ -1,13 +1,17 @@
 export type User = {
-  id?: number;
-  name: string;
-  email: string;
-  password: string;
-  guests: number | null;
-  alergy: string;
-  oldEmail?: string;
+  user?: {
+    id?: number;
+    name: string;
+    email: string;
+    password: string;
+    guests: number | null;
+    alergy: string;
+    oldEmail?: string;
+  };
+  admin?: {};
 };
-export type currentReservation = {
+
+export type currentReservationType = {
   guests: number;
   date: string;
   hours: string;
@@ -17,6 +21,6 @@ export type currentReservation = {
 export type userDataType = {
   userData: User;
   setUserData(val: User): void;
-  currentReservation: Array<currentReservation>;
-  setCurrentReservation(val: Array<currentReservation>): void;
+  currentReservation: Array<currentReservationType>;
+  setCurrentReservation(val: Array<currentReservationType>): void;
 };

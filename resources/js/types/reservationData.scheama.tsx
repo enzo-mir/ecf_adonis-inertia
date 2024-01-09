@@ -3,7 +3,9 @@ export const reservationScheama = z.object({
   name: z.string().refine((value) => /^[a-zA-Z]+$/.test(value), {
     message: "Le champs nom doit contenir uniquement des lettres",
   }),
-  email: z.string().email({ message: "email invalide" }),
+  email: z
+    .string({ invalid_type_error: "email invalide" })
+    .email({ message: "email invalide" }),
   guests: z
     .number()
     .min(1, { message: "Le nombre d'invité doit être supérieur à 1" })

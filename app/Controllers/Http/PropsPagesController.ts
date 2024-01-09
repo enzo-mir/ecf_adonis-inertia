@@ -26,8 +26,6 @@ export default class PropsPagesController {
   private hours = Database.rawQuery("SELECT * FROM `hours` WHERE 1");
 
   public async home(ctx: HttpContextContract) {
-    console.log(ctx.request.all());
-
     const userData = ctx.auth.user
       ? (await this.getUserData(ctx))[0][0].role === 0
         ? { user: (await this.getUserData(ctx))[0][0] }

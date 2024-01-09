@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Reserv from "./components/Reservation";
 import { Wrapper, HeroSection, SectionPlats } from "../assets/style/homeStyle";
 import { hourStore } from "../data/store/apiData.store";
@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import Layout from "./components/Layout";
 import { connectStore, userDataStore } from "../data/store/connect.store";
-
 
 const Home = ({ userData, hours, images }) => {
   const [res, setRes] = useState(false);
@@ -16,7 +15,7 @@ const Home = ({ userData, hours, images }) => {
 
   setHours(hours);
   if (userData.user) {
-    setUserData(userData.user);
+    setUserData(userData);
     setConnectedUser(true);
   }
 

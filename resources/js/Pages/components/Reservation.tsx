@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import postReservation from "../../data/postReservation";
 import { Overlay } from "../../assets/style/overlay";
 import {
   OptionsReserv,
@@ -13,8 +12,9 @@ import { userDataStore } from "../../data/store/connect.store";
 import { hourStore } from "../../data/store/apiData.store";
 import { motion } from "framer-motion";
 import React from "react";
-import { useForm, usePage } from "@inertiajs/inertia-react";
+import { useForm } from "@inertiajs/inertia-react";
 import { reservationScheama } from "../../types/reservationData.scheama";
+import { User, currentReservationType } from "../../types/userType.store";
 
 export default function Reserv({
   res: displayReservation,
@@ -22,17 +22,15 @@ export default function Reserv({
   res(val: boolean): void;
 }) {
   const [userData, setCurrentReservation] = userDataStore((state) => [
-    state.userData,
+    state.userData as User,
     state.setCurrentReservation,
   ]);
   const hours = hourStore((state) => state.hours);
-  const { errors } = usePage().props;
-
   const { data, setData, processing, post } = useForm({
-    name: userData?.name || "",
-    email: userData?.email || "",
-    guests: userData?.guests || 1,
-    alergy: userData?.alergy || "",
+    name: userData?.user.name || "",
+    email: userData?.user.email || "",
+    guests: userData?.user.guests || 1,
+    alergy: userData?.user.alergy || "",
     date: new Date().toLocaleDateString("fr-CA"),
     hourTargeted: null,
     timeTargeted: null,
@@ -40,7 +38,7 @@ export default function Reserv({
 
   const [resError, setResError] = useState("");
   const [showAllergy, setShowAllergy] = useState(
-    userData?.alergy ? true : false
+    userData?.user.alergy ? true : false
   );
   const [DTable, setDTable] = useState<Array<string> | string>([]);
   const [LTable, setLTable] = useState<Array<string> | string>([]);
@@ -183,14 +181,19 @@ export default function Reserv({
     });
 
     try {
-      const dataValidate = await reservationScheama.parseAsync(data);
+      const dataValidate = reservationScheama.parse(data);
       post("/reservation", {
         data: dataValidate,
         onError: (err) => {
-          setResError((errors || err) as unknown as string);
+          setResError(err as unknown as string);
         },
         onSuccess: (success) => {
-          console.log(success);
+          if (success.props.valid) {
+            setCurrentReservation(
+              success.props.valid as currentReservationType[]
+            );
+          }
+          displayReservation(false);
         },
       });
     } catch (error) {
@@ -237,22 +240,23 @@ export default function Reserv({
             id="email"
             required
             placeholder="Entrez votre e-mail"
-            value={userData?.email || data.email}
+            value={userData.user?.email || data.email}
             onChange={(e) =>
-              userData?.email || setData({ ...data, email: e.target.value })
+              userData.user?.email ||
+              setData({ ...data, email: e.target.value })
             }
-            disabled={userData?.email ? true : false}
+            disabled={userData.user?.email ? true : false}
           />
           <input
             type="text"
             id="name"
             required
             placeholder="Entrez votre nom"
-            value={userData?.name || data.name}
+            value={userData.user?.name || data.name}
             onChange={(e) =>
-              userData?.name || setData({ ...data, name: e.target.value })
+              userData.user?.name || setData({ ...data, name: e.target.value })
             }
-            disabled={userData?.name ? true : false}
+            disabled={userData.user?.name ? true : false}
           />
         </OptionsReserv>
         <div id="lunchHours">

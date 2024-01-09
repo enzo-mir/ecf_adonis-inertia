@@ -10,7 +10,9 @@ export const connectStore = create<connectionType>((set) => ({
 }));
 
 export const userDataStore = create<userDataType>((set) => ({
-  userData: { id: 0, name: "", email: "", password: "", guests: 0, alergy: "" },
+  userData: {
+    user: { id: 0, name: "", email: "", password: "", guests: 0, alergy: "" },
+  },
   setUserData: (val) => set(() => ({ userData: val })),
   currentReservation: [],
   setCurrentReservation: (val) => set(() => ({ currentReservation: val })),

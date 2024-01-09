@@ -15,6 +15,7 @@ import { AnimatePresence } from "framer-motion";
 import { hourStore } from "../../data/store/apiData.store";
 import React from "react";
 import { Link } from "@inertiajs/inertia-react";
+import { User } from "../../types/userType.store";
 
 const Header = () => {
   const [logPage, setLogPage] = useState(false);
@@ -29,9 +30,11 @@ const Header = () => {
     state.setConnectedAdmin,
   ]);
   const [userData, userReservation] = userDataStore((state) => [
-    state.userData,
+    state.userData as User,
     state.currentReservation,
   ]);
+
+  console.log(userData);
 
   const setHours = hourStore((state) => state.setHours);
   useEffect(() => {
@@ -118,7 +121,7 @@ const Header = () => {
                 {userReservation.length}
               </button>
               <button id="profil" onClick={() => setProfilPage(true)}>
-                {userData ? userData.name.charAt(0) : null}
+                {userData ? userData.user.name.charAt(0) : null}
               </button>
             </>
           )}

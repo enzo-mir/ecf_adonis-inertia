@@ -20,19 +20,19 @@ const ProfilComponent = ({
   setDisplayProfil(vale: boolean): void;
 }) => {
   const [editable, setEditable] = useState<boolean>(false);
-  const [userData, setUserData] = userDataStore((state) => [
+  const [userData, setuserData] = userDataStore((state) => [
     state.userData,
     state.setUserData,
   ]);
   const setConnectedUser = connectStore((state) => state.setConnectedUser);
 
   const [inputInfo, setInputInfo] = useState<UpdatedFormDataType>({
-    name: userData.name,
-    email: userData.email,
-    guests: userData.guests!,
+    name: userData.user.name,
+    email: userData.user.email,
+    guests: userData.user.guests!,
     password: null,
-    alergy: userData.alergy,
-    oldEmail: userData.email,
+    alergy: userData.user.alergy,
+    oldEmail: userData.user.email,
   });
 
   const [validationMessage, setValidationMessage] = useState<string>("");
@@ -52,7 +52,7 @@ const ProfilComponent = ({
         updateProfil(inputInfo).then((data) =>
           data.error
             ? setValidationMessage(data.error)
-            : (setUserData(data.data),
+            : (setuserData(data.data),
               setValidationMessage(data.valid),
               setEditable(!editable),
               setTimeout(() => {
@@ -73,12 +73,14 @@ const ProfilComponent = ({
         data.success
           ? (setDisplayProfil(false),
             setConnectedUser(false),
-            setUserData({
-              name: "",
-              email: "",
-              password: "",
-              guests: 0,
-              alergy: "",
+            setuserData({
+              user: {
+                name: "",
+                email: "",
+                password: "",
+                guests: 0,
+                alergy: "",
+              },
             }))
           : data.error
           ? setValidationMessage(data.error)
@@ -207,13 +209,15 @@ const ProfilComponent = ({
               logout();
               setDisplayProfil(false);
               setConnectedUser(false);
-              setUserData({
-                id: 0,
-                name: "",
-                email: "",
-                password: "",
-                guests: 0,
-                alergy: "",
+              setuserData({
+                user: {
+                  id: 0,
+                  name: "",
+                  email: "",
+                  password: "",
+                  guests: 0,
+                  alergy: "",
+                },
               });
             }}
           >
