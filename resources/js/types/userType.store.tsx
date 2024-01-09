@@ -7,6 +7,7 @@ export type User = {
     guests: number | null;
     alergy: string;
     oldEmail?: string;
+    currentReservation: Array<currentReservationType | null>;
   };
   admin?: {};
 };
@@ -21,6 +22,4 @@ export type currentReservationType = {
 export type userDataType = {
   userData: User;
   setUserData(val: User): void;
-  currentReservation: Array<currentReservationType>;
-  setCurrentReservation(val: Array<currentReservationType>): void;
 };

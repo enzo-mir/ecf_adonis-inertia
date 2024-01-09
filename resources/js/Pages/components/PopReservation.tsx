@@ -6,11 +6,21 @@ import { deleteReservation } from "../../data/deleteReservation";
 import { userDataStore } from "../../data/store/connect.store";
 import { motion } from "framer-motion";
 import React from "react";
+import { useForm } from "@inertiajs/inertia-react";
+import { currentReservationType } from "../../types/userType.store";
 
 const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
   const [errorMessage, setErrorMessage] = useState("");
-  const [data, setData] = userDataStore((state) => [state.currentReservation, state.setCurrentReservation]);
-
+  const [userData, setUserData] = userDataStore((state) => [
+    state.userData,
+    state.setUserData,
+  ]);
+  const { post, processing, data, setData, reset } = useForm({
+    guests: 0,
+    date: "",
+    hours: "",
+    email: "",
+  });
   return (
     <Overlay onClick={() => setDisplay(false)}>
       <Container
@@ -33,7 +43,7 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((reservation, id) => {
+          {userData.user.currentReservation.map((reservation, id) => {
             return (
               <tr key={id} className="reservationSettings">
                 <td>{reservation.guests}</td>
@@ -41,21 +51,59 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
                 <td>{reservation.hours}</td>
                 <td>
                   {reservation.email.slice(0, 3)}**
-                  {reservation.email.slice(reservation.email.indexOf("@"), reservation.email.length)}
+                  {reservation.email.slice(
+                    reservation.email.indexOf("@"),
+                    reservation.email.length
+                  )}
                 </td>
                 <td>
-                  <button
-                    onClick={() =>
-                      deleteReservation(
-                        reservation.guests,
-                        new Date(reservation.date).toLocaleDateString("fr-CA"),
-                        reservation.hours,
-                        reservation.email
-                      ).then((data) => (data.error ? setErrorMessage(data.error) : (setErrorMessage(""), setData(data.valid))))
-                    }
-                  >
-                    <FiDelete />
-                  </button>
+                  {data.date === reservation.date ? (
+                    <div className="deleteOption">
+                      <p>êtes-vous sûr ?</p>
+                      <button
+                        onClick={() => {
+                          post("/reservation/delete", {
+                            data,
+                            onError: (err) => {
+                              setErrorMessage(err as unknown as string);
+                            },
+                            onSuccess: (success) => {
+                              setErrorMessage(""),
+                                setUserData({
+                                  user: {
+                                    ...userData.user,
+                                    currentReservation: success.props
+                                      .valid as currentReservationType[],
+                                  },
+                                });
+                            },
+                          });
+                        }}
+                      >
+                        Oui
+                      </button>
+                      <button
+                        onClick={() => {
+                          reset();
+                        }}
+                      >
+                        Non
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setData({
+                          guests: reservation.guests,
+                          date: reservation.date,
+                          hours: reservation.hours,
+                          email: reservation.email,
+                        });
+                      }}
+                    >
+                      <FiDelete />
+                    </button>
+                  )}
                 </td>
               </tr>
             );
@@ -100,13 +148,28 @@ const Container = styled.table`
     font-size: var(--font-size);
     padding-top: 10px;
 
-    td button {
-      display: grid;
-      place-items: center;
+    td {
+      & div.deleteOption {
+        display: grid;
+        grid-template-rows: repeat(2, auto);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.25em;
+        font-size: 0.75em;
+        flex-wrap: wrap;
 
-      svg {
-        user-select: none;
-        pointer-events: none;
+        & > p {
+          grid-area: 1 / 1 / 2 / 3;
+        }
+      }
+      & button {
+        display: grid;
+        place-items: center;
+        font-size: 0.75em;
+
+        svg {
+          user-select: none;
+          pointer-events: none;
+        }
       }
     }
   }

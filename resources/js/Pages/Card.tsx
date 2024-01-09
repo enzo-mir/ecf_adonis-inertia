@@ -19,13 +19,17 @@ import {
 import React from "react";
 import Layout from "./components/Layout";
 import { hourStore } from "../data/store/apiData.store";
+import { connectStore, userDataStore } from "../data/store/connect.store";
+import { User } from "../types/userType.store";
 
 const Card = ({
   cardData,
   hours,
+  userData,
 }: {
   cardData: CardDataType;
   hours: Array<HourDataType>;
+  userData: User;
 }) => {
   const setHours = hourStore((state) => state.setHours);
   setHours(hours);
@@ -34,6 +38,14 @@ const Card = ({
   const dishs = cardData?.dishs;
   const desserts = cardData?.desserts;
   const menus = cardData?.menus;
+
+  const setUserData = userDataStore((state) => state.setUserData);
+  const setConnectedUser = connectStore((state) => state.setConnectedUser);
+
+  if (userData.user) {
+    setUserData(userData);
+    setConnectedUser(true);
+  }
 
   function mapingSimilarityFood(
     food: entreeType | platType | dessertType | menuType,

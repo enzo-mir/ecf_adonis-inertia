@@ -12,7 +12,6 @@ import logout from "../../data/logout";
 import PopReservation from "./PopReservation";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { AnimatePresence } from "framer-motion";
-import { hourStore } from "../../data/store/apiData.store";
 import React from "react";
 import { Link } from "@inertiajs/inertia-react";
 import { User } from "../../types/userType.store";
@@ -29,14 +28,8 @@ const Header = () => {
     state.connectedAdmin,
     state.setConnectedAdmin,
   ]);
-  const [userData, userReservation] = userDataStore((state) => [
-    state.userData as User,
-    state.currentReservation,
-  ]);
+  const [userData] = userDataStore((state) => [state.userData as User]);
 
-  console.log(userData);
-
-  const setHours = hourStore((state) => state.setHours);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -118,7 +111,7 @@ const Header = () => {
                 className="reservations"
                 onClick={() => setDisplayModalReservation(true)}
               >
-                {userReservation.length}
+                {userData.user.currentReservation.length}
               </button>
               <button id="profil" onClick={() => setProfilPage(true)}>
                 {userData ? userData.user.name.charAt(0) : null}

@@ -12,4 +12,7 @@ Route.get("/carte", "PropsPagesController.card");
   }
 }); */
 
-Route.post("/reservation", "ReservationsController.add");
+Route.group(() => {
+  Route.post("/add", "ReservationsController.add");
+  Route.post("/delete", "ReservationsController.delete");
+}).prefix("/reservation");

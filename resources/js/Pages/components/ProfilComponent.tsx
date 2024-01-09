@@ -80,6 +80,7 @@ const ProfilComponent = ({
                 password: "",
                 guests: 0,
                 alergy: "",
+                currentReservation: [],
               },
             }))
           : data.error
@@ -217,6 +218,7 @@ const ProfilComponent = ({
                   password: "",
                   guests: 0,
                   alergy: "",
+                  currentReservation: [],
                 },
               });
             }}

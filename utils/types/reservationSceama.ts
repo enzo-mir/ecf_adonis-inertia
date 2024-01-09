@@ -54,11 +54,24 @@ export const ReservationFromBodySheama = z.object({
     message: "Errreur lors du choix de l'heure",
   }),
 });
-export const DeleteReservationScheama = z.object({
-  guests: z.number(),
-  date: z.string(),
-  email: z.string(),
-  hours: z.string(),
-});
 
+export const DeleteReservationScheama = ReservationFromBodySheama.omit({
+  name: true,
+  alergy: true,
+  hourTargeted: true,
+  timeTargeted: true,
+}).extend({
+  hours: z
+    .string({
+      invalid_type_error: "Une heure doit être sélectionnée",
+      required_error: "Une heure doit être sélectionnée",
+    })
+    .refine(
+      (val) =>
+        new RegExp(/^([0-1]?[0-9]|2[0-3])(h|H)([0-5][0-9])?/gy).test(val),
+      {
+        message: "Une heure doit être sélectionnée",
+      }
+    ),
+});
 export const UserDataReservation = z.array(DeleteReservationScheama);

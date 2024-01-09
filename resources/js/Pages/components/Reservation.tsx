@@ -21,9 +21,9 @@ export default function Reserv({
 }: {
   res(val: boolean): void;
 }) {
-  const [userData, setCurrentReservation] = userDataStore((state) => [
+  const [userData, setUserData] = userDataStore((state) => [
     state.userData as User,
-    state.setCurrentReservation,
+    state.setUserData,
   ]);
   const hours = hourStore((state) => state.hours);
   const { data, setData, processing, post } = useForm({
@@ -182,17 +182,22 @@ export default function Reserv({
 
     try {
       const dataValidate = reservationScheama.parse(data);
-      post("/reservation", {
+      post("/reservation/add", {
         data: dataValidate,
         onError: (err) => {
           setResError(err as unknown as string);
         },
         onSuccess: (success) => {
           if (success.props.valid) {
-            setCurrentReservation(
-              success.props.valid as currentReservationType[]
-            );
+            setUserData({
+              user: {
+                ...userData.user,
+                currentReservation: success.props
+                  .valid as currentReservationType[],
+              },
+            });
           }
+          setResError("Table réservée !");
           displayReservation(false);
         },
       });

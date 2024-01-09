@@ -26,27 +26,72 @@ export default class PropsPagesController {
   private hours = Database.rawQuery("SELECT * FROM `hours` WHERE 1");
 
   public async home(ctx: HttpContextContract) {
-    const userData = ctx.auth.user
-      ? (await this.getUserData(ctx))[0][0].role === 0
-        ? { user: (await this.getUserData(ctx))[0][0] }
-        : { admin: {} }
-      : {};
+    if (ctx.auth.user) {
+      const currentReservation = await Database.rawQuery(
+        "SELECT guests, date, hours, email FROM reservations WHERE email = ?",
+        [ctx.auth.user.email]
+      );
 
-    delete userData.user?.id;
-    delete userData.user?.password;
-    delete userData.user?.role;
+      const userData = ctx.auth.user
+        ? (await this.getUserData(ctx))[0][0].role === 0
+          ? {
+              user: {
+                ...(await this.getUserData(ctx))[0][0],
+                currentReservation: currentReservation[0],
+              },
+            }
+          : { admin: {} }
+        : {};
+      delete userData.user?.id;
+      delete userData.user?.password;
+      delete userData.user?.role;
 
-    return ctx.inertia.render("Home", {
-      userData: userData || undefined,
-      images: (await this.images)[0],
-      hours: (await this.hours)[0],
-    });
+      return ctx.inertia.render("Home", {
+        userData: userData,
+        images: (await this.images)[0],
+        hours: (await this.hours)[0],
+      });
+    } else {
+      return ctx.inertia.render("Home", {
+        userData: undefined,
+        images: (await this.images)[0],
+        hours: (await this.hours)[0],
+      });
+    }
   }
 
   public async card(ctx: HttpContextContract) {
-    return ctx.inertia.render("Card", {
-      cardData: this.getCardData(),
-      hours: (await this.hours)[0],
-    });
+    if (ctx.auth.user) {
+      const currentReservation = await Database.rawQuery(
+        "SELECT guests, date, hours, email FROM reservations WHERE email = ?",
+        [ctx.auth.user.email]
+      );
+
+      const userData = ctx.auth.user
+        ? (await this.getUserData(ctx))[0][0].role === 0
+          ? {
+              user: {
+                ...(await this.getUserData(ctx))[0][0],
+                currentReservation: currentReservation[0],
+              },
+            }
+          : { admin: {} }
+        : {};
+      delete userData.user?.id;
+      delete userData.user?.password;
+      delete userData.user?.role;
+
+      return ctx.inertia.render("Card", {
+        userData,
+        cardData: this.getCardData(),
+        hours: (await this.hours)[0],
+      });
+    } else {
+      return ctx.inertia.render("Card", {
+        userData: undefined,
+        cardData: this.getCardData(),
+        hours: (await this.hours)[0],
+      });
+    }
   }
 }

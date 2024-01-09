@@ -1,5 +1,8 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import { ReservationFromBodySheama } from "../../../utils/types/reservationSceama";
+import {
+  DeleteReservationScheama,
+  ReservationFromBodySheama,
+} from "../../../utils/types/reservationSceama";
 import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class ReservationsController {
@@ -78,6 +81,42 @@ export default class ReservationsController {
           typeof error.message === "string"
             ? error.message
             : JSON.parse(error.message)[0]?.message,
+      });
+      return ctx.response.redirect().back();
+    }
+  }
+
+  public async delete(ctx: HttpContextContract) {
+    try {
+      let requestData = DeleteReservationScheama.parse(ctx.request.all());
+      let deleteWithData = await Database.rawQuery(
+        "DELETE FROM `reservations` WHERE `guests` = ? AND `date` = ? AND `hours` = ? AND `email` = ?",
+        [
+          requestData.guests,
+          requestData.date,
+          requestData.hours,
+          requestData.email,
+        ]
+      );
+      if (deleteWithData.length) {
+        let responseOfData: Array<Array<object>> = await Database.rawQuery(
+          "SELECT `guests`,`date`,`hours`,`email` FROM `reservations` WHERE email = ?",
+          [ctx.auth.user?.email]
+        );
+        if (responseOfData[0]) {
+          let tableReserv: Array<object> = [];
+          responseOfData[0].map((elem) => tableReserv.push(elem));
+          ctx.session.flash({ valid: tableReserv });
+          return ctx.response.redirect().back();
+        } else {
+          throw new Error("echec de la supression");
+        }
+      }
+    } catch (error) {
+      ctx.session.flash({
+        errors: !JSON.parse(error.message)
+          ? error.message
+          : JSON.parse(error.message)[0]?.message,
       });
       return ctx.response.redirect().back();
     }
