@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@inertiajs/inertia-react";
 import { Wrapper } from "../../assets/style/footerStyle";
 import Reserv from "./Reservation";
 import { hourStore } from "../../data/store/apiData.store";
@@ -34,10 +34,10 @@ const Footer = () => {
       <nav>
         <ul>
           <li>
-            <Link to="/">Accueil</Link>
+            <Link href="/">Accueil</Link>
           </li>
           <li>
-            <Link to="/carte">Carte</Link>
+            <Link href="/carte">Carte</Link>
           </li>
           <li>
             <button className="btnReserve" onClick={() => setRes(true)}>

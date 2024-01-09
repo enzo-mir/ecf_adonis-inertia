@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import icon from "../../assets/images/icon.svg";
 import Log from "./Log";
 import {
@@ -12,10 +11,10 @@ import Reserv from "./Reservation";
 import logout from "../../data/logout";
 import PopReservation from "./PopReservation";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
-import { query } from "../../data/fetchAllData";
 import { AnimatePresence } from "framer-motion";
 import { hourStore } from "../../data/store/apiData.store";
 import React from "react";
+import { Link } from "@inertiajs/inertia-react";
 
 const Header = () => {
   const [logPage, setLogPage] = useState(false);
@@ -24,7 +23,6 @@ const Header = () => {
   const [togglePage, setTogglePage] = useState<"login" | "signin">("signin");
   const [displayModalReservation, setDisplayModalReservation] = useState(false);
   const [displayHeader, setDisplayHeader] = useState(false);
-  const navigate = useNavigate();
   const connectedUser = connectStore((state) => state.connectedUser);
   const [isAdmin, setIsAdmin] = connectStore((state) => [
     state.connectedAdmin,
@@ -34,13 +32,8 @@ const Header = () => {
     state.userData,
     state.currentReservation,
   ]);
-  const setHours = hourStore((state) => state.setHours);
-  const location = useLocation();
 
-  useEffect(() => {
-    if (location.pathname === "/carte")
-      query().then((data) => setHours(data.hours));
-  }, [setHours, location.pathname]);
+  const setHours = hourStore((state) => state.setHours);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -72,26 +65,20 @@ const Header = () => {
         <button
           onClick={async () => {
             await logout().then(() => {
-              setIsAdmin(false), navigate("/");
+              setIsAdmin(false);
             });
           }}
         >
           Déconnection
         </button>
-        <button
-          onClick={() => {
-            navigate("/admin");
-          }}
-        >
-          Administration
-        </button>
+        <button>Administration</button>
       </HeaderContainer>
     ) : (
       <HeaderContainer>
         <nav>
           <ul>
             <li>
-              <NavLink to="/carte">Carte</NavLink>
+              <Link href="/carte">Carte</Link>
             </li>
             <li>
               <button className="btnReserve" onClick={() => setRes(true)}>
@@ -161,7 +148,7 @@ const Header = () => {
 
       <Wrapper className={displayHeader ? "display" : ""}>
         <div className="imgContainer">
-          <Link to="/">
+          <Link href="/">
             <img src={icon} alt="Icon du site" />
           </Link>
         </div>

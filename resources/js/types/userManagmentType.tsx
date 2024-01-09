@@ -21,7 +21,6 @@ export const signinType = z
       .max(9, { message: "Le nombre d'invité doit être inférieur à 10" }),
     alergy: z
       .string()
-
       .refine((value) => /^([a-z+A-Z\\,]+[a-z+A-Z])$/gm.test(value) || !value, {
         message: "Syntaxe des alergies : alergie1,alergie2 ...",
       }),

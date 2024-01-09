@@ -1,8 +1,13 @@
-type Hour = {
+export type HourDataType = {
   id: number;
   day: string;
   lunch: string;
   dinner: string;
+};
+export type HourToSend = {
+  day: string;
+  time: string;
+  target: string;
 };
 type Image = {
   description: string;
@@ -46,19 +51,19 @@ export type menuType = [
     sharing?: 0 | 1;
   }
 ];
-export type Card = {
+export type CardDataType = {
   starters: entreeType;
   dishs: platType;
   desserts: dessertType;
   menus: menuType;
 };
 export type CardType = {
-  cardStore: Card;
-  setCardStore(val: Card): void;
+  cardStore: CardDataType;
+  setCardStore(val: CardDataType): void;
 };
 export type HourType = {
-  hours: Array<Hour>;
-  setHours(val: Array<Hour>): void;
+  hours: Array<HourDataType>;
+  setHours(val: Array<HourDataType>): void;
 };
 export type ImageType = {
   images: Array<Image>;

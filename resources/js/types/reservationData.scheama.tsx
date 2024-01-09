@@ -1,17 +1,5 @@
 import { z } from "zod";
-
-export const ReservationSheama = z.array(
-  z.object({
-    guests: z.number(),
-    date: z.string(),
-    email: z.string(),
-    name: z.string(),
-    hours: z.string(),
-    alergy: z.string(),
-    timeJourney: z.string(),
-  })
-);
-export const ReservationFromBodySheama = z.object({
+export const reservationScheama = z.object({
   name: z.string().refine((value) => /^[a-zA-Z]+$/.test(value), {
     message: "Le champs nom doit contenir uniquement des lettres",
   }),
@@ -52,11 +40,3 @@ export const ReservationFromBodySheama = z.object({
     message: "Errreur lors du choix de l'heure",
   }),
 });
-export const DeleteReservationScheama = z.object({
-  guests: z.number(),
-  date: z.string(),
-  email: z.string(),
-  hours: z.string(),
-});
-
-export const UserDataReservation = z.array(DeleteReservationScheama);

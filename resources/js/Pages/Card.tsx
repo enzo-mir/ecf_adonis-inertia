@@ -8,29 +8,38 @@ import {
   DessertSection,
   MenuSection,
 } from "../assets/style/cardStyle";
-import { cardStore } from "../data/store/apiData.store";
 import {
+  CardDataType,
+  HourDataType,
   dessertType,
   entreeType,
   menuType,
   platType,
 } from "../types/dataApiTypes";
 import React from "react";
+import Layout from "./components/Layout";
+import { hourStore } from "../data/store/apiData.store";
 
-export default function Card() {
+const Card = ({
+  cardData,
+  hours,
+}: {
+  cardData: CardDataType;
+  hours: Array<HourDataType>;
+}) => {
+  const setHours = hourStore((state) => state.setHours);
+  setHours(hours);
   const [res, setRes] = useState(false);
-  const cardData = cardStore((state) => state.cardStore);
-
-  const entree = cardData.starters;
-  const plat = cardData.dishs;
-  const dessert = cardData.desserts;
-  const menu = cardData.menus;
+  const starters = cardData?.starters;
+  const dishs = cardData?.dishs;
+  const desserts = cardData?.desserts;
+  const menus = cardData?.menus;
 
   function mapingSimilarityFood(
     food: entreeType | platType | dessertType | menuType,
     title: string
   ) {
-    return food === entree || food === plat ? (
+    return food === starters || food === dishs ? (
       <>
         <h2>{title}</h2>
         <div className="noshare">
@@ -61,7 +70,7 @@ export default function Card() {
           })}
         </div>
       </>
-    ) : food === dessert ? (
+    ) : food === desserts ? (
       <>
         <h2>{title}</h2>
         {food.map((element) => {
@@ -103,19 +112,28 @@ export default function Card() {
   return (
     <>
       {res ? <Reserv res={setRes} /> : null}
-      <CarteContainer>
-        <h1>La carte</h1>
-        <MenuContainer>
-          <LunchSection>
-            {mapingSimilarityFood(entree, "les entrées")}
-          </LunchSection>
-          <PlatSection>{mapingSimilarityFood(plat, "les plats")}</PlatSection>
-          <DessertSection>
-            {mapingSimilarityFood(dessert, "les desserts")}
-          </DessertSection>
-          <MenuSection>{mapingSimilarityFood(menu, "les menus")}</MenuSection>
-        </MenuContainer>
-      </CarteContainer>
+      {cardData ? (
+        <CarteContainer>
+          <h1>La carte</h1>
+          <MenuContainer>
+            <LunchSection>
+              {mapingSimilarityFood(starters, "les entrées")}
+            </LunchSection>
+            <PlatSection>
+              {mapingSimilarityFood(dishs, "les plats")}
+            </PlatSection>
+            <DessertSection>
+              {mapingSimilarityFood(desserts, "les desserts")}
+            </DessertSection>
+            <MenuSection>
+              {mapingSimilarityFood(menus, "les menus")}
+            </MenuSection>
+          </MenuContainer>
+        </CarteContainer>
+      ) : null}
     </>
   );
-}
+};
+
+Card.layout = (page: HTMLElement) => <Layout children={page} />;
+export default Card;

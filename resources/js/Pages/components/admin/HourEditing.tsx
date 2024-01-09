@@ -3,6 +3,7 @@ import { hourStore } from "../../../data/store/apiData.store";
 import editBtn from "../../../assets/images/edit_btn.png";
 import adminHoursPost from "../../../data/adminHoursPost";
 import React from "react";
+import { HourToSend } from "../../../types/dataApiTypes";
 
 export default function HourEditing() {
   const [errorHour, setErrorHour] = useState(false);
@@ -11,7 +12,8 @@ export default function HourEditing() {
   const [hours, setHour] = hourStore((state) => [state.hours, state.setHours]);
 
   function editionFinished() {
-    const inputs: NodeListOf<HTMLInputElement> = document.querySelectorAll("table tr input");
+    const inputs: NodeListOf<HTMLInputElement> =
+      document.querySelectorAll("table tr input");
     inputs.forEach((input) => {
       const element = document.createElement("td");
       element.innerText = input.value;
@@ -29,21 +31,31 @@ export default function HourEditing() {
     });
   }
 
-  function editingHours(event: React.MouseEvent<HTMLElement>, text: string | null, day: string | null, time: string | null) {
+  function editingHours(
+    event: React.MouseEvent<HTMLElement>,
+    text: string | null,
+    day: string | null,
+    time: string | null
+  ) {
     const element: HTMLInputElement = document.createElement("input");
     element.classList.add(time as string);
     element.setAttribute("id", day as string);
     element.onkeydown = (e) => {
       if (e.code === "Enter") {
-        submitHourEdition(document.querySelectorAll("article table tbody input"));
+        submitHourEdition(
+          document.querySelectorAll("article table tbody input")
+        );
       }
     };
     element.value = text as string;
-    (event!.target as HTMLElement).parentNode!.replaceChild(element, event!.target as HTMLElement);
+    (event!.target as HTMLElement).parentNode!.replaceChild(
+      element,
+      event!.target as HTMLElement
+    );
   }
 
   function submitHourEdition(elem: NodeListOf<HTMLInputElement>) {
-    const data: Array<object> = [];
+    const data: Array<HourToSend> = [];
     for (let index = 0; index < elem.length; index++) {
       const element = elem[index];
       const day = elem[0].parentElement!.firstChild!.textContent;
@@ -62,7 +74,9 @@ export default function HourEditing() {
     if (hourRegexTesting) {
       setErrorHour(false);
       adminHoursPost(data).then((data) => {
-        return data.heures ? (setHoursEdit(false), setHour(data.heures), editionFinished()) : (setErrorHour(true), setHoursEdit(true));
+        return data.heures
+          ? (setHoursEdit(false), setHour(data.heures), editionFinished())
+          : (setErrorHour(true), setHoursEdit(true));
       });
     } else setErrorHour(true);
   }
@@ -96,7 +110,12 @@ export default function HourEditing() {
                   <td>{elem.day}</td>
                   <td
                     onClick={(e: React.MouseEvent<HTMLElement>) => {
-                      editingHours(e, (e.target as HTMLElement).textContent, elem.day, "lunch");
+                      editingHours(
+                        e,
+                        (e.target as HTMLElement).textContent,
+                        elem.day,
+                        "lunch"
+                      );
                       setHoursEdit(true);
                     }}
                   >
@@ -104,7 +123,12 @@ export default function HourEditing() {
                   </td>
                   <td
                     onClick={(e) => {
-                      editingHours(e, (e.target as HTMLElement).textContent, elem.day, "dinner");
+                      editingHours(
+                        e,
+                        (e.target as HTMLElement).textContent,
+                        elem.day,
+                        "dinner"
+                      );
                       setHoursEdit(true);
                     }}
                   >
@@ -119,7 +143,13 @@ export default function HourEditing() {
       {hoursEdit ? (
         <div className="ctaEdit">
           <p>Édition finit</p>
-          <button onClick={() => submitHourEdition(document.querySelectorAll("article table tbody input"))}>
+          <button
+            onClick={() =>
+              submitHourEdition(
+                document.querySelectorAll("article table tbody input")
+              )
+            }
+          >
             <img src={editBtn} alt="édition" />
           </button>
         </div>

@@ -13,32 +13,37 @@ import { userDataStore } from "../../data/store/connect.store";
 import { hourStore } from "../../data/store/apiData.store";
 import { motion } from "framer-motion";
 import React from "react";
+import { useForm, usePage } from "@inertiajs/inertia-react";
+import { reservationScheama } from "../../types/reservationData.scheama";
 
 export default function Reserv({
   res: displayReservation,
 }: {
   res(val: boolean): void;
 }) {
-  const [userInfoStored, setReservationData] = userDataStore((state) => [
+  const [userData, setCurrentReservation] = userDataStore((state) => [
     state.userData,
     state.setCurrentReservation,
   ]);
   const hours = hourStore((state) => state.hours);
-  const [date, setDate] = useState(new Date().toLocaleDateString("Fr-ca"));
-  const [guests, setGuests] = useState(userInfoStored?.guests || 1);
-  const [email, setEmail] = useState(userInfoStored?.email || "");
-  const [name, setName] = useState(userInfoStored?.name || "");
+  const { errors } = usePage().props;
+
+  const { data, setData, processing, post } = useForm({
+    name: userData?.name || "",
+    email: userData?.email || "",
+    guests: userData?.guests || 1,
+    alergy: userData?.alergy || "",
+    date: new Date().toLocaleDateString("fr-CA"),
+    hourTargeted: null,
+    timeTargeted: null,
+  });
+
   const [resError, setResError] = useState("");
-  const [alergy, setAlergy] = useState(userInfoStored?.alergy || "");
   const [showAllergy, setShowAllergy] = useState(
-    userInfoStored?.alergy ? true : false
+    userData?.alergy ? true : false
   );
   const [DTable, setDTable] = useState<Array<string> | string>([]);
   const [LTable, setLTable] = useState<Array<string> | string>([]);
-  const reservationTimeTarget = useRef({
-    hour: null as string | null,
-    time: "" as string,
-  });
   const reservContainerRef = useRef<HTMLElement | null>(null);
   const lunchTable: Array<string> = [];
   const dinnerTable: Array<string> = [];
@@ -55,10 +60,10 @@ export default function Reserv({
   function handleChangeDate(e: ChangeEvent | null) {
     let hourFetchLunch: string = "";
     let hourFetchDinner: string = "";
-    let dateDay: string = new Date(date).toLocaleDateString("fr-FR", {
+    let dateDay: string = new Date(data.date).toLocaleDateString("fr-FR", {
       weekday: "long",
     });
-    let fullDate: string = new Date(date).toLocaleDateString("fr-CA");
+    let fullDate: string = new Date(data.date).toLocaleDateString("fr-CA");
 
     if (e) {
       dateDay = new Date(
@@ -71,7 +76,7 @@ export default function Reserv({
       ).toLocaleDateString("fr-CA");
     }
 
-    setDate(fullDate);
+    setData({ ...data, date: fullDate });
 
     hours.forEach((elem) => {
       if (Object.values(elem)[1] === dateDay) {
@@ -151,17 +156,18 @@ export default function Reserv({
           document.getElementById("submitRes") !== e.target
         ) {
           obj.classList.remove("selected");
-          reservationTimeTarget.current.hour = null;
+          setData({ ...data, hourTargeted: null });
         }
       }
     };
   }
 
   function selectHours(e: React.MouseEvent<HTMLButtonElement>) {
-    reservationTimeTarget.current.hour = (e.target as HTMLElement).innerHTML;
-    reservationTimeTarget.current.time = (e.target as HTMLElement).getAttribute(
-      "data-time"
-    )!;
+    setData({
+      ...data,
+      hourTargeted: (e.target as HTMLElement).innerHTML,
+      timeTargeted: (e.target as HTMLElement).getAttribute("data-time")!,
+    });
 
     unselectHours();
     const oldTarget = document.querySelector(".selected");
@@ -169,40 +175,27 @@ export default function Reserv({
     (e.target as HTMLElement).classList.add("selected");
   }
 
-  function submitReservation() {
+  async function submitReservation() {
     reservContainerRef.current?.scrollTo({
       top: 0,
       left: 0,
       behavior: "smooth",
     });
 
-    if (guests > 0 && guests < 10) {
-      if (
-        date !== null &&
-        new Date(date).getTime() > new Date().getTime() - 86400000
-      ) {
-        if (email) {
-          if (name) {
-            if (reservationTimeTarget.current.hour !== null) {
-              setResError("");
-              postReservation(
-                guests,
-                date,
-                email,
-                name,
-                reservationTimeTarget.current.hour,
-                alergy || "",
-                reservationTimeTarget.current.time
-              ).then((data) => {
-                data.error
-                  ? setResError(data.error)
-                  : (setReservationData(data.valid), displayReservation(false));
-              });
-            } else setResError("Choisissez une heure de réservation");
-          } else setResError("Veuillez renseignez un nom de réservation");
-        } else setResError("Veuillez renseignez votre adresse e-mail");
-      } else setResError("Choisissez une date de réservation valide");
-    } else setResError("Le nombre de convives doit être compris entre 1 et 9");
+    try {
+      const dataValidate = await reservationScheama.parseAsync(data);
+      post("/reservation", {
+        data: dataValidate,
+        onError: (err) => {
+          setResError((errors || err) as unknown as string);
+        },
+        onSuccess: (success) => {
+          console.log(success);
+        },
+      });
+    } catch (error) {
+      setResError(JSON.parse(error.message)[0].message);
+    }
   }
 
   return (
@@ -226,8 +219,10 @@ export default function Reserv({
             placeholder="convives par défaut (1-9)"
             max="9"
             min="1"
-            value={guests}
-            onChange={(e) => setGuests(parseInt(e.target.value))}
+            value={data.guests}
+            onChange={(e) =>
+              setData({ ...data, guests: parseInt(e.target.value) })
+            }
             maxLength={2}
           />
           <input
@@ -235,25 +230,29 @@ export default function Reserv({
             id="date"
             onChange={(e: ChangeEvent) => handleChangeDate(e)}
             min={new Date().toLocaleDateString("fr-CA")}
-            value={date}
+            value={data.date}
           />
           <input
             type="email"
             id="email"
             required
             placeholder="Entrez votre e-mail"
-            value={userInfoStored?.email || email}
-            onChange={(e) => userInfoStored?.email || setEmail(e.target.value)}
-            disabled={userInfoStored?.email ? true : false}
+            value={userData?.email || data.email}
+            onChange={(e) =>
+              userData?.email || setData({ ...data, email: e.target.value })
+            }
+            disabled={userData?.email ? true : false}
           />
           <input
             type="text"
             id="name"
             required
             placeholder="Entrez votre nom"
-            value={userInfoStored?.name || name}
-            onChange={(e) => userInfoStored?.name || setName(e.target.value)}
-            disabled={userInfoStored?.name ? true : false}
+            value={userData?.name || data.name}
+            onChange={(e) =>
+              userData?.name || setData({ ...data, name: e.target.value })
+            }
+            disabled={userData?.name ? true : false}
           />
         </OptionsReserv>
         <div id="lunchHours">
@@ -306,7 +305,6 @@ export default function Reserv({
           <p
             onClick={() => {
               setShowAllergy(!showAllergy);
-              setAlergy(alergy);
             }}
           >
             Allergie(s) ?
@@ -316,14 +314,19 @@ export default function Reserv({
               <input
                 type="texte"
                 placeholder="Entrez vos allergies"
-                value={alergy}
+                value={data.alergy}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setAlergy(e.target.value)
+                  setData({ ...data, alergy: e.target.value })
                 }
               />
             </AlergyWrapper>
           )}
-          <button id="submitRes" type="submit" onClick={submitReservation}>
+          <button
+            id="submitRes"
+            type="submit"
+            onClick={submitReservation}
+            disabled={processing}
+          >
             Réservez la table
           </button>
         </div>

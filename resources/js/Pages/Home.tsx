@@ -1,13 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reserv from "./components/Reservation";
 import { Wrapper, HeroSection, SectionPlats } from "../assets/style/homeStyle";
-import { imageStore } from "../data/store/apiData.store";
+import { hourStore } from "../data/store/apiData.store";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
+import Layout from "./components/Layout";
+import { connectStore, userDataStore } from "../data/store/connect.store";
 
-const Home = () => {
+
+const Home = ({ userData, hours, images }) => {
   const [res, setRes] = useState(false);
-  const imagesApi = imageStore((state) => state.images);
+  const setHours = hourStore((state) => state.setHours);
+  const setUserData = userDataStore((state) => state.setUserData);
+  const setConnectedUser = connectStore((state) => state.setConnectedUser);
+
+  setHours(hours);
+  if (userData.user) {
+    setUserData(userData.user);
+    setConnectedUser(true);
+  }
+
   const containerVariant = {
     hiddenHeader: { opacity: 0 },
     showHeader: {
@@ -79,22 +91,25 @@ const Home = () => {
         <button className="btnReserve" onClick={() => setRes(true)}>
           Réservez une table
         </button>
-        <div className="imagesGalery">
-          {imagesApi.map((images, id) => {
-            return (
-              <div key={id}>
-                <img src={images.url} alt="plat du chef" loading="lazy" />
-                <span>
-                  <h1>{images.title}</h1>
-                  <p>{images.description}</p>
-                </span>
-              </div>
-            );
-          })}
-        </div>
+        {images?.length ? (
+          <div className="imagesGalery">
+            {images?.map((images, id) => {
+              return (
+                <div key={id}>
+                  <img src={images.url} alt="plat du chef" loading="lazy" />
+                  <span>
+                    <h1>{images.title}</h1>
+                    <p>{images.description}</p>
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
       </SectionPlats>
     </Wrapper>
   );
 };
+Home.layout = (page: HTMLElement) => <Layout children={page} />;
 
 export default Home;

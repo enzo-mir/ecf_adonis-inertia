@@ -1,4 +1,6 @@
-export default async function adminHoursPost(dataHours: Array<object>) {
+import { HourToSend } from "../types/dataApiTypes";
+
+export default async function adminHoursPost(dataHours: Array<HourToSend>) {
   return fetch("/adminHours", {
     method: "POST",
     headers: {

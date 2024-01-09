@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
-const UndifinedRoute = () => {
+const UndefinedRoute = () => {
   useEffect(() => {
     return () => {
       document.body.style.overflow = "visible";
@@ -52,4 +52,4 @@ const Wrapper = styled.main`
     font-size: var(--font-size-h1);
   }
 `;
-export default UndifinedRoute;
+export default UndefinedRoute;
