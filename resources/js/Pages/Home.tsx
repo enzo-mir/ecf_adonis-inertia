@@ -14,7 +14,7 @@ const Home = ({ userData, hours, images }) => {
   const setConnectedUser = connectStore((state) => state.setConnectedUser);
 
   setHours(hours);
-  if (userData.user) {
+  if (userData?.user) {
     setUserData(userData);
     setConnectedUser(true);
   }

@@ -2,7 +2,7 @@ import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import {
   DeleteReservationScheama,
   ReservationFromBodySheama,
-} from "../../../utils/types/reservationSceama";
+} from "../../../utils/types/reservationScheama";
 import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class ReservationsController {

@@ -42,7 +42,7 @@ const Card = ({
   const setUserData = userDataStore((state) => state.setUserData);
   const setConnectedUser = connectStore((state) => state.setConnectedUser);
 
-  if (userData.user) {
+  if (userData?.user) {
     setUserData(userData);
     setConnectedUser(true);
   }

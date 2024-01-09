@@ -33,7 +33,6 @@ export const updateZodType = z.object({
       }
     )
     .nullable(),
-  oldEmail: z.string().email({ message: "email invalide" }),
   guests: z
     .number()
     .min(1, { message: "Le nombre d'invité doit être supérieur à 1" })
@@ -45,6 +44,8 @@ export const updateZodType = z.object({
       message: "Syntaxe des alergies : alergie1,alergie2 ...",
     }),
 });
+export type UpdatedFormDataType = z.infer<typeof updateZodType>;
+
 export const LoginUserScheama = z.object({
   email: z.string().email(),
   password: z.string(),

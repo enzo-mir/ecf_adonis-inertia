@@ -179,7 +179,7 @@ export default function Reserv({
       left: 0,
       behavior: "smooth",
     });
-
+    setResError("");
     try {
       const dataValidate = reservationScheama.parse(data);
       post("/reservation/add", {

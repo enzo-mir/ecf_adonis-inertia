@@ -52,7 +52,6 @@ export const updateZodType = z.object({
       }
     )
     .nullable(),
-  oldEmail: z.string().email({ message: "email invalide" }),
   guests: z
     .number()
     .min(1, { message: "Le nombre d'invité doit être supérieur à 1" })

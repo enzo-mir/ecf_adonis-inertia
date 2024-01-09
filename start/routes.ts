@@ -16,3 +16,8 @@ Route.group(() => {
   Route.post("/add", "ReservationsController.add");
   Route.post("/delete", "ReservationsController.delete");
 }).prefix("/reservation");
+
+Route.group(() => {
+  Route.post("/update", "ProfilesController.update");
+  Route.post("/logout", "ProfilesController.logout");
+}).prefix("profile");

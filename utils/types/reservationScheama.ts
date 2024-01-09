@@ -1,16 +1,4 @@
 import { z } from "zod";
-
-export const ReservationSheama = z.array(
-  z.object({
-    guests: z.number(),
-    date: z.string(),
-    email: z.string(),
-    name: z.string(),
-    hours: z.string(),
-    alergy: z.string(),
-    timeJourney: z.string(),
-  })
-);
 export const ReservationFromBodySheama = z.object({
   name: z.string().refine((value) => /^[a-zA-Z]+$/.test(value), {
     message: "Le champs nom doit contenir uniquement des lettres",

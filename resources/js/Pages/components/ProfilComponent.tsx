@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
 import { ContainerSettings } from "../../assets/style/profilComponentsStyle";
 import logout from "../../data/logout";
@@ -6,13 +6,11 @@ import deleteAccount from "../../data/deleteAccount";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { Cross } from "../../assets/style/cross";
 import { motion } from "framer-motion";
-import {
-  UpdatedFormDataType,
-  updateZodType,
-} from "../../types/userManagmentType";
+import { updateZodType } from "../../types/userManagmentType";
 import { z } from "zod";
-import updateProfil from "../../data/updateProfil";
 import React from "react";
+import { useForm } from "@inertiajs/inertia-react";
+import { User } from "../../types/userType.store";
 
 const ProfilComponent = ({
   setDisplayProfil,
@@ -26,13 +24,12 @@ const ProfilComponent = ({
   ]);
   const setConnectedUser = connectStore((state) => state.setConnectedUser);
 
-  const [inputInfo, setInputInfo] = useState<UpdatedFormDataType>({
+  const { post, data, setData, reset, processing } = useForm({
     name: userData.user.name,
     email: userData.user.email,
-    guests: userData.user.guests!,
+    guests: userData.user.guests,
     password: null,
     alergy: userData.user.alergy,
-    oldEmail: userData.user.email,
   });
 
   const [validationMessage, setValidationMessage] = useState<string>("");
@@ -44,30 +41,60 @@ const ProfilComponent = ({
     };
   }, []);
 
-  function validationForm() {
-    try {
-      const zodScheama = updateZodType.parse(inputInfo);
-      if (zodScheama) {
-        setValidationMessage("");
-        updateProfil(inputInfo).then((data) =>
-          data.error
-            ? setValidationMessage(data.error)
-            : (setuserData(data.data),
-              setValidationMessage(data.valid),
-              setEditable(!editable),
-              setTimeout(() => {
-                setValidationMessage("");
-              }, 1000))
-        );
+  async function validationForm(e: FormEvent) {
+    e.preventDefault();
+    setValidationMessage("");
+
+    var objectComparaison: boolean = true;
+    const objectToCompare = { ...data };
+    Object.assign(objectToCompare, {
+      currentReservation: userData.user.currentReservation,
+    });
+    function areObjectsEqual() {
+      for (const key in objectToCompare) {
+        if (Object.prototype.hasOwnProperty.call(objectToCompare, key)) {
+          if (
+            objectToCompare[key] !==
+            { ...userData.user, password: data.password }[key]
+          )
+            return false;
+        }
       }
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        setValidationMessage(error.errors[0].message);
+      return true;
+    }
+    if (areObjectsEqual()) {
+      objectComparaison = false;
+    } else {
+      objectComparaison = true;
+    }
+
+    if (!objectComparaison) {
+      setEditable(false);
+      reset();
+    } else {
+      try {
+        await updateZodType.parseAsync(data);
+        post("/profile/update", {
+          data,
+          onError: (err) => {
+            setValidationMessage(err as unknown as string);
+          },
+          onSuccess: (success) => {
+            setuserData({
+              user: { ...userData.user, ...(success.props.valid as User) },
+            });
+            setEditable(false);
+          },
+        });
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          setValidationMessage(error.errors[0].message);
+        }
       }
     }
   }
   function deletingAcc() {
-    deleteAccount(inputInfo.email)
+    /* deleteAccount(inputInfo.email)
       .then((response) => response.json())
       .then((data) => {
         data.success
@@ -86,8 +113,51 @@ const ProfilComponent = ({
           : data.error
           ? setValidationMessage(data.error)
           : null;
-      });
+      }); */
   }
+
+  const EditableCta = () => {
+    return (
+      <div className="cta">
+        {editable ? (
+          <button type="submit" disabled={processing}>
+            Édition finit
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setEditable(true);
+            }}
+          >
+            Éditer les infos
+          </button>
+        )}
+
+        <button
+          onClick={() => {
+            post("/profile/logout");
+            setDisplayProfil(false);
+            setConnectedUser(false);
+            reset();
+            setuserData({
+              user: {
+                id: 0,
+                name: "",
+                email: "",
+                password: "",
+                guests: 0,
+                alergy: "",
+                currentReservation: [],
+              },
+            });
+          }}
+        >
+          Déconnection
+        </button>
+        <button onClick={deletingAcc}>supprimer le compte</button>
+      </div>
+    );
+  };
 
   return (
     <Overlay onClick={() => setDisplayProfil(false)}>
@@ -104,17 +174,15 @@ const ProfilComponent = ({
           <p className="error">{validationMessage}</p>
         ) : null}
         {editable ? (
-          <>
+          <form onSubmit={validationForm}>
             <div className="profilAcount">
               <label htmlFor="name">
                 nom :
                 <input
                   type="text"
                   name="name"
-                  value={inputInfo.name}
-                  onChange={(e) =>
-                    setInputInfo({ ...inputInfo, name: e.target.value })
-                  }
+                  value={data.name}
+                  onChange={(e) => setData({ ...data, name: e.target.value })}
                 />
               </label>
               <label htmlFor="email">
@@ -122,10 +190,8 @@ const ProfilComponent = ({
                 <input
                   type="email"
                   name="email"
-                  value={inputInfo.email}
-                  onChange={(e) =>
-                    setInputInfo({ ...inputInfo, email: e.target.value })
-                  }
+                  value={data.email}
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
                 />
               </label>
             </div>
@@ -136,10 +202,10 @@ const ProfilComponent = ({
                   type="number"
                   min={1}
                   name="guests"
-                  value={inputInfo.guests}
+                  value={data.guests}
                   onChange={(e) =>
-                    setInputInfo({
-                      ...inputInfo,
+                    setData({
+                      ...data,
                       guests: parseInt(e.target.value),
                     })
                   }
@@ -150,10 +216,8 @@ const ProfilComponent = ({
                 <input
                   type="text"
                   name="alergy"
-                  value={inputInfo.alergy}
-                  onChange={(e) =>
-                    setInputInfo({ ...inputInfo, alergy: e.target.value })
-                  }
+                  value={data.alergy}
+                  onChange={(e) => setData({ ...data, alergy: e.target.value })}
                 />
               </label>
             </div>
@@ -163,70 +227,36 @@ const ProfilComponent = ({
                 <input
                   type="text"
                   name="name"
-                  value={inputInfo.password || ""}
+                  value={data.password || ""}
                   onChange={(e) =>
-                    setInputInfo({ ...inputInfo, password: e.target.value })
+                    setData({ ...data, password: e.target.value })
                   }
                 />
               </label>
             </div>
-          </>
+            <EditableCta />
+          </form>
         ) : (
-          <>
+          <div>
             <div className="profilAcount">
               <p>
-                nom : <strong>{inputInfo.name}</strong>
+                nom : <strong>{data.name}</strong>
               </p>
               <p>
-                e-mail : <strong>{inputInfo.email}</strong>
+                e-mail : <strong>{data.email}</strong>
               </p>
             </div>
             <div className="addsOn">
               <p>
-                convives (par défaut) : <strong>{inputInfo.guests!}</strong>
+                convives (par défaut) : <strong>{data.guests!}</strong>
               </p>
               <p>
-                alergies : <strong>{inputInfo.alergy || "aucune"}</strong>
+                alergies : <strong>{data.alergy || "aucune"}</strong>
               </p>
             </div>
-            ;
-          </>
+            <EditableCta />
+          </div>
         )}
-
-        <div className="cta">
-          {!editable ? (
-            <button
-              onClick={() => {
-                setEditable(true);
-              }}
-            >
-              Éditer les infos
-            </button>
-          ) : (
-            <button onClick={validationForm}>Édition finit</button>
-          )}
-          <button
-            onClick={() => {
-              logout();
-              setDisplayProfil(false);
-              setConnectedUser(false);
-              setuserData({
-                user: {
-                  id: 0,
-                  name: "",
-                  email: "",
-                  password: "",
-                  guests: 0,
-                  alergy: "",
-                  currentReservation: [],
-                },
-              });
-            }}
-          >
-            Déconnection
-          </button>
-          <button onClick={deletingAcc}>supprimer le compte</button>
-        </div>
       </ContainerSettings>
     </Overlay>
   );
