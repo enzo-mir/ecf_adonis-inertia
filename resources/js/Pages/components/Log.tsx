@@ -32,30 +32,21 @@ const Log = ({
   const setUserData = userDataStore((state) => state.setUserData);
 
   const submitSignin = async (e: FormEvent) => {
-    e.preventDefault;
+    e.preventDefault();
     try {
-      const signinData = await signinType.parseAsync(data);
+      const signinData = await signinType.parseAsync({
+        ...data,
+        alergy: data.alergy || "",
+      });
+
       post("/auth/register", {
         data: signinData,
         onSuccess: (success) => {
           setFormConfirmation(success.props.valid as string);
-          setTimeout(() => {
-            post("/auth/login", {
-              data: { email: data.email, password: data.password },
-              onSuccess: () => {
-                setUserData(success.props.valid as User);
-                setConnectedUser(true);
-                setFormConfirmation("");
-                displayPage(false);
-              },
-              onError: (err) => {
-                setFormConfirmation(err as unknown as string);
-                setTimeout(() => {
-                  setFormConfirmation("");
-                }, 2000);
-              },
-            });
-          }, 1000);
+          setUserData(success.props.valid as User);
+          setConnectedUser(true);
+          setFormConfirmation("");
+          displayPage(false);
         },
         onError: (err) => {
           setFormConfirmation(err as unknown as string);
@@ -65,6 +56,8 @@ const Log = ({
         },
       });
     } catch (error) {
+      console.log(error);
+
       if (error instanceof z.ZodError) {
         setFormConfirmation(error.errors[0].message);
       } else {
@@ -77,6 +70,7 @@ const Log = ({
     e.preventDefault();
     try {
       const loginData = LoginDataType.parse(data);
+
       post("/auth/login", {
         data: loginData,
         onSuccess: (success) => {
@@ -181,8 +175,12 @@ const Log = ({
                 />
                 <input
                   type="text"
+                  defaultValue={""}
                   onChange={(e) => {
-                    setData({ ...data, alergy: e.target.value });
+                    setData({
+                      ...data,
+                      alergy: e.target.value,
+                    });
                   }}
                   placeholder="Alergies (ex : tomates, carotte)"
                 />

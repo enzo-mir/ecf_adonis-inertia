@@ -4,6 +4,7 @@ import {
   ReservationFromBodySheama,
 } from "../../../utils/types/reservationScheama";
 import Database from "@ioc:Adonis/Lucid/Database";
+import { getReservation } from "../getUserData";
 
 export default class ReservationsController {
   private guestsLimit = 35;
@@ -54,22 +55,8 @@ export default class ReservationsController {
       );
 
       if (reservationInsertion.length && ctx.auth.user) {
-        let responseOfData: Array<Array<object>> = await Database.rawQuery(
-          "SELECT `guests`,`date`,`hours`,`email` FROM `reservations` WHERE email = ?",
-          [ctx.auth.user.email]
-        );
-
-        if (responseOfData[0].length) {
-          let tableReservation: Array<object> = [];
-
-          responseOfData[0].map((reservations) =>
-            tableReservation.push(reservations)
-          );
-          ctx.session.flash({ valid: tableReservation });
-          return ctx.response.redirect().back();
-        } else {
-          throw new Error("Echec de l'accé aux données");
-        }
+        ctx.session.flash({ valid: await getReservation(ctx) });
+        return ctx.response.redirect().back();
       } else if (reservationInsertion.length) {
         return ctx.response.redirect().back();
       } else {
