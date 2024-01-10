@@ -1,18 +1,11 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Database from "@ioc:Adonis/Lucid/Database";
-import { UpdatedFormDataType, updateZodType } from "../../../utils/types/user";
+import { updateZodType } from "../../../utils/types/user";
 import { z } from "zod";
 import Hash from "@ioc:Adonis/Core/Hash";
+import { getUserData } from "../getUserData";
 
 export default class ProfilesController {
-  private async getUserData(ctx: HttpContextContract) {
-    const user_database = await Database.rawQuery(
-      "SELECT name, email, guests, alergy from users WHERE id = ? AND email = ?",
-      [ctx.auth.user?.id, ctx.auth.user?.email]
-    );
-    return user_database[0][0] as UpdatedFormDataType;
-  }
-
   public async update(ctx: HttpContextContract) {
     try {
       const userUpdateData = await updateZodType.parseAsync(ctx.request.all());
@@ -22,7 +15,7 @@ export default class ProfilesController {
         );
 
         if (updateQuery[0].changedRows > 0) {
-          ctx.session.flash({ valid: await this.getUserData(ctx) });
+          ctx.session.flash({ valid: await getUserData(ctx) });
           return ctx.response.redirect().back();
         } else {
           throw new Error("Echec lors de la mise à jour des données");
@@ -35,7 +28,7 @@ export default class ProfilesController {
         );
 
         if (updateQuery[0].changedRows > 0) {
-          ctx.session.flash({ valid: await this.getUserData(ctx) });
+          ctx.session.flash({ valid: await getUserData(ctx) });
           return ctx.response.redirect().back();
         } else {
           throw new Error("Echec lors de la mise à jour des données");
@@ -57,10 +50,20 @@ export default class ProfilesController {
       await ctx.auth.logout();
       return ctx.inertia.redirectBack();
     } catch (error) {
-      ctx.session.flash({
-        errors: error.message,
-      });
-      return ctx.response.redirect().back();
+      return ctx.response.status(400).redirect().back();
+    }
+  }
+
+  public async delete(ctx: HttpContextContract) {
+    await this.logout(ctx);
+    try {
+      const lineDeleted = await Database.rawQuery(
+        "DELETE FROM `users` WHERE `id` = ? AND `email` = ? AND `name` = ? ",
+        [ctx.auth.user?.id, ctx.auth.user?.email, ctx.auth.user?.name]
+      );
+      console.log(lineDeleted);
+    } catch (error) {
+      return ctx.response.status(400).redirect().back();
     }
   }
 }

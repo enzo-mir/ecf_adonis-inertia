@@ -89,31 +89,11 @@ const ProfilComponent = ({
       } catch (error) {
         if (error instanceof z.ZodError) {
           setValidationMessage(error.errors[0].message);
+        } else {
+          setValidationMessage(error.message);
         }
       }
     }
-  }
-  function deletingAcc() {
-    /* deleteAccount(inputInfo.email)
-      .then((response) => response.json())
-      .then((data) => {
-        data.success
-          ? (setDisplayProfil(false),
-            setConnectedUser(false),
-            setuserData({
-              user: {
-                name: "",
-                email: "",
-                password: "",
-                guests: 0,
-                alergy: "",
-                currentReservation: [],
-              },
-            }))
-          : data.error
-          ? setValidationMessage(data.error)
-          : null;
-      }); */
   }
 
   const EditableCta = () => {
@@ -135,26 +115,56 @@ const ProfilComponent = ({
 
         <button
           onClick={() => {
-            post("/profile/logout");
-            setDisplayProfil(false);
-            setConnectedUser(false);
-            reset();
-            setuserData({
-              user: {
-                id: 0,
-                name: "",
-                email: "",
-                password: "",
-                guests: 0,
-                alergy: "",
-                currentReservation: [],
+            post("/profile/logout", {
+              onSuccess: () => {
+                setValidationMessage("Déconnection ...");
+                setTimeout(() => {
+                  setDisplayProfil(false);
+                  setConnectedUser(false);
+                  reset();
+                  setuserData({
+                    user: {
+                      name: "",
+                      email: "",
+                      password: "",
+                      guests: 0,
+                      alergy: "",
+                      currentReservation: [],
+                    },
+                  });
+                }, 1500);
               },
             });
           }}
         >
           Déconnection
         </button>
-        <button onClick={deletingAcc}>supprimer le compte</button>
+        <button
+          onClick={() => {
+            post("/profile/delete", {
+              onSuccess: () => {
+                setValidationMessage("Profil effacé !");
+                setTimeout(() => {
+                  setDisplayProfil(false);
+                  setConnectedUser(false);
+                  reset();
+                  setuserData({
+                    user: {
+                      name: "",
+                      email: "",
+                      password: "",
+                      guests: 0,
+                      alergy: "",
+                      currentReservation: [],
+                    },
+                  });
+                }, 1500);
+              },
+            });
+          }}
+        >
+          supprimer le compte
+        </button>
       </div>
     );
   };

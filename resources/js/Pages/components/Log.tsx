@@ -5,16 +5,14 @@ import {
   ContentSignIn,
   ContentLogIn,
 } from "../../assets/style/logStyle";
-import postCreateAccount from "../../data/postCreateAccount";
-import postConnection from "../../data/postConnection";
 import { Cross } from "../../assets/style/cross";
-import { useNavigate } from "react-router-dom";
-import { connectStore } from "../../data/store/connect.store";
-import { FormDataSignin, signinType } from "../../types/userManagmentType";
+import { connectStore, userDataStore } from "../../data/store/connect.store";
+import { LoginDataType, signinType } from "../../types/userManagmentType";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "@inertiajs/inertia-react";
 import React from "react";
+import { z } from "zod";
+import { User } from "../../types/userType.store";
 
 const Log = ({
   displayPage,
@@ -25,83 +23,91 @@ const Log = ({
 }) => {
   const [page, setPage] = useState(togglePage);
   const [fromConfirmation, setFormConfirmation] = useState("");
+  const { data, setData, post, reset } = useForm();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<FormDataSignin>({ resolver: zodResolver(signinType) });
+  const [setConnectedAdmin, setConnectedUser] = connectStore((state) => [
+    state.setConnectedAdmin,
+    state.setConnectedUser,
+  ]);
+  const setUserData = userDataStore((state) => state.setUserData);
 
-  const setConnectedAdmin = connectStore((state) => state.setConnectedAdmin);
-  const navigate = useNavigate();
-
-  const [loginEmail, setLoginEmail] = useState<string>("");
-  const [loginPassword, setLoginPassword] = useState<string>("");
-  const [loginConfirmation, setLoginConfirmation] = useState("");
-  type responseType = { error?: string; valid?: string };
-
-  const submitSignin = async (signinData: FormDataSignin) => {
+  const submitSignin = async (e: FormEvent) => {
+    e.preventDefault;
     try {
-      const response = await postCreateAccount(signinData);
-      const responseData: responseType = await response.json();
-
-      if (!response.ok) {
-        setFormConfirmation(responseData.error!);
-        setTimeout(() => {
-          setFormConfirmation("");
-        }, 2000);
-      } else {
-        setFormConfirmation(responseData.valid!);
-        setTimeout(() => {
-          return submitLogin(signinData.email, signinData.password, null);
-        }, 1000);
-      }
+      const signinData = await signinType.parseAsync(data);
+      post("/auth/register", {
+        data: signinData,
+        onSuccess: (success) => {
+          setFormConfirmation(success.props.valid as string);
+          setTimeout(() => {
+            post("/auth/login", {
+              data: { email: data.email, password: data.password },
+              onSuccess: () => {
+                setUserData(success.props.valid as User);
+                setConnectedUser(true);
+                setFormConfirmation("");
+                displayPage(false);
+              },
+              onError: (err) => {
+                setFormConfirmation(err as unknown as string);
+                setTimeout(() => {
+                  setFormConfirmation("");
+                }, 2000);
+              },
+            });
+          }, 1000);
+        },
+        onError: (err) => {
+          setFormConfirmation(err as unknown as string);
+          setTimeout(() => {
+            setFormConfirmation("");
+          }, 2000);
+        },
+      });
     } catch (error) {
-      throw new Error(error as string);
+      if (error instanceof z.ZodError) {
+        setFormConfirmation(error.errors[0].message);
+      } else {
+        setFormConfirmation(error.message);
+      }
     }
   };
 
-  const submitLogin = async (
-    email: string,
-    password: string,
-    e: FormEvent | null
-  ) => {
-    e!.preventDefault();
+  const submitLogin = (e: FormEvent) => {
+    e.preventDefault();
     try {
-      const response: responseType = await postConnection(
-        email || loginEmail,
-        password || loginPassword
-      );
-
-      if (response.error) {
-        setLoginConfirmation(response.error!);
-      } else {
-        if (response.valid == "user") {
-          navigate(0);
-        } else {
-          setConnectedAdmin(true);
-          displayPage(false);
-          navigate("/admin");
-        }
-        setLoginConfirmation("");
-      }
+      const loginData = LoginDataType.parse(data);
+      post("/auth/login", {
+        data: loginData,
+        onSuccess: (success) => {
+          setFormConfirmation("Connection ...");
+          setTimeout(() => {
+            setFormConfirmation("");
+            displayPage(false);
+            if ((success.props.valid as User).user) {
+              setUserData(success.props.valid);
+              setConnectedUser(true);
+              displayPage(false);
+            } else if ((success.props.valid as User).admin) {
+              setConnectedAdmin(true);
+            }
+          }, 1500);
+        },
+        onError: (err) => {
+          setFormConfirmation(err as unknown as string);
+          setTimeout(() => {
+            setFormConfirmation("");
+          }, 2000);
+        },
+      });
     } catch (error) {
-      throw new Error(error as string);
+      if (error instanceof z.ZodError) {
+        setFormConfirmation(error.errors[0].message);
+      } else {
+        setFormConfirmation(error.message);
+      }
     }
   };
-  function ErrorhandleFormSignin() {
-    if (errors) {
-      for (const key in errors) {
-        if (Object.prototype.hasOwnProperty.call(errors, key)) {
-          const element = errors[key as keyof typeof errors];
-          return <p>{element!.message}</p>;
-        }
-      }
-    } else {
-      return null;
-    }
-  }
 
   return (
     <Overlay onClick={() => displayPage(false)}>
@@ -117,17 +123,10 @@ const Log = ({
 
         <h1>{page === "signin" ? "Inscrivez-vous" : "Connectez-vous"} </h1>
         {fromConfirmation && <p>{fromConfirmation}</p>}
-        <ErrorhandleFormSignin />
-        {page === "login" && loginConfirmation ? (
-          <p>{loginConfirmation}</p>
-        ) : null}
-
         <form
-          onSubmit={
-            page === "signin"
-              ? handleSubmit(submitSignin)
-              : (e) => submitLogin(loginEmail, loginPassword, e)
-          }
+          onSubmit={(e) => {
+            page === "signin" ? submitSignin(e) : submitLogin(e);
+          }}
         >
           {page === "signin" ? (
             <ContentSignIn>
@@ -136,16 +135,19 @@ const Log = ({
                   type="text"
                   placeholder="Nom"
                   autoComplete="family-name"
-                  autoFocus
-                  {...register("name", { required: true })}
                   required
+                  autoFocus
+                  onChange={(e) => {
+                    setData({ ...data, name: e.target.value });
+                  }}
                 />
                 <input
                   type="email"
                   required
                   placeholder="Adresse e-mail"
-                  {...register("email", { required: true })}
-                  onChange={(e) => setValue("email", e.target.value)}
+                  onChange={(e) => {
+                    setData({ ...data, email: e.target.value });
+                  }}
                 />
               </div>
               <div className="password">
@@ -154,15 +156,18 @@ const Log = ({
                   placeholder="Mot de passe"
                   autoComplete="current-password"
                   required
-                  {...register("password", { required: true })}
-                  onChange={(e) => setValue("password", e.target.value)}
+                  onChange={(e) => {
+                    setData({ ...data, password: e.target.value });
+                  }}
                 />
                 <input
                   type="password"
                   autoComplete="password"
                   required
                   placeholder="Confirmation mot de passe"
-                  {...register("confirmPassword", { required: true })}
+                  onChange={(e) => {
+                    setData({ ...data, confirmPassword: e.target.value });
+                  }}
                 />
               </div>
               <div className="adds">
@@ -170,15 +175,15 @@ const Log = ({
                   type="number"
                   placeholder="Convives par défaut (1-9)"
                   required
-                  {...register("guests", {
-                    required: true,
-                    valueAsNumber: true,
-                  })}
-                  onChange={(e) => setValue("guests", parseInt(e.target.value))}
+                  onChange={(e) => {
+                    setData({ ...data, guests: parseInt(e.target.value) });
+                  }}
                 />
                 <input
                   type="text"
-                  {...register("alergy", { required: true })}
+                  onChange={(e) => {
+                    setData({ ...data, alergy: e.target.value });
+                  }}
                   placeholder="Alergies (ex : tomates, carotte)"
                 />
               </div>
@@ -191,16 +196,16 @@ const Log = ({
                 autoComplete="email"
                 required
                 autoFocus
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setLoginEmail(e.target.value);
+                onChange={(e) => {
+                  setData({ ...data, email: e.target.value });
                 }}
               />
               <input
                 type="password"
                 placeholder="Mot de passe"
                 required
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setLoginPassword(e.target.value);
+                onChange={(e) => {
+                  setData({ ...data, password: e.target.value });
                 }}
               />
             </ContentLogIn>
@@ -215,9 +220,7 @@ const Log = ({
               onClick={() => {
                 setPage(page === "signin" ? "login" : "signin");
                 setFormConfirmation("");
-                setLoginConfirmation("");
-                setLoginEmail("");
-                setLoginPassword("");
+                reset();
               }}
             >
               {page === "signin"

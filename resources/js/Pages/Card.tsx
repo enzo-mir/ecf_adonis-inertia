@@ -34,10 +34,7 @@ const Card = ({
   const setHours = hourStore((state) => state.setHours);
   setHours(hours);
   const [res, setRes] = useState(false);
-  const starters = cardData?.starters;
-  const dishs = cardData?.dishs;
-  const desserts = cardData?.desserts;
-  const menus = cardData?.menus;
+  const { starters, dishs, desserts, menus } = cardData;
 
   const setUserData = userDataStore((state) => state.setUserData);
   const setConnectedUser = connectStore((state) => state.setConnectedUser);

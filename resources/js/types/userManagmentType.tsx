@@ -65,7 +65,7 @@ export const updateZodType = z.object({
 });
 export type UpdatedFormDataType = z.infer<typeof updateZodType>;
 
-export type LoginDataType = {
-  email: string;
-  password: string;
-};
+export const LoginDataType = z.object({
+  email: z.string().email({ message: "Veuillez entrer un email valid" }),
+  password: z.string({ invalid_type_error: "Une erreur est survenus" }),
+});

@@ -20,4 +20,10 @@ Route.group(() => {
 Route.group(() => {
   Route.post("/update", "ProfilesController.update");
   Route.post("/logout", "ProfilesController.logout");
+  Route.post("/delete", "ProfilesController.delete");
 }).prefix("profile");
+
+Route.group(() => {
+  Route.post("/login", "AuthentificationsController.login");
+  Route.post("/register", "AuthentificationsController.register");
+}).prefix("auth");

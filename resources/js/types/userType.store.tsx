@@ -1,12 +1,10 @@
 export type User = {
   user?: {
-    id?: number;
     name: string;
     email: string;
     password: string;
     guests: number | null;
     alergy: string;
-    oldEmail?: string;
     currentReservation: Array<currentReservationType | null>;
   };
   admin?: {};
