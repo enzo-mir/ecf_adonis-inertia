@@ -1,8 +1,11 @@
 import { z } from "zod";
 export const reservationScheama = z.object({
-  name: z.string().refine((value) => /^[a-zA-Z]+$/.test(value), {
-    message: "Le champs nom doit contenir uniquement des lettres",
-  }),
+  name: z
+    .string()
+    .refine((val) => val, { message: "Le champ nom est requis" })
+    .refine((value) => /^[a-zA-Z]+$/.test(value), {
+      message: "Le champs nom doit contenir uniquement des lettres",
+    }),
   email: z
     .string({ invalid_type_error: "email invalide" })
     .email({ message: "email invalide" }),

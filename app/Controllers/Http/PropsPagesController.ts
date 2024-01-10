@@ -1,5 +1,6 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Database from "@ioc:Adonis/Lucid/Database";
+import { allHours, allImages, getCardData } from "../getPropsData";
 
 export default class PropsPagesController {
   private async getUserData(ctx: HttpContextContract) {
@@ -7,23 +8,6 @@ export default class PropsPagesController {
       `SELECT * FROM users WHERE email = "${ctx.auth.user?.email}"`
     );
   }
-  private async getCardData() {
-    const starters = await Database.rawQuery("SELECT * FROM `starters`");
-    const dishs = await Database.rawQuery("SELECT * FROM `dishs`");
-    const desserts = await Database.rawQuery("SELECT * FROM `desserts`");
-    const menus = await Database.rawQuery("SELECT * FROM `menus`");
-    return {
-      starters: starters[0],
-      dishs: dishs[0],
-      desserts: desserts[0],
-      menus: menus[0],
-    };
-  }
-
-  private images = Database.rawQuery(
-    "SELECT `id`, `title`, `description`, `url` FROM `images`"
-  );
-  private hours = Database.rawQuery("SELECT * FROM `hours` WHERE 1");
 
   public async home(ctx: HttpContextContract) {
     if (ctx.auth.user) {
@@ -48,14 +32,14 @@ export default class PropsPagesController {
 
       return ctx.inertia.render("Home", {
         userData: userData,
-        images: (await this.images)[0],
-        hours: (await this.hours)[0],
+        images: (await allImages)[0],
+        hours: (await allHours)[0],
       });
     } else {
       return ctx.inertia.render("Home", {
         userData: undefined,
-        images: (await this.images)[0],
-        hours: (await this.hours)[0],
+        images: (await allImages)[0],
+        hours: (await allHours)[0],
       });
     }
   }
@@ -83,14 +67,14 @@ export default class PropsPagesController {
 
       return ctx.inertia.render("Card", {
         userData,
-        cardData: this.getCardData(),
-        hours: (await this.hours)[0],
+        cardData: getCardData(),
+        hours: (await allHours)[0],
       });
     } else {
       return ctx.inertia.render("Card", {
         userData: undefined,
-        cardData: this.getCardData(),
-        hours: (await this.hours)[0],
+        cardData: getCardData(),
+        hours: (await allHours)[0],
       });
     }
   }

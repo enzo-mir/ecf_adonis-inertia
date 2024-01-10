@@ -1,8 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
 import { ContainerSettings } from "../../assets/style/profilComponentsStyle";
-import logout from "../../data/logout";
-import deleteAccount from "../../data/deleteAccount";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { Cross } from "../../assets/style/cross";
 import { motion } from "framer-motion";
@@ -181,7 +179,7 @@ const ProfilComponent = ({
       >
         <Cross onClick={() => setDisplayProfil(false)} />
         {validationMessage ? (
-          <p className="error">{validationMessage}</p>
+          <p className="validationMessage">{validationMessage}</p>
         ) : null}
         {editable ? (
           <form onSubmit={validationForm}>

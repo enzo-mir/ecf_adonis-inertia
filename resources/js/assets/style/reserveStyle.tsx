@@ -83,49 +83,26 @@ const OptionsReserv = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   place-items: center;
-  gap: 3cqh 10vw;
+  gap: 5cqh 10vw;
 
-  & input {
-    position: relative;
-    background-color: var(--darker-color);
-    color: #fff;
-    border: none;
+  & >input {
     height: 30px;
     width: clamp(200px, 100%, 250px);
-    font-size: var(--font-size-little);
-    text-align: center;
-    padding: 0.2rem;
-    border-radius: 5px;
-
-    &::placeholder {
-      color: var(--color-whiteless);
-    }
 
     &[type="date"] {
+      background-color: var(--darker-color);
+      color: #fff;
+      border: none;
       min-width: 100%;
+      font-size: var(--font-size-little);
+      text-align: center;
+      padding: 0.2rem;
+      border-radius: 5px;
+      height: 30px;
     }
-  }
-  & span {
-    position: absolute;
-    top: 2.5px;
-    left: 0;
-    transform: translate(25%, 25%);
-    background: url(${guests});
-    background-size: 100%;
-    background-position: 50%;
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
-    z-index: 50;
-  }
-
-  & #email::placeholder,
-  & #name::placeholder {
-    color: var(--color-whiteless);
   }
 
   & #date {
-    height: 30px;
     &::-webkit-calendar-picker-indicator {
       background: url(${downArrowCalendar});
       background-size: cover;
@@ -151,6 +128,11 @@ const OptionsReserv = styled.div`
 
   @media screen and (max-width: 750px) {
     grid-template-columns: 1fr;
+
+    & > #date{
+      min-width: calc(100% + 2em);
+
+    }
   }
 `;
 

@@ -217,7 +217,6 @@ export default function Reserv({
         <h1>Réservez votre table</h1>
         {resError ? <p className="validationReservation">{resError}</p> : null}
         <OptionsReserv>
-          <span></span>
           <input
             type="number"
             id="persons"

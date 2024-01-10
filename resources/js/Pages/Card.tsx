@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reserv from "./components/Reservation";
 import {
   CarteContainer,
@@ -37,12 +37,22 @@ const Card = ({
   const { starters, dishs, desserts, menus } = cardData;
 
   const setUserData = userDataStore((state) => state.setUserData);
-  const setConnectedUser = connectStore((state) => state.setConnectedUser);
+  const [setConnectedUser, setConnectedAdmin] = connectStore((state) => [
+    state.setConnectedUser,
+    state.setConnectedAdmin,
+  ]);
+  useEffect(() => {
+    setHours(hours);
 
-  if (userData?.user) {
-    setUserData(userData);
-    setConnectedUser(true);
-  }
+    if (userData?.user) {
+      setUserData(userData);
+      setConnectedUser(true);
+    }
+
+    if (userData?.admin) {
+      setConnectedAdmin(true);
+    }
+  }, [userData, hours]);
 
   function mapingSimilarityFood(
     food: entreeType | platType | dessertType | menuType,

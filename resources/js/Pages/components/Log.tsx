@@ -23,7 +23,7 @@ const Log = ({
 }) => {
   const [page, setPage] = useState(togglePage);
   const [fromConfirmation, setFormConfirmation] = useState("");
-  const { data, setData, post, reset } = useForm();
+  const { data, setData, post, reset, processing } = useForm();
 
   const [setConnectedAdmin, setConnectedUser] = connectStore((state) => [
     state.setConnectedAdmin,
@@ -41,12 +41,12 @@ const Log = ({
 
       post("/auth/register", {
         data: signinData,
-        onSuccess: (success) => {
-          setFormConfirmation(success.props.valid as string);
-          setUserData(success.props.valid as User);
-          setConnectedUser(true);
-          setFormConfirmation("");
-          displayPage(false);
+        onSuccess: () => {
+          setFormConfirmation("Connection ...");
+          setTimeout(() => {
+            setFormConfirmation("");
+            displayPage(false);
+          }, 1500);
         },
         onError: (err) => {
           setFormConfirmation(err as unknown as string);
@@ -56,8 +56,6 @@ const Log = ({
         },
       });
     } catch (error) {
-      console.log(error);
-
       if (error instanceof z.ZodError) {
         setFormConfirmation(error.errors[0].message);
       } else {
@@ -73,18 +71,11 @@ const Log = ({
 
       post("/auth/login", {
         data: loginData,
-        onSuccess: (success) => {
+        onSuccess: () => {
           setFormConfirmation("Connection ...");
           setTimeout(() => {
             setFormConfirmation("");
             displayPage(false);
-            if ((success.props.valid as User).user) {
-              setUserData(success.props.valid);
-              setConnectedUser(true);
-              displayPage(false);
-            } else if ((success.props.valid as User).admin) {
-              setConnectedAdmin(true);
-            }
           }, 1500);
         },
         onError: (err) => {
@@ -140,6 +131,7 @@ const Log = ({
                 <input
                   type="email"
                   required
+                  autoComplete="email"
                   placeholder="Adresse e-mail"
                   onChange={(e) => {
                     setData({ ...data, email: e.target.value });
@@ -150,7 +142,7 @@ const Log = ({
                 <input
                   type="password"
                   placeholder="Mot de passe"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   required
                   onChange={(e) => {
                     setData({ ...data, password: e.target.value });
@@ -203,6 +195,7 @@ const Log = ({
               <input
                 type="password"
                 placeholder="Mot de passe"
+                autoComplete="password"
                 required
                 onChange={(e) => {
                   setData({ ...data, password: e.target.value });
@@ -211,11 +204,9 @@ const Log = ({
             </ContentLogIn>
           ) : null}
           <div className="ctaLog">
-            {page === "signin" ? (
-              <button type="submit">Créer un compte</button>
-            ) : (
-              <button type="submit">Connection</button>
-            )}
+            <button type="submit" disabled={processing}>
+              {page === "signin" ? "Créer un compte" : "Connection"}
+            </button>
             <p
               onClick={() => {
                 setPage(page === "signin" ? "login" : "signin");

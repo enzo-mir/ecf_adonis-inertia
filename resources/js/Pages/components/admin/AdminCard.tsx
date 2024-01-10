@@ -39,7 +39,6 @@ const AdminCard = ({
     setDisplay(true);
   }
 
-
   return (
     <>
       <h1>Carte du restaurant</h1>

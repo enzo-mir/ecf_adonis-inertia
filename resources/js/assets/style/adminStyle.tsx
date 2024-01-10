@@ -208,6 +208,7 @@ const Wrapper = styled.main`
   gap: clamp(20px, 10vh, 100px);
   padding-block: 150px;
   text-align: center;
+  overflow-x: hidden;
 
   & > nav > ul {
     display: flex;

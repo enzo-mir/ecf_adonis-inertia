@@ -27,3 +27,11 @@ Route.group(() => {
   Route.post("/login", "AuthentificationsController.login");
   Route.post("/register", "AuthentificationsController.register");
 }).prefix("auth");
+
+Route.group(() => {
+  Route.get("", "AdminsController.index");
+}).prefix("/admin");
+
+Route.any("/*", async (ctx) => {
+  return ctx.inertia.render("UndefinedPage");
+});

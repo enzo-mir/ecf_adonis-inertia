@@ -65,7 +65,18 @@ const HeaderContainer = styled.div`
   align-items: center;
   gap: 50px;
   width: 100%;
+  & a {
+    position: relative;
+    color: var(--darker-color);
+    text-decoration: none;
+    text-underline-offset: 8px;
+    padding: 1rem;
 
+    &[aria-current="page"] {
+      text-decoration: underline;
+      font-weight: 600;
+    }
+  }
   & nav {
     margin-left: auto;
     width: max-content;
@@ -78,18 +89,6 @@ const HeaderContainer = styled.div`
         display: grid;
         place-items: center;
         font-size: var(--font-size);
-        & a {
-          position: relative;
-          color: var(--darker-color);
-          text-decoration: none;
-          text-underline-offset: 8px;
-          padding: 1rem;
-
-          &[aria-current="page"] {
-            text-decoration: underline;
-            font-weight: 600;
-          }
-        }
       }
     }
   }

@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useEffect } from "react";
 import AdminEditImages from "./components/admin/AdminEditImages";
 import {
   HoursContainer,
@@ -7,8 +7,7 @@ import {
   Wrapper,
 } from "../assets/style/adminStyle";
 import adminImageDeleted from "../data/adminImageDeleted";
-import { imageStore } from "../data/store/apiData.store";
-import { useNavigate } from "react-router-dom";
+import { cardStore, hourStore, imageStore } from "../data/store/apiData.store";
 import AdminCard from "./components/admin/AdminCard";
 import HourEditing from "./components/admin/HourEditing";
 import { BsFillImageFill } from "react-icons/bs";
@@ -17,9 +16,36 @@ import { IoFastFood } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
 import CardEdition from "./components/admin/CardEdition";
 import React from "react";
+import Layout from "./components/Layout";
+import { CardDataType, HourDataType, Image } from "../types/dataApiTypes";
+import { connectStore } from "../data/store/connect.store";
 
-const Admin = () => {
+const Admin = ({
+  hoursData,
+  cardData,
+  imagesData,
+}: {
+  cardData: CardDataType;
+  hoursData: HourDataType[];
+  imagesData: Image[];
+}) => {
   const [displayEditImage, setDisplayEditImage] = useState(false);
+  const setCardData = cardStore((state) => state.setCardStore);
+  const setHoursData = hourStore((state) => state.setHours);
+  const [setImagesData, images] = imageStore((state) => [
+    state.setImages,
+    state.images,
+  ]);
+  const [setConnectedAdmin] = connectStore((state) => [
+    state.setConnectedAdmin,
+  ]);
+  useEffect(() => {
+    setCardData(cardData);
+    setHoursData(hoursData);
+    setImagesData(imagesData);
+    setConnectedAdmin(true);
+  }, [cardData, hoursData, imagesData]);
+
   const [imageEdition, setImageEdition] = useState<{
     title: string;
     description: string;
@@ -42,12 +68,6 @@ const Admin = () => {
   });
 
   const [showOption, setShowOption] = useState<string>("image");
-  const navigate = useNavigate();
-
-  const [setImages, images] = imageStore((state) => [
-    state.setImages,
-    state.images,
-  ]);
 
   function imageEdit(
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
@@ -68,7 +88,7 @@ const Admin = () => {
   }
   function handleDeleteImage(url: string) {
     adminImageDeleted(url).then((data) =>
-      data?.data ? setImages(data.data) : navigate(0)
+      data?.data ? setImagesData(data.data) : null
     );
   }
 
@@ -202,5 +222,6 @@ const Admin = () => {
     </Wrapper>
   );
 };
+Admin.layout = (page: HTMLElement) => <Layout children={page} />;
 
 export default Admin;

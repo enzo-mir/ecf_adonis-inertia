@@ -9,7 +9,7 @@ export type HourToSend = {
   time: string;
   target: string;
 };
-type Image = {
+export type Image = {
   description: string;
   id: number;
   url: string;

@@ -8,12 +8,11 @@ import {
 } from "../../assets/style/headerStyle";
 import ProfilComponent from "./ProfilComponent";
 import Reserv from "./Reservation";
-import logout from "../../data/logout";
 import PopReservation from "./PopReservation";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { AnimatePresence } from "framer-motion";
 import React from "react";
-import { Link } from "@inertiajs/inertia-react";
+import { Link, useForm } from "@inertiajs/inertia-react";
 import { User } from "../../types/userType.store";
 
 const Header = () => {
@@ -28,8 +27,11 @@ const Header = () => {
     state.connectedAdmin,
     state.setConnectedAdmin,
   ]);
-  const [userData] = userDataStore((state) => [state.userData as User]);
-
+  const { post } = useForm();
+  const [userData, setuserData] = userDataStore((state) => [
+    state.userData,
+    state.setUserData,
+  ]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -59,15 +61,27 @@ const Header = () => {
     return isAdmin ? (
       <HeaderContainer>
         <button
-          onClick={async () => {
-            await logout().then(() => {
-              setIsAdmin(false);
+          onClick={() => {
+            post("/profile/logout", {
+              onSuccess: () => {
+                setuserData({
+                  user: {
+                    name: "",
+                    email: "",
+                    password: "",
+                    guests: 0,
+                    alergy: "",
+                    currentReservation: [],
+                  },
+                });
+                window.location.href = "/";
+              },
             });
           }}
         >
           Déconnection
         </button>
-        <button>Administration</button>
+        <Link href="/admin">Administration</Link>
       </HeaderContainer>
     ) : (
       <HeaderContainer>

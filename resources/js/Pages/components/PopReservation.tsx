@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Overlay } from "../../assets/style/overlay";
 import { FiDelete } from "react-icons/fi";
 import { useState } from "react";
-import { deleteReservation } from "../../data/deleteReservation";
 import { userDataStore } from "../../data/store/connect.store";
 import { motion } from "framer-motion";
 import React from "react";

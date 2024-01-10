@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reserv from "./components/Reservation";
 import { Wrapper, HeroSection, SectionPlats } from "../assets/style/homeStyle";
 import { hourStore } from "../data/store/apiData.store";
@@ -11,13 +11,22 @@ const Home = ({ userData, hours, images }) => {
   const [res, setRes] = useState(false);
   const setHours = hourStore((state) => state.setHours);
   const setUserData = userDataStore((state) => state.setUserData);
-  const setConnectedUser = connectStore((state) => state.setConnectedUser);
+  const [setConnectedUser, setConnectedAdmin] = connectStore((state) => [
+    state.setConnectedUser,
+    state.setConnectedAdmin,
+  ]);
+  useEffect(() => {
+    setHours(hours);
 
-  setHours(hours);
-  if (userData?.user) {
-    setUserData(userData);
-    setConnectedUser(true);
-  }
+    if (userData?.user) {
+      setUserData(userData);
+      setConnectedUser(true);
+    }
+
+    if (userData?.admin) {
+      setConnectedAdmin(true);
+    }
+  }, [userData,hours]);
 
   const containerVariant = {
     hiddenHeader: { opacity: 0 },

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-export const ContainerSettings = styled.div`
+export const ContainerSettings = styled.section`
   position: absolute;
   display: grid;
   grid-template-rows: auto 1fr;
@@ -13,8 +13,18 @@ export const ContainerSettings = styled.div`
   background-color: #fff;
   font-size: var(--font-size);
 
-  & > form,
-  & > div:nth-child(2) {
+  &:has(p.validationMessage) {
+    grid-template-rows: auto auto 1fr;
+    & p.validationMessage {
+    background-color: var(--primary-color);
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+  }
+  }
+
+  & form,
+  & > div:last-child {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -74,13 +84,6 @@ export const ContainerSettings = styled.div`
   & input {
     padding-inline: 0;
     width: clamp(200px, 15cqw, 400px);
-  }
-
-  & .error {
-    background-color: var(--primary-color);
-    padding: 1rem;
-    border-radius: 5px;
-    text-align: center;
   }
 
   @media screen and (max-width: 600px) {
