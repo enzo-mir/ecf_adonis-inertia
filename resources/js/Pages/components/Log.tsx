@@ -116,7 +116,9 @@ const Log = ({
         <Cross onClick={() => displayPage(false)} />
 
         <h1>{page === "signin" ? "Inscrivez-vous" : "Connectez-vous"} </h1>
-        {fromConfirmation && <p>{fromConfirmation}</p>}
+        {fromConfirmation && (
+          <p className="validationMessage">{fromConfirmation}</p>
+        )}
         <form
           onSubmit={(e) => {
             page === "signin" ? submitSignin(e) : submitLogin(e);

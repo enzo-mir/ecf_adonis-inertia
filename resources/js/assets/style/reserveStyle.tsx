@@ -11,12 +11,21 @@ const ReservationContainer = styled.section`
   gap: 30px;
   padding-block: 25px;
   width: clamp(300px, 75vw, 1000px);
-  min-height: auto;
-  max-height: auto;
+  max-height: 80svh;
   max-width: 100%;
   z-index: 150;
   background-color: #fff;
   overflow: auto;
+  scroll-behavior: smooth;
+
+  &:has(p.validationReservation) p.validationReservation {
+    background: var(--primary-color);
+    max-width: 90%;
+    padding: 0.25em;
+    color: var(--darker-color);
+    font-weight: bolder;
+    border-radius: 5px;
+  }
 
   & h1 {
     font-size: var(--font-size-bigger);
@@ -98,7 +107,7 @@ const OptionsReserv = styled.div`
   }
   & span {
     position: absolute;
-    top: 0;
+    top: 2.5px;
     left: 0;
     transform: translate(25%, 25%);
     background: url(${guests});
@@ -146,14 +155,13 @@ const OptionsReserv = styled.div`
 `;
 
 const HoursList = styled.ul`
-  --gap: 5em;
   display: flex;
   column-gap: 2cqw;
   row-gap: 3cqh;
   font-size: var(--font-size-reg);
   justify-content: center;
   flex-wrap: wrap;
-  padding-inline: var(--gap);
+  padding-inline: 3em;
   max-width: 100%;
 
   & button {

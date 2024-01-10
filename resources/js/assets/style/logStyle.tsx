@@ -13,17 +13,25 @@ const LogContainer = styled.section`
   z-index: 150;
   background-color: #fff;
 
-  &:has(> p) {
-    grid-template-rows: auto auto auto 30cqh auto;
+  &:has(> p.validationMessage) {
+    grid-template-rows: auto auto auto 1fr auto;
   }
 
   & p {
     text-align: center;
+    &.validationMessage {
+      background: var(--primary-color);
+      padding: 0.25em;
+      color: var(--darker-color);
+      font-weight: bolder;
+      border-radius: 5px;
+    }
   }
   & form {
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 
     & .ctaLog {
       display: flex;
@@ -47,6 +55,7 @@ const LogContainer = styled.section`
   }
   & h1 {
     font-size: var(--font-size-bigger);
+    font-weight: bolder;
     text-align: center;
   }
 `;
@@ -72,9 +81,9 @@ const ContentLogIn = styled.div`
   display: grid;
   justify-items: center;
   align-content: center;
-  height: 100%;
   grid-template-rows: auto auto;
   gap: 5vh;
+
   & input {
     width: 50%;
   }

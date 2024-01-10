@@ -174,11 +174,7 @@ export default function Reserv({
   }
 
   async function submitReservation() {
-    reservContainerRef.current?.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
+    reservContainerRef.current?.scrollTo(0, 0);
     setResError("");
     try {
       const dataValidate = reservationScheama.parse(data);
@@ -215,10 +211,11 @@ export default function Reserv({
         animate={{ y: "0", opacity: 1 }}
         exit={{ y: "-20%", opacity: 0 }}
         transition={{ duration: 0.5 }}
+        ref={reservContainerRef}
       >
         <Cross onClick={() => displayReservation(false)} />
         <h1>Réservez votre table</h1>
-        {resError ? <p>{resError}</p> : null}
+        {resError ? <p className="validationReservation">{resError}</p> : null}
         <OptionsReserv>
           <span></span>
           <input
@@ -231,7 +228,8 @@ export default function Reserv({
             onChange={(e) =>
               setData({ ...data, guests: parseInt(e.target.value) })
             }
-            maxLength={2}
+            maxLength={1}
+            required
           />
           <input
             type="date"
@@ -239,6 +237,7 @@ export default function Reserv({
             onChange={(e: ChangeEvent) => handleChangeDate(e)}
             min={new Date().toLocaleDateString("fr-CA")}
             value={data.date}
+            required
           />
           <input
             type="email"
