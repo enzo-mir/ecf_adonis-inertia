@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { hourStore } from "../../../data/store/apiData.store";
 import editBtn from "../../../assets/images/edit_btn.png";
-import adminHoursPost from "../../../data/adminHoursPost";
-import React from "react";
-import { HourToSend } from "../../../types/dataApiTypes";
+import { useForm } from "@inertiajs/inertia-react";
 
 export default function HourEditing() {
   const [errorHour, setErrorHour] = useState(false);
   const [hoursEdit, setHoursEdit] = useState(false);
 
   const [hours, setHour] = hourStore((state) => [state.hours, state.setHours]);
+  const { post } = useForm();
 
   function editionFinished() {
     const inputs: NodeListOf<HTMLInputElement> =
@@ -54,8 +53,8 @@ export default function HourEditing() {
     );
   }
 
-  function submitHourEdition(elem: NodeListOf<HTMLInputElement>) {
-    const data: Array<HourToSend> = [];
+  async function submitHourEdition(elem: NodeListOf<HTMLInputElement>) {
+    const data: Array<object> = [];
     for (let index = 0; index < elem.length; index++) {
       const element = elem[index];
       const day = elem[0].parentElement!.firstChild!.textContent;
@@ -73,11 +72,24 @@ export default function HourEditing() {
     }
     if (hourRegexTesting) {
       setErrorHour(false);
-      adminHoursPost(data).then((data) => {
-        return data.heures
-          ? (setHoursEdit(false), setHour(data.heures), editionFinished())
-          : (setErrorHour(true), setHoursEdit(true));
+      const response = fetch("/admin/hoursEdition", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          data,
+        }),
       });
+
+      if ((await response).ok) {
+        response.then((r) => r.json()).then((data) => setHour(data.hours));
+        editionFinished();
+      } else {
+        setErrorHour(true);
+      }
     } else setErrorHour(true);
   }
 
@@ -142,7 +154,6 @@ export default function HourEditing() {
       </table>
       {hoursEdit ? (
         <div className="ctaEdit">
-          <p>Édition finit</p>
           <button
             onClick={() =>
               submitHourEdition(
@@ -150,6 +161,7 @@ export default function HourEditing() {
               )
             }
           >
+            <p>Édition finit</p>
             <img src={editBtn} alt="édition" />
           </button>
         </div>

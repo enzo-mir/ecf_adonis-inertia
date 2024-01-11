@@ -16,17 +16,8 @@ export default class AuthentificationsController {
       await Hash.verify(getDatabsePwd[0][0].password, userinfo.password);
       await ctx.auth.attempt(userinfo.email, userinfo.password);
       if (ctx.auth.user?.role === 1) {
-        ctx.session.flash({ valid: { admin: {} } });
         return ctx.response.redirect().back();
       } else {
-        ctx.session.flash({
-          valid: {
-            user: {
-              ...(await getUserData(ctx)),
-              currentReservation: await getReservation(ctx),
-            },
-          },
-        });
         return ctx.response.redirect().back();
       }
     } catch (error) {

@@ -91,12 +91,11 @@ const HoursContainer = styled.article`
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 25px;
     & button {
-      display: grid;
-      place-items: center;
-      padding: 0.5em;
-      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1em;
     }
   }
 `;

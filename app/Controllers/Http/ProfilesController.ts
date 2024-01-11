@@ -48,7 +48,7 @@ export default class ProfilesController {
   public async logout(ctx: HttpContextContract) {
     try {
       await ctx.auth.logout();
-      return ctx.inertia.redirectBack();
+      return ctx.inertia.location("/");
     } catch (error) {
       return ctx.response.status(400).redirect().back();
     }

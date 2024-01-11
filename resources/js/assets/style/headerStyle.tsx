@@ -77,6 +77,11 @@ const HeaderContainer = styled.div`
       font-weight: 600;
     }
   }
+
+  & > button  > a {
+    text-decoration: none;
+    color: white;
+  }
   & nav {
     margin-left: auto;
     width: max-content;

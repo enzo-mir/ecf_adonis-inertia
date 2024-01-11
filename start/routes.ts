@@ -30,6 +30,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get("", "AdminsController.index");
+  Route.post("/hoursEdition", "AdminsController.hours");
 }).prefix("/admin");
 
 Route.any("/*", async (ctx) => {

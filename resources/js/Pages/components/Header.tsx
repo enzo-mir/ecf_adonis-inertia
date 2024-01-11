@@ -13,7 +13,6 @@ import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { AnimatePresence } from "framer-motion";
 import React from "react";
 import { Link, useForm } from "@inertiajs/inertia-react";
-import { User } from "../../types/userType.store";
 
 const Header = () => {
   const [logPage, setLogPage] = useState(false);
@@ -74,7 +73,6 @@ const Header = () => {
                     currentReservation: [],
                   },
                 });
-                window.location.href = "/";
               },
             });
           }}
