@@ -15,6 +15,10 @@ import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import { reservationScheama } from "../../types/reservationData.scheama";
 import { User, currentReservationType } from "../../types/userType.store";
+import { TbUsersPlus } from "react-icons/tb";
+import { MdOutlineDateRange } from "react-icons/md";
+import { MdAlternateEmail } from "react-icons/md";
+import { FaUserAlt } from "react-icons/fa";
 
 export default function Reserv({
   res: displayReservation,
@@ -217,50 +221,63 @@ export default function Reserv({
         <h1>Réservez votre table</h1>
         {resError ? <p className="validationReservation">{resError}</p> : null}
         <OptionsReserv>
-          <input
-            type="number"
-            id="persons"
-            placeholder="convives par défaut (1-9)"
-            max="9"
-            min="1"
-            value={data.guests}
-            onChange={(e) =>
-              setData({ ...data, guests: parseInt(e.target.value) })
-            }
-            maxLength={1}
-            required
-          />
-          <input
-            type="date"
-            id="date"
-            onChange={(e: ChangeEvent) => handleChangeDate(e)}
-            min={new Date().toLocaleDateString("fr-CA")}
-            value={data.date}
-            required
-          />
-          <input
-            type="email"
-            id="email"
-            required
-            placeholder="Entrez votre e-mail"
-            value={userData.user?.email || data.email}
-            onChange={(e) =>
-              userData.user?.email ||
-              setData({ ...data, email: e.target.value })
-            }
-            disabled={userData.user?.email ? true : false}
-          />
-          <input
-            type="text"
-            id="name"
-            required
-            placeholder="Entrez votre nom"
-            value={userData.user?.name || data.name}
-            onChange={(e) =>
-              userData.user?.name || setData({ ...data, name: e.target.value })
-            }
-            disabled={userData.user?.name ? true : false}
-          />
+          <label htmlFor="persons">
+            <TbUsersPlus color="#fff"/>
+            <input
+              type="number"
+              id="persons"
+              placeholder="convives par défaut (1-9)"
+              max="9"
+              min="1"
+              value={data.guests}
+              onChange={(e) =>
+                setData({ ...data, guests: parseInt(e.target.value) })
+              }
+              maxLength={1}
+              required
+            />
+          </label>
+          <label htmlFor="date">
+            <MdOutlineDateRange color="#fff"/>
+            <input
+              type="date"
+              id="date"
+              onChange={(e: ChangeEvent) => handleChangeDate(e)}
+              min={new Date().toLocaleDateString("fr-CA")}
+              value={data.date}
+              required
+            />
+          </label>
+          <label htmlFor="email">
+            <MdAlternateEmail color="#fff"/>
+            <input
+              type="email"
+              id="email"
+              required
+              placeholder="Entrez votre e-mail"
+              value={userData.user?.email || data.email}
+              onChange={(e) =>
+                userData.user?.email ||
+                setData({ ...data, email: e.target.value })
+              }
+              disabled={userData.user?.email ? true : false}
+            />
+          </label>
+          <label htmlFor="name">
+            <FaUserAlt color="#fff"/>
+            <input
+              type="text"
+              id="name"
+              required
+              placeholder="Entrez votre nom"
+              value={userData.user?.name || data.name}
+              onChange={(e) =>
+                userData.user?.name ||
+                setData({ ...data, name: e.target.value })
+              }
+              disabled={userData.user?.name ? true : false}
+            />
+          </label>
         </OptionsReserv>
         <div id="lunchHours">
           <h2>MIDI</h2>

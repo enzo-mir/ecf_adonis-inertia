@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { hourStore } from "../../../data/store/apiData.store";
-import editBtn from "../../../assets/images/edit_btn.png";
+import { MdEditSquare } from "react-icons/md";
+
 import { useForm } from "@inertiajs/inertia-react";
 
 export default function HourEditing() {
@@ -162,7 +163,7 @@ export default function HourEditing() {
             }
           >
             <p>Édition finit</p>
-            <img src={editBtn} alt="édition" />
+            <MdEditSquare color="#fff" />
           </button>
         </div>
       ) : null}

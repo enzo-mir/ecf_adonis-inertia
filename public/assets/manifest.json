@@ -5,5 +5,6 @@
   "assets/images/icon.svg": "http://localhost:8080/assets/images/icon.3ba0aedd.svg",
   "assets/images/calendar.png": "http://localhost:8080/assets/images/calendar.a3a3ffb3.png",
   "assets/images/edit_btn.png": "http://localhost:8080/assets/images/edit_btn.dde7b678.png",
-  "assets/images/barre-de-menu.png": "http://localhost:8080/assets/images/barre-de-menu.42b9c112.png"
+  "assets/images/barre-de-menu.png": "http://localhost:8080/assets/images/barre-de-menu.42b9c112.png",
+  "assets/app.png": "http://localhost:8080/assets/images/calendar.a3a3ffb3.png"
 }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import editBtn from "../../../assets/images/edit_btn.png";
 import { cardStore } from "../../../data/store/apiData.store";
 import React from "react";
+import { MdEditSquare } from "react-icons/md";
 
 const AdminCard = ({
   display,
@@ -64,7 +64,7 @@ const AdminCard = ({
                       )
                     }
                   >
-                    <img src={editBtn} alt="edit btn" />
+                    <MdEditSquare color="#fff"/>
                   </button>
                 </div>
               ) : null;
@@ -89,7 +89,7 @@ const AdminCard = ({
                       )
                     }
                   >
-                    <img src={editBtn} alt="edit btn" />
+                    <MdEditSquare color="#fff"/>
                   </button>
                 </div>
               ) : null;
@@ -119,7 +119,7 @@ const AdminCard = ({
                       )
                     }
                   >
-                    <img src={editBtn} alt="edit btn" />
+                    <MdEditSquare color="#fff"/>
                   </button>
                 </div>
               ) : null;
@@ -144,7 +144,7 @@ const AdminCard = ({
                       )
                     }
                   >
-                    <img src={editBtn} alt="edit btn" />
+                    <MdEditSquare color="#fff"/>
                   </button>
                 </div>
               ) : null;
@@ -172,7 +172,7 @@ const AdminCard = ({
                     )
                   }
                 >
-                  <img src={editBtn} alt="edit btn" />
+                  <MdEditSquare color="#fff"/>
                 </button>
               </div>
             );
@@ -199,7 +199,7 @@ const AdminCard = ({
                     )
                   }
                 >
-                  <img src={editBtn} alt="edit btn" />
+                  <MdEditSquare color="#fff"/>
                 </button>
               </div>
             );

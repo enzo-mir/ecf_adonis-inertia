@@ -5,7 +5,7 @@ import { ContainerWrapperEditImage } from "../../../assets/style/adminStyle";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { motion } from "framer-motion";
 import React from "react";
-
+import { MdEditSquare } from "react-icons/md";
 const AdminEditImages = ({
   imageEditionData,
   displaying,
@@ -22,13 +22,11 @@ const AdminEditImages = ({
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.removeAttribute("style");
     };
   }, []);
-  console.log(imageEdition.adding);
-
-  document.body.style.overflow = "hidden";
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files![0];
@@ -39,9 +37,7 @@ const AdminEditImages = ({
       setError("Limite de taille : 500 Ko");
     }
   }
-  function submitEvent(e: React.FormEvent<HTMLFormElement>) {
-    if (error) e.preventDefault();
-  }
+
   return (
     <Overlay onClick={() => displaying(false)}>
       <ContainerWrapperEditImage
@@ -52,8 +48,8 @@ const AdminEditImages = ({
         exit={{ y: "-20%", opacity: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {error && <p className="error">{error}</p>}
         <Cross onClick={() => displaying(false)} />
+        {error && <p className="error">{error}</p>}
         {imageEdition.adding ? (
           <label htmlFor="imageAdminChange">
             <div
@@ -63,7 +59,9 @@ const AdminEditImages = ({
                   ? "url(" + imageEdition.url + ")"
                   : "black",
               }}
-            ></div>
+            >
+              <MdEditSquare color="#fff" />
+            </div>
           </label>
         ) : (
           <>
@@ -88,7 +86,7 @@ const AdminEditImages = ({
           }
           method="post"
           encType="multipart/form-data"
-          onSubmit={submitEvent}
+          onSubmit={(e) => e.preventDefault()}
         >
           {!imageEdition.adding ? (
             <input type="hidden" name="oldUrl" value={imageEditionData.url} />

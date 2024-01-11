@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import editBtn from "../images/edit_btn.png";
+
 const EditCardContainer = styled.div`
   position: absolute;
   display: grid;
@@ -245,9 +245,13 @@ const ContainerWrapperEditImage = styled.div`
   background-color: #fff;
   font-size: var(--font-size);
 
-  & p.error {
-    color: var(--error-txt);
-    font-weight: bold;
+  &:has(p.error) {
+    grid-template-rows: auto auto 1fr 1fr;
+
+    & p.error {
+      color: var(--error-txt);
+      font-weight: bold;
+    }
   }
 
   &:has(> img) {
@@ -261,6 +265,7 @@ const ContainerWrapperEditImage = styled.div`
     z-index: -1;
 
     .addImageCase {
+      position: relative;
       width: clamp(150px, 13vw, 200px);
       aspect-ratio: 1/1;
       border-radius: 10px;
@@ -268,22 +273,19 @@ const ContainerWrapperEditImage = styled.div`
       background-size: cover !important;
       background-position: center !important;
       background-repeat: no-repeat !important;
+      & svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        opacity: 0;
+        transition: 0.15s ease-out;
+        z-index: 1;
+      }
     }
 
-    &::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: url(${editBtn});
-      background-repeat: no-repeat;
-      width: 30px;
-      height: 30px;
-      opacity: 0;
-      transition: 0.15s ease-out;
-      z-index: 1;
-    }
     @media (pointer: coarse) {
       &:not(:hover),
       &:hover {
@@ -292,7 +294,7 @@ const ContainerWrapperEditImage = styled.div`
           filter: brightness(50%);
         }
 
-        &::after {
+        & svg {
           opacity: 1;
         }
       }
@@ -303,7 +305,7 @@ const ContainerWrapperEditImage = styled.div`
         filter: brightness(50%);
       }
 
-      &::after {
+      & svg {
         opacity: 1;
       }
     }

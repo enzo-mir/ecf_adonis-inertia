@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import downArrowCalendar from "../images/down-arrow.ico";
-import calendar from "../images/calendar.png";
-import guests from "../images/guests.png";
 
 const ReservationContainer = styled.section`
   display: flex;
@@ -85,10 +83,25 @@ const OptionsReserv = styled.div`
   place-items: center;
   gap: 5cqh 10vw;
 
-  & >input {
-    height: 30px;
+  & label {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
     width: clamp(200px, 100%, 250px);
+    border-radius: 5px;
+    padding-inline-start: 0.5em;
+    gap: 0.5em;
 
+    & > svg {
+      height: 30px;
+    }
+    background-color: var(--darker-color);
+  }
+
+  & input {
+    min-width: 100%;
+    height: 30px;
+    padding: 0 0 0 0.25em;
     &[type="date"] {
       background-color: var(--darker-color);
       color: #fff;
@@ -97,41 +110,26 @@ const OptionsReserv = styled.div`
       font-size: var(--font-size-little);
       text-align: center;
       padding: 0.2rem;
-      border-radius: 5px;
-      height: 30px;
-    }
-  }
+      &#date {
+        &::-webkit-calendar-picker-indicator {
+          background: url(${downArrowCalendar});
+          background-size: cover;
+          width: 20px;
+          height: 20px;
 
-  & #date {
-    &::-webkit-calendar-picker-indicator {
-      background: url(${downArrowCalendar});
-      background-size: cover;
-      width: 20px;
-      height: 20px;
-
-      &:hover {
-        cursor: pointer;
+          &:hover {
+            cursor: pointer;
+          }
+        }
       }
-    }
-    &::before {
-      position: absolute;
-      content: "";
-      width: 4cqh;
-      left: 0;
-      height: 100%;
-      background: url(${calendar});
-      background-size: 50%;
-      background-position: 50%;
-      background-repeat: no-repeat;
     }
   }
 
   @media screen and (max-width: 750px) {
     grid-template-columns: 1fr;
 
-    & > #date{
+    & > #date {
       min-width: calc(100% + 2em);
-
     }
   }
 `;
