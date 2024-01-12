@@ -9,22 +9,22 @@ dependencies:
     specifier: ^8.2.3
     version: 8.2.3(@adonisjs/application@5.3.0)(@adonisjs/core@5.9.0)(@adonisjs/lucid@18.4.2)(@adonisjs/session@6.4.0)
   '@adonisjs/core':
-    specifier: ^5.8.0
+    specifier: ^5.9.0
     version: 5.9.0
   '@adonisjs/lucid':
     specifier: ^18.4.2
     version: 18.4.2(@adonisjs/application@5.3.0)(@adonisjs/core@5.9.0)(mysql2@3.7.0)
   '@adonisjs/repl':
-    specifier: ^3.1.0
+    specifier: ^3.1.11
     version: 3.1.11(@adonisjs/core@5.9.0)
   '@adonisjs/session':
     specifier: ^6.4.0
     version: 6.4.0(@adonisjs/core@5.9.0)
   '@adonisjs/shield':
-    specifier: ^7.0.0
+    specifier: ^7.1.1
     version: 7.1.1(@adonisjs/core@5.9.0)(@adonisjs/session@6.4.0)(@adonisjs/view@6.2.0)
   '@adonisjs/view':
-    specifier: ^6.1.0
+    specifier: ^6.2.0
     version: 6.2.0(@adonisjs/core@5.9.0)
   '@babel/plugin-syntax-dynamic-import':
     specifier: ^7.8.3
@@ -90,7 +90,7 @@ dependencies:
     specifier: ^6.1.6
     version: 6.1.6(react-dom@18.2.0)(react@18.2.0)
   ts-loader:
-    specifier: ^8.0.1
+    specifier: ^8.4.0
     version: 8.4.0(typescript@4.6.4)(webpack@5.89.0)
   zod:
     specifier: ^3.22.4
@@ -104,10 +104,10 @@ devDependencies:
     specifier: ^5.9.6
     version: 5.9.6(@adonisjs/core@5.9.0)
   '@babel/core':
-    specifier: ^7.17.0
+    specifier: ^7.23.2
     version: 7.23.2
   '@babel/preset-env':
-    specifier: ^7.16.0
+    specifier: ^7.23.2
     version: 7.23.2(@babel/core@7.23.2)
   '@japa/preset-adonis':
     specifier: ^1.2.0
@@ -131,13 +131,13 @@ devDependencies:
     specifier: ^10.2.3
     version: 10.2.3
   typescript:
-    specifier: ~4.6
+    specifier: ~4.6.4
     version: 4.6.4
   webpack:
-    specifier: ^5.72
+    specifier: ^5.89.0
     version: 5.89.0(webpack-cli@4.10.0)
   webpack-cli:
-    specifier: ^4.9.1
+    specifier: ^4.10.0
     version: 4.10.0(webpack@5.89.0)
   youch:
     specifier: ^3.3.3
@@ -3143,7 +3143,7 @@ packages:
   /axios@0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.3
+      follow-redirects: 1.15.5
     transitivePeerDependencies:
       - debug
     dev: false
@@ -4707,6 +4707,16 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+
+  /follow-redirects@1.15.5:
+    resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
 
   /for-in@1.0.2:
     resolution: {integrity: sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==}

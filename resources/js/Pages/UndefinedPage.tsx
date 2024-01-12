@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/inertia-react";
 import React from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
@@ -13,16 +14,28 @@ const UndefinedRoute = () => {
   return (
     <Wrapper>
       <h1>Erreur 404 : page introuvable</h1>
+      <Link href="/">Revenir à l'accueil</Link>
     </Wrapper>
   );
 };
 const Wrapper = styled.main`
   position: relative;
   display: flex;
+  flex-direction: column;
+  gap: 2em;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background: var(--color-blackless);
+
+  & > a {
+    background-color: var(--darker-color);
+    color: white;
+    border-radius: 0.25em;
+    text-decoration: none;
+    text-underline-offset: 8px;
+    padding: 1rem;
+  }
   & h1 {
     position: relative;
     padding: 1em;

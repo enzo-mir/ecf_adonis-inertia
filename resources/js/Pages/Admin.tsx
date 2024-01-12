@@ -6,7 +6,6 @@ import {
   CardContainer,
   Wrapper,
 } from "../assets/style/adminStyle";
-import adminImageDeleted from "../data/adminImageDeleted";
 import { cardStore, hourStore, imageStore } from "../data/store/apiData.store";
 import AdminCard from "./components/admin/AdminCard";
 import HourEditing from "./components/admin/HourEditing";
@@ -32,17 +31,18 @@ const Admin = ({
   const [displayEditImage, setDisplayEditImage] = useState(false);
   const setCardData = cardStore((state) => state.setCardStore);
   const setHoursData = hourStore((state) => state.setHours);
-  const [setImagesData, images] = imageStore((state) => [
+  const [setImages, images] = imageStore((state) => [
     state.setImages,
     state.images,
   ]);
   const [setConnectedAdmin] = connectStore((state) => [
     state.setConnectedAdmin,
   ]);
+
   useEffect(() => {
     setCardData(cardData);
     setHoursData(hoursData);
-    setImagesData(imagesData);
+    setImages(imagesData);
     setConnectedAdmin(true);
   }, [cardData, hoursData, imagesData]);
 
@@ -77,7 +77,6 @@ const Admin = ({
     const parentElement: ParentNode = (event.target as Node).parentNode!
       .parentNode!;
     const imageTargeted: HTMLImageElement = parentElement.querySelector("img")!;
-
     setImageEdition({
       adding: false,
       url: imageTargeted.getAttribute("src")!,
@@ -86,10 +85,26 @@ const Admin = ({
     });
     setDisplayEditImage(true);
   }
-  function handleDeleteImage(url: string) {
-    adminImageDeleted(url).then((data) =>
-      data?.data ? setImagesData(data.data) : null
-    );
+  async function deleteImage(images: Image) {
+    const response = fetch("/image/delete", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        Connection: "keep-alive",
+        Accept: "*",
+      },
+      body: JSON.stringify({
+        url: images.url,
+      }),
+    });
+
+    if ((await response).ok) {
+      response
+        .then((r) => r.json())
+        .then((data) => {
+          setImages(data.images);
+        });
+    }
   }
 
   function imageAdd() {
@@ -173,12 +188,7 @@ const Admin = ({
                       >
                         Éditer
                       </button>
-                      <button
-                        onClick={(e) => {
-                          handleDeleteImage(images.url);
-                          (e.target as HTMLButtonElement).disabled = true;
-                        }}
-                      >
+                      <button onClick={() => deleteImage(images)}>
                         Supprimer
                       </button>
                     </aside>

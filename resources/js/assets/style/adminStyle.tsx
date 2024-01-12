@@ -245,6 +245,15 @@ const ContainerWrapperEditImage = styled.div`
   background-color: #fff;
   font-size: var(--font-size);
 
+  &:has(div.updateImage) {
+    & > div.updateImage {
+      display: flex;
+      gap: 1.5em;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
   &:has(p.error) {
     grid-template-rows: auto auto 1fr 1fr;
 
@@ -262,7 +271,6 @@ const ContainerWrapperEditImage = styled.div`
   }
   & label {
     position: relative;
-    z-index: -1;
 
     .addImageCase {
       position: relative;
@@ -282,7 +290,7 @@ const ContainerWrapperEditImage = styled.div`
         height: 30px;
         opacity: 0;
         transition: 0.15s ease-out;
-        z-index: 1;
+        z-index: 50;
       }
     }
 

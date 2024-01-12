@@ -33,6 +33,12 @@ Route.group(() => {
   Route.post("/hoursEdition", "AdminsController.hours");
 }).prefix("/admin");
 
+Route.group(() => {
+  Route.post("/upload", "ImagesController.upload");
+  Route.post("/delete", "ImagesController.delete");
+  Route.post("/update", "ImagesController.update");
+}).prefix("/image");
+
 Route.any("/*", async (ctx) => {
   return ctx.inertia.render("UndefinedPage");
 });

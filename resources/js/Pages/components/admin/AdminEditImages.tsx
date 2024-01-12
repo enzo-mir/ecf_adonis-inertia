@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { Overlay } from "../../../assets/style/overlay";
 import { Cross } from "../../../assets/style/cross";
 import { ContainerWrapperEditImage } from "../../../assets/style/adminStyle";
@@ -6,6 +6,7 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import { motion } from "framer-motion";
 import React from "react";
 import { MdEditSquare } from "react-icons/md";
+import { useForm } from "@inertiajs/inertia-react";
 const AdminEditImages = ({
   imageEditionData,
   displaying,
@@ -19,22 +20,58 @@ const AdminEditImages = ({
   displaying(val: boolean): void;
 }) => {
   const [imageEdition, setImageEdition] = useState(imageEditionData);
-  const [error, setError] = useState<string>("");
-
+  const [validationImage, setValidationImage] = useState<string>("");
+  const urlRef = useRef("");
+  const { post, data, setData, reset, processing } = useForm({
+    image: null,
+    title: imageEditionData.title,
+    description: imageEditionData.description,
+    old_url: imageEditionData.url,
+  });
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
       document.body.removeAttribute("style");
+      reset();
     };
   }, []);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setValidationImage("");
     const file = event.target.files![0];
+    setData({ ...data, image: file });
     const urlChanging = URL.createObjectURL(file);
-    setImageEdition({ ...imageEdition, url: urlChanging });
-    setError("");
+    urlRef.current = urlChanging;
     if (file.size > 500000) {
-      setError("Limite de taille : 500 Ko");
+      setValidationImage("Limite de taille : 500 Ko");
+    }
+  }
+
+  function imageSubmition(e: FormEvent) {
+    e.preventDefault();
+    if (imageEditionData.adding) {
+      delete data.old_url;
+      post("/image/upload", {
+        data,
+        forceFormData: true,
+        onSuccess: () => {
+          displaying(false);
+        },
+        onError: (err) => {
+          setValidationImage(err as unknown as string);
+        },
+      });
+    } else {
+      post("/image/update", {
+        data: { ...data },
+        forceFormData: true,
+        onSuccess: () => {
+          displaying(false);
+        },
+        onError: (err) => {
+          setValidationImage(err as unknown as string);
+        },
+      });
     }
   }
 
@@ -49,14 +86,14 @@ const AdminEditImages = ({
         transition={{ duration: 0.5 }}
       >
         <Cross onClick={() => displaying(false)} />
-        {error && <p className="error">{error}</p>}
+        {validationImage && <p className="error">{validationImage}</p>}
         {imageEdition.adding ? (
           <label htmlFor="imageAdminChange">
             <div
               className="addImageCase"
               style={{
-                background: imageEdition.url
-                  ? "url(" + imageEdition.url + ")"
+                background: urlRef.current
+                  ? "url(" + urlRef.current + ")"
                   : "black",
               }}
             >
@@ -64,71 +101,51 @@ const AdminEditImages = ({
             </div>
           </label>
         ) : (
-          <>
+          <div className="updateImage">
             <img src={imageEdition.url} alt="plat du chef" />
             <AiOutlineArrowRight />
             <label htmlFor="imageAdminChange">
               <div
                 className="addImageCase"
                 style={{
-                  background: imageEdition.url
-                    ? "url(" + imageEdition.url + ")"
+                  background: urlRef.current
+                    ? "url(" + urlRef.current + ")"
                     : "black",
                 }}
-              ></div>
+              >
+                <MdEditSquare color="#fff" />
+              </div>
             </label>
-          </>
+          </div>
         )}
 
-        <form
-          action={
-            imageEdition.adding ? "/adminImageAdded" : "/adminImageUpdated"
-          }
-          method="post"
-          encType="multipart/form-data"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          {!imageEdition.adding ? (
-            <input type="hidden" name="oldUrl" value={imageEditionData.url} />
-          ) : null}
+        <form onSubmit={imageSubmition}>
           <input
             type="file"
             id="imageAdminChange"
             name="image"
-            onChange={(e) => {
-              handleChange(e);
-            }}
+            onChange={handleChange}
             required={imageEdition.adding ? true : false}
-            accept="image/png, image/jpeg, image/jpg"
+            accept="image/png, image/jpeg, image/jpg, image/svg"
           />
           <p>Titre</p>
           <input
             type="text"
             name="title"
-            onChange={(e) => {
-              setImageEdition({
-                ...imageEdition,
-                title: e.target.value,
-              });
-            }}
+            onChange={(e) => setData({ ...data, title: e.target.value })}
             required
-            value={imageEdition.title}
+            value={data.title}
           />
           <p>Description</p>
           <input
             type="text"
             name="description"
-            onChange={(e) => {
-              setImageEdition({
-                ...imageEdition,
-                description: e.target.value,
-              });
-            }}
+            onChange={(e) => setData({ ...data, description: e.target.value })}
             required
-            value={imageEdition.description}
+            value={data.description}
           />
           {
-            <button type="submit">
+            <button type="submit" disabled={processing}>
               {imageEdition.adding ? "Ajouter" : "Envoyer"}
             </button>
           }
