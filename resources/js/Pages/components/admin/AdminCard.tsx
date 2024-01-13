@@ -23,17 +23,19 @@ const AdminCard = ({
   }, [display]);
 
   function editableCard(
+    id: number,
     title: string,
     desc: string,
     price: number | null,
-    formule: string | null,
+    formula: string | null,
     choiceEdit: "starters" | "dishs" | "desserts" | "formula"
   ) {
     setData({
+      id,
       title,
       desc,
       price,
-      formule,
+      formula,
       choiceEdit,
     });
     setDisplay(true);
@@ -47,15 +49,16 @@ const AdminCard = ({
         <>
           <div className="seul">
             <h2>Seul</h2>
-            {starters.map((food, id) => {
+            {starters.map((food) => {
               return !food.sharing ? (
-                <div key={id}>
+                <div key={food.id}>
                   <h3>{food.name}</h3>
                   <p>{food.description}</p>
                   <p>{food.price}€</p>
                   <button
                     onClick={() =>
                       editableCard(
+                        food.id,
                         food.name,
                         food.description,
                         food.price,
@@ -64,7 +67,7 @@ const AdminCard = ({
                       )
                     }
                   >
-                    <MdEditSquare color="#fff"/>
+                    <MdEditSquare color="#fff" />
                   </button>
                 </div>
               ) : null;
@@ -72,15 +75,16 @@ const AdminCard = ({
           </div>
           <div className="partage">
             <h2>Partager</h2>
-            {starters.map((food, id) => {
+            {starters.map((food) => {
               return food.sharing ? (
-                <div key={id}>
+                <div key={food.id}>
                   <h3>{food.name}</h3>
                   <p>{food.description}</p>
                   <p>{food.price}€</p>
                   <button
                     onClick={() =>
                       editableCard(
+                        food.id,
                         food.name,
                         food.description,
                         food.price,
@@ -89,7 +93,7 @@ const AdminCard = ({
                       )
                     }
                   >
-                    <MdEditSquare color="#fff"/>
+                    <MdEditSquare color="#fff" />
                   </button>
                 </div>
               ) : null;
@@ -102,15 +106,16 @@ const AdminCard = ({
         <>
           <div className="seul">
             <h2>Seul</h2>
-            {dishs.map((food, id) => {
+            {dishs.map((food) => {
               return !food.sharing ? (
-                <div key={id}>
+                <div key={food.id}>
                   <h3>{food.name}</h3>
                   <p>{food.description}</p>
                   <p>{food.price}€</p>
                   <button
                     onClick={() =>
                       editableCard(
+                        food.id,
                         food.name,
                         food.description,
                         food.price,
@@ -119,7 +124,7 @@ const AdminCard = ({
                       )
                     }
                   >
-                    <MdEditSquare color="#fff"/>
+                    <MdEditSquare color="#fff" />
                   </button>
                 </div>
               ) : null;
@@ -127,15 +132,16 @@ const AdminCard = ({
           </div>
           <div className="partage">
             <h2>Partager</h2>
-            {dishs.map((food, id) => {
+            {dishs.map((food) => {
               return food.sharing ? (
-                <div key={id}>
+                <div key={food.id}>
                   <h3>{food.name}</h3>
                   <p>{food.description}</p>
                   <p>{food.price}€</p>
                   <button
                     onClick={() =>
                       editableCard(
+                        food.id,
                         food.name,
                         food.description,
                         food.price,
@@ -144,7 +150,7 @@ const AdminCard = ({
                       )
                     }
                   >
-                    <MdEditSquare color="#fff"/>
+                    <MdEditSquare color="#fff" />
                   </button>
                 </div>
               ) : null;
@@ -155,15 +161,16 @@ const AdminCard = ({
       <h2>Desserts</h2>
       <div className="content">
         <div>
-          {desserts.map((food, id) => {
+          {desserts.map((food) => {
             return (
-              <div key={id} className="dessert">
+              <div key={food.id} className="dessert">
                 <h3>{food.name}</h3>
                 <p>{food.description}</p>
                 <p>{food.price}€</p>
                 <button
                   onClick={() =>
                     editableCard(
+                      food.id,
                       food.name,
                       food.description,
                       food.price,
@@ -172,7 +179,7 @@ const AdminCard = ({
                     )
                   }
                 >
-                  <MdEditSquare color="#fff"/>
+                  <MdEditSquare color="#fff" />
                 </button>
               </div>
             );
@@ -191,6 +198,7 @@ const AdminCard = ({
                 <button
                   onClick={() =>
                     editableCard(
+                      food.id,
                       food.name,
                       food.description,
                       null,
@@ -199,7 +207,7 @@ const AdminCard = ({
                     )
                   }
                 >
-                  <MdEditSquare color="#fff"/>
+                  <MdEditSquare color="#fff" />
                 </button>
               </div>
             );

@@ -3,6 +3,7 @@ import { allHours, allImages, getCardData } from "../getPropsData";
 import { HourType } from "../../../utils/types/hoursType";
 import Database from "@ioc:Adonis/Lucid/Database";
 import { z } from "zod";
+import { cardUpdateType } from "../../../utils/types/cardManagmentType";
 
 export default class AdminsController {
   public async index(ctx: HttpContextContract) {
@@ -57,6 +58,50 @@ export default class AdminsController {
             ? JSON.parse(error.message)[0]?.message
             : "Une erreur est survenus",
       });
+    }
+  }
+
+  public async cardUpdate(ctx: HttpContextContract) {
+    try {
+      const cardInfo = cardUpdateType.parse(ctx.request.all());
+
+      if (
+        cardInfo.formula === null &&
+        cardInfo.price !== null &&
+        cardInfo.desc
+      ) {
+        const updatedLine = await Database.rawQuery(
+          `UPDATE ${cardInfo.choice_edit} SET name = "${cardInfo.title}", description = "${cardInfo.desc}", price = ${cardInfo.price} WHERE  id = ${cardInfo.id} `
+        );
+        if (updatedLine[0].changedRows) {
+          return ctx.response.redirect().back();
+        } else {
+          ctx.session.flash({
+            errors: "Erreur lors de la mise à jour des données",
+          });
+          return ctx.response.redirect().back();
+        }
+      } else {
+        const updatedLine = await Database.rawQuery(
+          `UPDATE menus SET name = "${cardInfo.title}", formula = "${cardInfo.formula}" WHERE  id = ${cardInfo.id}`
+        );
+        if (updatedLine[0].changedRows) {
+          return ctx.response.redirect().back();
+        } else {
+          ctx.session.flash({
+            errors: "Erreur lors de la mise à jour des données",
+          });
+          return ctx.response.redirect().back();
+        }
+      }
+    } catch (error) {
+      ctx.session.flash({
+        errors:
+          error instanceof z.ZodError
+            ? JSON.parse(error.message)[0]?.message
+            : error.message,
+      });
+      return ctx.response.redirect().back();
     }
   }
 }

@@ -60,11 +60,12 @@ const Admin = ({
 
   const [displayCardEdition, setDisplayCardEdition] = useState<boolean>(false);
   const [dataCardEdit, setDataCardEdit] = useState({
-    title: "" as string,
-    desc: "" as string,
-    price: 0 as number,
-    formule: "" as string,
-    choiceEdit: "" as string,
+    id: 0,
+    title: "",
+    desc: "",
+    price: 0,
+    formula: "",
+    choiceEdit: "",
   });
 
   const [showOption, setShowOption] = useState<string>("image");
@@ -150,12 +151,8 @@ const Admin = ({
         ) : null}
         {displayCardEdition ? (
           <CardEdition
-            titleCarteEdition={dataCardEdit.title}
-            formuleCarteEdition={dataCardEdit.formule}
-            descCarteEdition={dataCardEdit.desc}
-            priceCarteEdition={dataCardEdit.price}
+            cardData={dataCardEdit}
             setDisplayEditCard={setDisplayCardEdition}
-            choiceEdit={dataCardEdit.choiceEdit}
           />
         ) : null}
       </AnimatePresence>

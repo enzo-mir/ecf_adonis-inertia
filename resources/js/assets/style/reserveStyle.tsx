@@ -88,7 +88,7 @@ const OptionsReserv = styled.div`
     grid-template-columns: auto 1fr;
     align-items: center;
     width: clamp(200px, 100%, 250px);
-    border-radius: 5px;
+    border-radius: 0.5em;
     padding-inline-start: 0.5em;
     gap: 0.5em;
 
@@ -101,7 +101,8 @@ const OptionsReserv = styled.div`
   & input {
     min-width: 100%;
     height: 30px;
-    padding: 0 0 0 0.25em;
+    padding: 0.25em 0 0.25em 0.25em;
+
     &[type="date"] {
       background-color: var(--darker-color);
       color: #fff;
@@ -110,6 +111,8 @@ const OptionsReserv = styled.div`
       font-size: var(--font-size-little);
       text-align: center;
       padding: 0.2rem;
+      border-top-right-radius: 0.5em;
+      border-bottom-right-radius: 0.5em;
       &#date {
         &::-webkit-calendar-picker-indicator {
           background: url(${downArrowCalendar});

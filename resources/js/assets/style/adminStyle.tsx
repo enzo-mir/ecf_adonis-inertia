@@ -3,9 +3,8 @@ import styled from "styled-components";
 const EditCardContainer = styled.div`
   position: absolute;
   display: grid;
-  place-items: center;
-  grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
   padding-block: 50px;
   width: 1000px;
   min-height: 60vh;
@@ -13,16 +12,25 @@ const EditCardContainer = styled.div`
   z-index: 150;
   background-color: #fff;
 
-  & > div:first-child {
-    grid-area: 1 / 1 / 2 / 3;
-  }
-  & div {
+  & form {
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    padding-inline: 1em;
     height: 100%;
+
+    & > label {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: start;
+      place-items: center;
+      gap: 1em;
+      padding-inline: 2em;
+      & > input {
+        justify-self: start;
+        width: fit-content;
+      }
+    }
   }
   & button {
     grid-area: 3 / 1 / 4 / 3;

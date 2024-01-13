@@ -1,48 +1,47 @@
 import { Overlay } from "../../../assets/style/overlay";
 import { EditCardContainer } from "../../../assets/style/adminStyle";
 import { Cross } from "../../../assets/style/cross";
-import postUpdateCard from "../../../data/postUpdateCard";
-import { cardStore } from "../../../data/store/apiData.store";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 import React from "react";
+import { useForm } from "@inertiajs/inertia-react";
 
 const CardEdition = ({
-  titleCarteEdition,
-  descCarteEdition,
-  priceCarteEdition,
-  formuleCarteEdition,
+  cardData,
   setDisplayEditCard,
-  choiceEdit,
 }: {
-  titleCarteEdition: string;
-  descCarteEdition: string | null;
-  priceCarteEdition: number | null;
-  formuleCarteEdition: string | null;
+  cardData: {
+    id: number;
+    title: string;
+    desc: string | null;
+    price: number | null;
+    formula: string | null;
+    choiceEdit: string;
+  };
   setDisplayEditCard(val: boolean): void;
-  choiceEdit: string;
 }) => {
-  const setCardStore = cardStore((state) => state.setCardStore);
   const [errorEditingCard, setErrorEditingCard] = useState<string>("");
 
-  const [cardInfo, setCardInfo] = useState({
-    title: titleCarteEdition as string,
-    desc: descCarteEdition as string,
-    price: priceCarteEdition as number,
-    formula: formuleCarteEdition as string,
+  const { post, data, setData, processing } = useForm({
+    id: cardData.id,
+    title: cardData.title,
+    desc: cardData.desc,
+    price: cardData.price,
+    formula: cardData.formula,
+    choice_edit: cardData.choiceEdit,
   });
-  function submitEdition() {
+  function submitEdition(e: FormEvent) {
+    e.preventDefault();
     if (!errorEditingCard) {
-      postUpdateCard(
-        titleCarteEdition,
-        descCarteEdition,
-        cardInfo,
-        choiceEdit
-      ).then((data) =>
-        data.error
-          ? setErrorEditingCard(data.error)
-          : (setCardStore(data), setDisplayEditCard(false))
-      );
+      post("/card/update", {
+        data,
+        onSuccess: () => {
+          setDisplayEditCard(false);
+        },
+        onError: (err) => {
+          setErrorEditingCard(err as unknown as string);
+        },
+      });
     }
   }
 
@@ -71,77 +70,86 @@ const CardEdition = ({
             }}
           />
           <h1>Édition de la carte</h1>
-          {errorEditingCard && <p className="errorTxt">{errorEditingCard}</p>}
+          {errorEditingCard ? (
+            <p className="errorTxt">{errorEditingCard}</p>
+          ) : null}
         </div>
-        <div>
-          <p>titre : {cardInfo.title}</p>
-          {formuleCarteEdition == null ? (
-            <>
-              <p>description : {cardInfo.desc}</p>
-              <p>prix : {cardInfo.price}€</p>
-            </>
-          ) : (
-            <p>
-              formule : {cardInfo.formula}
-              <br />
-              <sub>(Séparer les formules par des virgules)</sub>
-            </p>
-          )}
-        </div>
-        <div>
-          <input
-            type="text"
-            defaultValue={titleCarteEdition}
-            value={cardInfo.title}
-            onChange={(e) => {
-              setCardInfo({ ...cardInfo, title: e.target.value });
-              !e.target.value
-                ? setErrorEditingCard("Erreur : Champ(s) non-remplis")
-                : setErrorEditingCard("");
-            }}
-          />
-          {formuleCarteEdition == null ? (
-            <>
-              <input
-                type="text"
-                defaultValue={descCarteEdition!}
-                value={cardInfo.desc}
-                onChange={(e) => {
-                  setCardInfo({ ...cardInfo, desc: e.target.value });
-                  !e.target.value
-                    ? setErrorEditingCard("Erreur : Champ(s) non-remplis")
-                    : setErrorEditingCard("");
-                }}
-              />
-              <input
-                type="number"
-                min="0"
-                maxLength={5}
-                defaultValue={priceCarteEdition!}
-                value={cardInfo.price}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setCardInfo({ ...cardInfo, price: parseInt(e.target.value) });
-                  !e.target.value
-                    ? setErrorEditingCard("Erreur : Champ(s) non-remplis")
-                    : setErrorEditingCard("");
-                }}
-              />
-            </>
-          ) : (
+        <form onSubmit={submitEdition}>
+          <label htmlFor="titleCard">
+            <p>Titre : {data.title}</p>
             <input
               type="text"
-              defaultValue={formuleCarteEdition}
-              value={cardInfo.formula}
+              defaultValue={cardData.title}
+              id="titleCard"
+              value={data.title}
               onChange={(e) => {
-                setCardInfo({ ...cardInfo, formula: e.target.value });
+                setData({ ...data, title: e.target.value });
                 !e.target.value
                   ? setErrorEditingCard("Erreur : Champ(s) non-remplis")
                   : setErrorEditingCard("");
               }}
             />
+          </label>
+          {cardData.formula == null ? (
+            <>
+              <label htmlFor="descCard">
+                <p>Description : {data.desc}</p>
+                <input
+                  type="text"
+                  id="descCard"
+                  defaultValue={cardData.desc!}
+                  value={data.desc}
+                  onChange={(e) => {
+                    setData({ ...data, desc: e.target.value });
+                    !e.target.value
+                      ? setErrorEditingCard("Erreur : Champ(s) non-remplis")
+                      : setErrorEditingCard("");
+                  }}
+                />
+              </label>
+              <label htmlFor="priceCard">
+                <p>prix : {data.price}€</p>
+                <input
+                  type="number"
+                  id="priceCard"
+                  min="0"
+                  maxLength={5}
+                  defaultValue={cardData.price}
+                  value={data.price}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setData({ ...data, price: parseInt(e.target.value) });
+                    !e.target.value
+                      ? setErrorEditingCard("Erreur : Champ(s) non-remplis")
+                      : setErrorEditingCard("");
+                  }}
+                />
+              </label>
+            </>
+          ) : (
+            <label htmlFor="formulaCard">
+              <p>
+                formule : {data.formula}
+                <br />
+                <sub>(Séparer les formules par des virgules)</sub>
+              </p>
+              <input
+                type="text"
+                id="formulaCard"
+                defaultValue={cardData.formula}
+                value={data.formula}
+                onChange={(e) => {
+                  setData({ ...data, formula: e.target.value });
+                  !e.target.value
+                    ? setErrorEditingCard("Erreur : Champ(s) non-remplis")
+                    : setErrorEditingCard("");
+                }}
+              />
+            </label>
           )}
-        </div>
-        <button onClick={submitEdition}>Fin de l&lsquo;édition</button>
+          <button type="submit" disabled={processing}>
+            Fin de l&lsquo;édition
+          </button>
+        </form>
       </EditCardContainer>
     </Overlay>
   );
