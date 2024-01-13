@@ -102,6 +102,12 @@ const OptionsReserv = styled.div`
     min-width: 100%;
     height: 30px;
     padding: 0.25em 0 0.25em 0.25em;
+    &:disabled {
+      background-color: var(--darker-color);
+      color: rgba(255, 255, 255, 0.75);
+      border-top-right-radius: 0.5em;
+      border-bottom-right-radius: 0.5em;
+    }
 
     &[type="date"] {
       background-color: var(--darker-color);

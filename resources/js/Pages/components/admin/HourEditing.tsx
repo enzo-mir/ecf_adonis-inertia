@@ -12,6 +12,7 @@ export default function HourEditing() {
   const { post } = useForm();
 
   function editionFinished() {
+    setHoursEdit(false);
     const inputs: NodeListOf<HTMLInputElement> =
       document.querySelectorAll("table tr input");
     inputs.forEach((input) => {

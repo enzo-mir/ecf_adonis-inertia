@@ -95,6 +95,54 @@ const ProfilComponent = ({
   }
 
   const EditableCta = () => {
+    function logout() {
+      post("/profile/logout", {
+        onSuccess: () => {
+          setValidationMessage("Déconnection ...");
+          setTimeout(() => {
+            setDisplayProfil(false);
+            setConnectedUser(false);
+            reset();
+            setuserData({
+              user: {
+                name: "",
+                email: "",
+                password: "",
+                guests: 0,
+                alergy: "",
+                currentReservation: [],
+              },
+            });
+          }, 1500);
+        },
+      });
+    }
+
+    function deleteAccount() {
+      post("/profile/delete", {
+        onSuccess: () => {
+          setValidationMessage("Profil effacé !");
+          setTimeout(() => {
+            setDisplayProfil(false);
+            setConnectedUser(false);
+            reset();
+            setuserData({
+              user: {
+                name: "",
+                email: "",
+                password: "",
+                guests: 0,
+                alergy: "",
+                currentReservation: [],
+              },
+            });
+          }, 1500);
+        },
+        onError: (err) => {
+          setValidationMessage(err as unknown as string);
+        },
+      });
+    }
     return (
       <div className="cta">
         {editable ? (
@@ -111,58 +159,8 @@ const ProfilComponent = ({
           </button>
         )}
 
-        <button
-          onClick={() => {
-            post("/profile/logout", {
-              onSuccess: () => {
-                setValidationMessage("Déconnection ...");
-                setTimeout(() => {
-                  setDisplayProfil(false);
-                  setConnectedUser(false);
-                  reset();
-                  setuserData({
-                    user: {
-                      name: "",
-                      email: "",
-                      password: "",
-                      guests: 0,
-                      alergy: "",
-                      currentReservation: [],
-                    },
-                  });
-                }, 1500);
-              },
-            });
-          }}
-        >
-          Déconnection
-        </button>
-        <button
-          onClick={() => {
-            post("/profile/delete", {
-              onSuccess: () => {
-                setValidationMessage("Profil effacé !");
-                setTimeout(() => {
-                  setDisplayProfil(false);
-                  setConnectedUser(false);
-                  reset();
-                  setuserData({
-                    user: {
-                      name: "",
-                      email: "",
-                      password: "",
-                      guests: 0,
-                      alergy: "",
-                      currentReservation: [],
-                    },
-                  });
-                }, 1500);
-              },
-            });
-          }}
-        >
-          supprimer le compte
-        </button>
+        <button onClick={logout}>Déconnection</button>
+        <button onClick={deleteAccount}>supprimer le compte</button>
       </div>
     );
   };
