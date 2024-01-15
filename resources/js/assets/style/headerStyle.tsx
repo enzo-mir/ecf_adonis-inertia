@@ -78,7 +78,7 @@ const HeaderContainer = styled.div`
     }
   }
 
-  & > button  > a {
+  & > button > a {
     text-decoration: none;
     color: white;
   }
@@ -113,10 +113,6 @@ const HeaderContainer = styled.div`
     justify-content: center;
     column-gap: 2vw;
     padding-inline: 1em;
-
-    & button::after {
-      display: none;
-    }
 
     & .reservations {
       display: grid;

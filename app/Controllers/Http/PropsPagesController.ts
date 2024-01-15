@@ -10,6 +10,7 @@ export default class PropsPagesController {
   }
 
   public async home(ctx: HttpContextContract) {
+    console.log((await allHours)[0]);
     if (ctx.auth.user) {
       const currentReservation = await Database.rawQuery(
         "SELECT guests, date, hours, email FROM reservations WHERE email = ?",

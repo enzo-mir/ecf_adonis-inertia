@@ -97,26 +97,14 @@ const Header = () => {
         </nav>
         <div className="profil">
           {!connectedUser ? (
-            <>
-              <button
-                className="signIn"
-                onClick={() => {
-                  setTogglePage("signin");
-                  setLogPage(true);
-                }}
-              >
-                Inscription
-              </button>
-              <button
-                className="logIn"
-                onClick={() => {
-                  setLogPage(true);
-                  setTogglePage("login");
-                }}
-              >
-                Connexion
-              </button>
-            </>
+            <button
+              onClick={() => {
+                setLogPage(true);
+                setTogglePage("signin");
+              }}
+            >
+              S'identifier
+            </button>
           ) : (
             <>
               <button

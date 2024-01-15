@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import Layout from "./components/Layout";
 import { connectStore, userDataStore } from "../data/store/connect.store";
+import { Head } from "@inertiajs/inertia-react";
 
 const Home = ({ userData, hours, images }) => {
   const [res, setRes] = useState(false);
@@ -15,6 +16,7 @@ const Home = ({ userData, hours, images }) => {
     state.setConnectedUser,
     state.setConnectedAdmin,
   ]);
+
   useEffect(() => {
     setHours(hours);
 
@@ -26,7 +28,7 @@ const Home = ({ userData, hours, images }) => {
     if (userData?.admin) {
       setConnectedAdmin(true);
     }
-  }, [userData,hours]);
+  }, [userData, hours]);
 
   const containerVariant = {
     hiddenHeader: { opacity: 0 },
@@ -55,6 +57,7 @@ const Home = ({ userData, hours, images }) => {
 
   return (
     <Wrapper>
+      <Head title="Accueil - Le Quai Antique" />
       <AnimatePresence>{res && <Reserv res={setRes} />}</AnimatePresence>
       <HeroSection>
         <div className="headerPage">

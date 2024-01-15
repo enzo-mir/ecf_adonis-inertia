@@ -1,33 +1,25 @@
 import styled from "styled-components";
 export const ContainerSettings = styled.section`
-  position: absolute;
   display: grid;
   grid-template-rows: auto 1fr;
   place-items: start center;
   gap: 30px;
-  padding-block: 25px;
-  width: 1000px;
-  min-height: 60%;
-  max-width: 100%;
-  z-index: 150;
-  background-color: #fff;
-  font-size: var(--font-size);
 
   &:has(p.validationMessage) {
     grid-template-rows: auto auto 1fr;
     & p.validationMessage {
-    background-color: var(--primary-color);
-    padding: 1rem;
-    border-radius: 5px;
-    text-align: center;
-  }
+      background-color: var(--primary-color);
+      padding: 1rem;
+      border-radius: 5px;
+      text-align: center;
+    }
   }
 
   & form,
   & > div:last-child {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     height: 100%;
     gap: 2.5em;
@@ -45,10 +37,6 @@ export const ContainerSettings = styled.section`
       grid-template-columns: 1fr 1fr;
       justify-content: space-between;
       place-items: center;
-
-      & strong {
-        font-weight: 600;
-      }
       @media screen and (max-width: 600px) {
         justify-content: center;
         &:has(label) {

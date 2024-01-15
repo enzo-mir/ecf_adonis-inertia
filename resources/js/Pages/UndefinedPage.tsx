@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/inertia-react";
+import { Head, Link } from "@inertiajs/inertia-react";
 import React from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
@@ -13,6 +13,7 @@ const UndefinedRoute = () => {
   document.body.style.overflow = "hidden";
   return (
     <Wrapper>
+      <Head title="Erreur 404 - Le Quai Antique" />
       <h1>Erreur 404 : page introuvable</h1>
       <Link href="/">Revenir à l'accueil</Link>
     </Wrapper>

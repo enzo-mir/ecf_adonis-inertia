@@ -1,5 +1,6 @@
 {
   "include": ["**/*"],
+
   "compilerOptions": {
     "lib": ["DOM"],
     "jsx": "react-jsx",

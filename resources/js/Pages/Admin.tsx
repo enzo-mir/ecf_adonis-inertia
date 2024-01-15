@@ -18,6 +18,7 @@ import React from "react";
 import Layout from "./components/Layout";
 import { CardDataType, HourDataType, Image } from "../types/dataApiTypes";
 import { connectStore } from "../data/store/connect.store";
+import { Head } from "@inertiajs/inertia-react";
 
 const Admin = ({
   hoursData,
@@ -120,6 +121,7 @@ const Admin = ({
 
   return (
     <Wrapper>
+      <Head title="Administration - Le Quai Antique" />
       <nav>
         <ul>
           <li>

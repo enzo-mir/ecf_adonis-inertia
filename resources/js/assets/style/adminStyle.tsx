@@ -1,16 +1,10 @@
 import styled from "styled-components";
 
-const EditCardContainer = styled.div`
+const EditCardContainer = styled.section`
   position: absolute;
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
-  padding-block: 50px;
-  width: 1000px;
-  min-height: 60vh;
-  max-width: 100%;
-  z-index: 150;
-  background-color: #fff;
 
   & form {
     display: flex;
@@ -240,18 +234,11 @@ const Wrapper = styled.main`
   }
 `;
 
-const ContainerWrapperEditImage = styled.div`
+const ContainerWrapperEditImage = styled.section`
   position: absolute;
   display: grid;
   grid-template-rows: auto 1fr 1fr;
   place-items: center;
-  padding-block: 50px;
-  max-width: 1000px;
-  min-height: 60vh;
-  width: 100%;
-  z-index: 150;
-  background-color: #fff;
-  font-size: var(--font-size);
 
   &:has(div.updateImage) {
     & > div.updateImage {

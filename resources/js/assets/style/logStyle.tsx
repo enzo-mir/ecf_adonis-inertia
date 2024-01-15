@@ -1,17 +1,10 @@
 import styled from "styled-components";
 
 const LogContainer = styled.section`
-  position: absolute;
   display: grid;
   place-items: center;
   grid-template-rows: auto auto 1fr auto;
   gap: 30px;
-  padding-block: 25px;
-  width: 1000px;
-  min-height: 500px;
-  max-width: 100%;
-  z-index: 150;
-  background-color: #fff;
 
   &:has(> p.validationMessage) {
     grid-template-rows: auto auto auto 1fr auto;

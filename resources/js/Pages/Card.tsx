@@ -21,6 +21,7 @@ import Layout from "./components/Layout";
 import { hourStore } from "../data/store/apiData.store";
 import { connectStore, userDataStore } from "../data/store/connect.store";
 import { User } from "../types/userType.store";
+import { Head } from "@inertiajs/inertia-react";
 
 const Card = ({
   cardData,
@@ -133,6 +134,7 @@ const Card = ({
       {res ? <Reserv res={setRes} /> : null}
       {cardData ? (
         <CarteContainer>
+          <Head title="La carte - Le Quai Antique" />
           <h1>La carte</h1>
           <MenuContainer>
             <LunchSection>

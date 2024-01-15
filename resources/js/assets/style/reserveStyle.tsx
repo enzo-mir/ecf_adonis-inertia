@@ -7,12 +7,6 @@ const ReservationContainer = styled.section`
   justify-content: start;
   align-items: center;
   gap: 30px;
-  padding-block: 25px;
-  width: clamp(300px, 75vw, 1000px);
-  max-height: 80svh;
-  max-width: 100%;
-  z-index: 150;
-  background-color: #fff;
   overflow: auto;
   scroll-behavior: smooth;
 

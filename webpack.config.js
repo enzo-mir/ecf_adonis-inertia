@@ -59,10 +59,10 @@ Encore.enableReactPreset();
 | we must copy them manually.
 |
 */
-// Encore.copyFiles({
-//   from: './resources/images',
-//   to: 'images/[path][name].[hash:8].[ext]',
-// })
+Encore.copyFiles({
+  from: "./resources/js/assets/images",
+  to: "images/[path][name].[hash:8].[ext]",
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -129,6 +129,7 @@ Encore.enableVersioning(Encore.isProduction());
 | to watch them explicitly and livereload the browser.
 |
 */
+
 Encore.configureDevServerOptions((options) => {
   /**
    * Normalize "options.static" property to an array
