@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, Suspense, useEffect, useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
 import {
   OptionsReserv,
@@ -222,7 +222,7 @@ export default function Reserv({
         {resError ? <p className="validationReservation">{resError}</p> : null}
         <OptionsReserv>
           <label htmlFor="persons">
-            <TbUsersPlus color="#fff"/>
+            <TbUsersPlus color="#fff" />
             <input
               type="number"
               id="persons"
@@ -238,7 +238,7 @@ export default function Reserv({
             />
           </label>
           <label htmlFor="date">
-            <MdOutlineDateRange color="#fff"/>
+            <MdOutlineDateRange color="#fff" />
             <input
               type="date"
               id="date"
@@ -249,7 +249,7 @@ export default function Reserv({
             />
           </label>
           <label htmlFor="email">
-            <MdAlternateEmail color="#fff"/>
+            <MdAlternateEmail color="#fff" />
             <input
               type="email"
               id="email"
@@ -264,7 +264,7 @@ export default function Reserv({
             />
           </label>
           <label htmlFor="name">
-            <FaUserAlt color="#fff"/>
+            <FaUserAlt color="#fff" />
             <input
               type="text"
               id="name"

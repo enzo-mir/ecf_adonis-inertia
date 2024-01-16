@@ -35,11 +35,6 @@ const HeroSection = styled.section`
       filter: brightness(70%);
     }
 
-    @media screen and (max-width: 1100px) {
-      grid-template-columns: 1fr;
-      grid-template-rows: 70% 1fr;
-    }
-
     & > aside {
       display: flex;
       flex-direction: column;
@@ -66,6 +61,10 @@ const HeroSection = styled.section`
         color: white;
         text-decoration: none;
       }
+    }
+    @media screen and (max-width: 1100px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: 70% 1fr;
     }
   }
 `;

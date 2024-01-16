@@ -1,6 +1,7 @@
 const { join } = require("path");
 const Encore = require("@symfony/webpack-encore");
-
+const CompressionPlugin = require("compression-webpack-plugin");
+const { optimize } = require("webpack");
 /*
 |--------------------------------------------------------------------------
 | Encore runtime environment
@@ -76,8 +77,9 @@ Encore.copyFiles({
 | https://webpack.js.org/plugins/split-chunks-plugin/
 |
 */
-// Encore.splitEntryChunks()
+Encore.splitEntryChunks();
 
+Encore.enableBuildNotifications();
 /*
 |--------------------------------------------------------------------------
 | Isolated entrypoints
@@ -149,7 +151,27 @@ Encore.configureDevServerOptions((options) => {
     watch: true,
   });
 });
-
+Encore.configureSplitChunks((splitChunks) => {
+  (splitChunks.chunks = "async"),
+    (splitChunks.minSize = 20000),
+    (splitChunks.minRemainingSize = 0),
+    (splitChunks.minChunks = 2),
+    (splitChunks.maxAsyncRequests = 30),
+    (splitChunks.maxInitialRequests = 30),
+    (splitChunks.enforceSizeThreshold = 50000),
+    (splitChunks.cacheGroups = {
+      defaultVendors: {
+        test: /[\\/]node_modules[\\/]/,
+        priority: -10,
+        reuseExistingChunk: true,
+      },
+      default: {
+        minChunks: 2,
+        priority: -20,
+        reuseExistingChunk: true,
+      },
+    });
+});
 /*
 |--------------------------------------------------------------------------
 | CSS precompilers support
@@ -172,7 +194,7 @@ Encore.configureDevServerOptions((options) => {
 | PostCSS or CSS.
 |
 */
-// Encore.enablePostCssLoader()
+Encore.enablePostCssLoader();
 // Encore.configureCssLoader(() => {})
 
 /*
@@ -200,12 +222,6 @@ Encore.configureDevServerOptions((options) => {
 | the level to "info".
 |
 */
-const config = Encore.getWebpackConfig();
-config.infrastructureLogging = {
-  level: "warn",
-};
-config.stats = "errors-warnings";
-
 /*
 |--------------------------------------------------------------------------
 | Export config
@@ -214,4 +230,5 @@ config.stats = "errors-warnings";
 | Export config for webpack to do its job
 |
 */
-module.exports = config;
+
+module.exports = Encore.getWebpackConfig();

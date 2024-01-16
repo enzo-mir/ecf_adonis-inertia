@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Reserv from "./components/Reservation";
+import React from "react";
+const Reserv = React.lazy(() => import("./components/Reservation"));
 import {
   CarteContainer,
   MenuContainer,
@@ -16,8 +17,7 @@ import {
   menuType,
   platType,
 } from "../types/dataApiTypes";
-import React from "react";
-import Layout from "./components/Layout";
+const Layout = React.lazy(() => import("./components/Layout"));
 import { hourStore } from "../data/store/apiData.store";
 import { connectStore, userDataStore } from "../data/store/connect.store";
 import { User } from "../types/userType.store";

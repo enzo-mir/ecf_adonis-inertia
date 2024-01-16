@@ -1,5 +1,4 @@
-import { useState, MouseEvent, useEffect } from "react";
-import AdminEditImages from "./components/admin/AdminEditImages";
+import { useState, MouseEvent, useEffect, lazy, Suspense } from "react";
 import {
   HoursContainer,
   ImgWrapper,
@@ -7,18 +6,22 @@ import {
   Wrapper,
 } from "../assets/style/adminStyle";
 import { cardStore, hourStore, imageStore } from "../data/store/apiData.store";
-import AdminCard from "./components/admin/AdminCard";
-import HourEditing from "./components/admin/HourEditing";
+const AdminCard = lazy(() => import("./components/admin/AdminCard"));
+const HourEditing = lazy(() => import("./components/admin/HourEditing"));
+const Layout = lazy(() => import("./components/Layout"));
+const CardEdition = lazy(() => import("./components/admin/CardEdition"));
+const AdminEditImages = lazy(
+  () => import("./components/admin/AdminEditImages")
+);
 import { BsFillImageFill } from "react-icons/bs";
 import { BiSolidTime } from "react-icons/bi";
 import { IoFastFood } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
-import CardEdition from "./components/admin/CardEdition";
 import React from "react";
-import Layout from "./components/Layout";
 import { CardDataType, HourDataType, Image } from "../types/dataApiTypes";
 import { connectStore } from "../data/store/connect.store";
 import { Head } from "@inertiajs/inertia-react";
+import Loading from "./Loading";
 
 const Admin = ({
   hoursData,
@@ -122,112 +125,114 @@ const Admin = ({
   return (
     <Wrapper>
       <Head title="Administration - Le Quai Antique" />
-      <nav>
-        <ul>
-          <li>
-            <button onClick={() => setShowOption("image")}>
-              <span>Image</span>
-              <BsFillImageFill />
-            </button>
-          </li>
-          <li>
-            <button onClick={() => setShowOption("hour")}>
-              <span>Heures</span>
-              <BiSolidTime />
-            </button>
-          </li>
-          <li>
-            <button onClick={() => setShowOption("card")}>
-              <span>Carte</span>
-              <IoFastFood />
-            </button>
-          </li>
-        </ul>
-      </nav>
-      <AnimatePresence>
-        {displayEditImage ? (
-          <AdminEditImages
-            imageEditionData={imageEdition}
-            displaying={setDisplayEditImage}
-          />
-        ) : null}
-        {displayCardEdition ? (
-          <CardEdition
-            cardData={dataCardEdit}
-            setDisplayEditCard={setDisplayCardEdition}
-          />
-        ) : null}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showOption === "image" ? (
-          <ImgWrapper
-            as={motion.article}
-            initial={{ x: "-20%" }}
-            animate={{ x: "0%" }}
-            exit={{ x: "20%" }}
-          >
-            <h1>Galerie d&#39;images</h1>
-            <div className="imgGalery">
-              {images?.map((images, id) => {
-                return (
-                  <div key={id}>
-                    <img src={images.url} alt="plats du chef" />
-                    <p>
-                      Titre : {images.title}
-                      <br />
-                      <br />
-                      Description : {images.description}
-                    </p>
-                    <aside>
-                      <button
-                        onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-                          imageEdit(e, images.title, images.description)
-                        }
-                      >
-                        Éditer
-                      </button>
-                      <button onClick={() => deleteImage(images)}>
-                        Supprimer
-                      </button>
-                    </aside>
-                  </div>
-                );
-              })}
-              <button onClick={imageAdd}>Ajouter +</button>
-            </div>
-          </ImgWrapper>
-        ) : showOption === "hour" ? (
-          <HoursContainer
-            as={motion.article}
-            initial={{ x: "-20%" }}
-            animate={{ x: "0%" }}
-            exit={{ x: "20%" }}
-          >
-            <HourEditing />
-          </HoursContainer>
-        ) : (
-          <CardContainer
-            as={motion.article}
-            initial={{ x: "-20%" }}
-            animate={{ x: "0%" }}
-            exit={{ x: "20%" }}
-          >
-            <AdminCard
-              setDisplay={setDisplayCardEdition}
-              setData={setDataCardEdit}
-              display={displayCardEdition}
+      <Suspense fallback={<Loading />}>
+        <nav>
+          <ul>
+            <li>
+              <button onClick={() => setShowOption("image")}>
+                <span>Image</span>
+                <BsFillImageFill />
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setShowOption("hour")}>
+                <span>Heures</span>
+                <BiSolidTime />
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setShowOption("card")}>
+                <span>Carte</span>
+                <IoFastFood />
+              </button>
+            </li>
+          </ul>
+        </nav>
+        <AnimatePresence>
+          {displayEditImage ? (
+            <AdminEditImages
+              imageEditionData={imageEdition}
+              displaying={setDisplayEditImage}
             />
-          </CardContainer>
-        )}
-      </AnimatePresence>
+          ) : null}
+          {displayCardEdition ? (
+            <CardEdition
+              cardData={dataCardEdit}
+              setDisplayEditCard={setDisplayCardEdition}
+            />
+          ) : null}
+        </AnimatePresence>
 
-      <article>
-        <h1>
-          Nombre de convives maximum du restaurant <br />
-          35 personnes
-        </h1>
-      </article>
+        <AnimatePresence>
+          {showOption === "image" ? (
+            <ImgWrapper
+              as={motion.article}
+              initial={{ x: "-20%" }}
+              animate={{ x: "0%" }}
+              exit={{ x: "20%" }}
+            >
+              <h1>Galerie d&#39;images</h1>
+              <div className="imgGalery">
+                {images?.map((images, id) => {
+                  return (
+                    <div key={id}>
+                      <img src={images.url} alt="plats du chef" />
+                      <p>
+                        Titre : {images.title}
+                        <br />
+                        <br />
+                        Description : {images.description}
+                      </p>
+                      <aside>
+                        <button
+                          onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                            imageEdit(e, images.title, images.description)
+                          }
+                        >
+                          Éditer
+                        </button>
+                        <button onClick={() => deleteImage(images)}>
+                          Supprimer
+                        </button>
+                      </aside>
+                    </div>
+                  );
+                })}
+                <button onClick={imageAdd}>Ajouter +</button>
+              </div>
+            </ImgWrapper>
+          ) : showOption === "hour" ? (
+            <HoursContainer
+              as={motion.article}
+              initial={{ x: "-20%" }}
+              animate={{ x: "0%" }}
+              exit={{ x: "20%" }}
+            >
+              <HourEditing />
+            </HoursContainer>
+          ) : (
+            <CardContainer
+              as={motion.article}
+              initial={{ x: "-20%" }}
+              animate={{ x: "0%" }}
+              exit={{ x: "20%" }}
+            >
+              <AdminCard
+                setDisplay={setDisplayCardEdition}
+                setData={setDataCardEdit}
+                display={displayCardEdition}
+              />
+            </CardContainer>
+          )}
+        </AnimatePresence>
+
+        <article>
+          <h1>
+            Nombre de convives maximum du restaurant <br />
+            35 personnes
+          </h1>
+        </article>
+      </Suspense>
     </Wrapper>
   );
 };
