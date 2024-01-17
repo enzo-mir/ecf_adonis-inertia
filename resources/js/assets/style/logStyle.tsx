@@ -25,6 +25,7 @@ const LogContainer = styled.section`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 2em;
 
     & .ctaLog {
       display: flex;

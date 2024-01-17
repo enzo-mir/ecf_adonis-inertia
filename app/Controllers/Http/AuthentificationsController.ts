@@ -15,11 +15,7 @@ export default class AuthentificationsController {
       );
       await Hash.verify(getDatabsePwd[0][0].password, userinfo.password);
       await ctx.auth.attempt(userinfo.email, userinfo.password);
-      if (ctx.auth.user?.role === 1) {
-        return ctx.response.redirect().back();
-      } else {
-        return ctx.response.redirect().back();
-      }
+      return ctx.response.redirect().back();
     } catch (error) {
       ctx.session.flash({
         errors:

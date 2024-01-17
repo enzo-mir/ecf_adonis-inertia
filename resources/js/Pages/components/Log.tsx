@@ -6,13 +6,11 @@ import {
   ContentLogIn,
 } from "../../assets/style/logStyle";
 import { Cross } from "../../assets/style/cross";
-import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { LoginDataType, signinType } from "../../types/userManagmentType";
 import { motion } from "framer-motion";
 import { useForm } from "@inertiajs/inertia-react";
 import React from "react";
 import { z } from "zod";
-import { User } from "../../types/userType.store";
 
 const Log = ({
   displayPage,
@@ -24,12 +22,6 @@ const Log = ({
   const [page, setPage] = useState(togglePage);
   const [fromConfirmation, setFormConfirmation] = useState("");
   const { data, setData, post, reset, processing } = useForm();
-
-  const [setConnectedAdmin, setConnectedUser] = connectStore((state) => [
-    state.setConnectedAdmin,
-    state.setConnectedUser,
-  ]);
-  const setUserData = userDataStore((state) => state.setUserData);
 
   const submitSignin = async (e: FormEvent) => {
     e.preventDefault();
@@ -46,7 +38,7 @@ const Log = ({
           setTimeout(() => {
             setFormConfirmation("");
             displayPage(false);
-          }, 1500);
+          }, 1000);
         },
         onError: (err) => {
           setFormConfirmation(err as unknown as string);

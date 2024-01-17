@@ -110,7 +110,8 @@ const OptionsReserv = styled.div`
       min-width: 100%;
       font-size: var(--font-size-little);
       text-align: center;
-      padding: 0.2rem;
+      padding: 0.25em 0 0.25em 0.25em;
+      height: 30px;
       border-top-right-radius: 0.5em;
       border-bottom-right-radius: 0.5em;
       &#date {

@@ -33,7 +33,6 @@ const Card = ({
   userData: User;
 }) => {
   const setHours = hourStore((state) => state.setHours);
-  setHours(hours);
   const [res, setRes] = useState(false);
   const { starters, dishs, desserts, menus } = cardData;
 

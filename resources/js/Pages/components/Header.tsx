@@ -59,7 +59,7 @@ const Header = () => {
 
   const NavMenu = () => {
     return isAdmin ? (
-      <div className="flex justify-center items-center gap-[50px] w-full">
+      <HeaderContainer>
         <button
           onClick={() => {
             post("/profile/logout", {
@@ -81,18 +81,14 @@ const Header = () => {
         >
           Déconnection
         </button>
-        <Link href="/admin" className="text-[var(--darker-color)]">
-          Administration
-        </Link>
-      </div>
+        <Link href="/admin">Administration</Link>
+      </HeaderContainer>
     ) : (
-      <div className="flex justify-center items-center gap-[50px] w-full">
-        <nav className="ml-auto w-max">
-          <ul className="flex justify-center gap-x-[2vw]">
-            <li className="grid place-items-center text-base">
-              <Link href="/carte" className="text-[var(--darker-color)]">
-                Carte
-              </Link>
+      <HeaderContainer>
+        <nav>
+          <ul>
+            <li>
+              <Link href="/carte">Carte</Link>
             </li>
             <li>
               <button className="btnReserve" onClick={() => setRes(true)}>
@@ -101,7 +97,7 @@ const Header = () => {
             </li>
           </ul>
         </nav>
-        <div className="relative ml-auto flex items-center justify-center gap-x-[2vw] px-4">
+        <div className="profil">
           {!connectedUser ? (
             <button
               onClick={() => {
@@ -114,7 +110,7 @@ const Header = () => {
           ) : (
             <>
               <button
-                className="max-[600px]:w-[30px] max-[600px]:h-[30px] hover:bg-[var(--darker-color)] grid place-items-center rounded-full border-solid border-[var(--darker-color)] border-2 text-white font-semibold text-sm h-[clamp(30px,4vh,100px)] aspect-square z-50 bg-[var(--darker-color-a70)] p-0"
+                className="reservations"
                 onClick={() => setDisplayModalReservation(true)}
               >
                 {userData.user.currentReservation.length}
@@ -125,7 +121,7 @@ const Header = () => {
             </>
           )}
         </div>
-      </div>
+      </HeaderContainer>
     );
   };
 
@@ -152,32 +148,21 @@ const Header = () => {
         </AnimatePresence>
       </Suspense>
 
-      <header
-        className={`fixed top-0 w-full h-full flex justify-center items-center bg-[var(--primary-color)] transition-all z-50 ${
-          displayHeader
-            ? "max-[600px]:transition-all max-[600px]:h-[40vh] max-[600px]:max-h-[800px] max-[600px]:min-h-[350px] max-[600px]:gap-[5vh] max-[600px]:pb-4"
-            : "max-[600px]:h-auto max-[600px]:justify-start"
-        }`}
-      >
-        <div className="grid place-items-center p-4 h-full">
+      <Wrapper className={displayHeader ? "display" : ""}>
+        <div className="imgContainer">
           <Link href="/">
-            <img
-              src={icon}
-              alt="Icon du site"
-              className="h-[5vh] min-h-[40px] max-h-[100px] aspect-square"
-            />
+            <img src={icon} alt="Icon du site" />
           </Link>
         </div>
         <NavMenu />
-        <span
-          className={`max-[600px]:block cursor-pointer absolute top-1/2 translate-y-[-50%] hidden h-[3vh] min-h-[20px] aspect-square bg-[var(--burger-icon)] transition-all z-50`}
+        <BtnMenu
           onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
             (e.target as Node).parentNode!.children[1].classList.toggle(
               "display"
             )
           }
         />
-      </header>
+      </Wrapper>
     </>
   );
 };

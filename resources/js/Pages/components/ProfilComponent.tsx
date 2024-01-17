@@ -103,16 +103,6 @@ const ProfilComponent = ({
             setDisplayProfil(false);
             setConnectedUser(false);
             reset();
-            setuserData({
-              user: {
-                name: "",
-                email: "",
-                password: "",
-                guests: 0,
-                alergy: "",
-                currentReservation: [],
-              },
-            });
           }, 1500);
         },
       });

@@ -1,7 +1,8 @@
 const { join } = require("path");
 const Encore = require("@symfony/webpack-encore");
-const CompressionPlugin = require("compression-webpack-plugin");
-const { optimize } = require("webpack");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+
 /*
 |--------------------------------------------------------------------------
 | Encore runtime environment
@@ -194,7 +195,7 @@ Encore.configureSplitChunks((splitChunks) => {
 | PostCSS or CSS.
 |
 */
-Encore.enablePostCssLoader();
+//Encore.enablePostCssLoader();
 // Encore.configureCssLoader(() => {})
 
 /*
@@ -230,5 +231,19 @@ Encore.enablePostCssLoader();
 | Export config for webpack to do its job
 |
 */
+
+Encore.configureSplitChunks((splitChunks) => {
+  (splitChunks.chunks = "all"),
+    (splitChunks.maxInitialRequests = Infinity),
+    (splitChunks.cacheGroups = {
+      vendor: {
+        test: /[\\/]node_modules[\\/]/,
+        name: (module) =>
+          `vendor.${
+            module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
+          }`,
+      },
+    });
+});
 
 module.exports = Encore.getWebpackConfig();

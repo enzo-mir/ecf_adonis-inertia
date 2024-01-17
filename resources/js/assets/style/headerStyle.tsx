@@ -103,6 +103,10 @@ const HeaderContainer = styled.div`
     aspect-ratio: 1/1;
     border-radius: 50%;
     font-size: var(--font-size-bigger);
+
+    &::after {
+      display: none;
+    }
   }
 
   & .profil {
@@ -118,7 +122,7 @@ const HeaderContainer = styled.div`
       display: grid;
       place-items: center;
       border-radius: 50%;
-      border: 3px solid var(--darker-color);
+      border: 2px solid var(--darker-color);
       color: white;
       font-weight: 600;
       font-size: var(--font-size-little);
@@ -127,6 +131,10 @@ const HeaderContainer = styled.div`
       z-index: 50;
       background-color: var(--darker-color-a70);
       padding: 0;
+
+      &::after {
+        display: none;
+      }
 
       &:hover {
         background-color: var(--darker-color);

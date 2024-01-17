@@ -1,7 +1,184 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  scroll-behavior: smooth;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+  width: 100%;
+  min-height: 100svh;
+  background-color: #fff;
+  font-family: var(--font-f-julius);
+}
 
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+html {
+  background-color: var(--primary-color);
+}
+button {
+  position: relative;
+  border: none;
+  background-color: var(--darker-color);
+  color: #fff;
+  font-family: var(--font-f-julius);
+  padding: 0.5rem;
+  font-size: var(--font-size);
+  border-radius: 5px;
+  transition: all 0.2s ease-out;
+  z-index: 1;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 110%;
+    transition: all 0.2s ease-out;
+    border-radius: 5px;
+    top: 0;
+    left: 0;
+    background: var(--darker-color-a70);
+    z-index: -1;
+  }
+}
+
+& input {
+  position: relative;
+  border: none;
+  border-bottom: 2px solid var(--darker-color);
+  padding: 0.5rem 1em;
+  font-size: var(--font-size);
+  width: 100%;
+  outline: none;
+
+  &::placeholder {
+    color: var(--darker-color);
+    filter: opacity(50%);
+  }
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: var(--darker-color-big);
+  &::after {
+    height: 100%;
+  }
+}
 @font-face {
   font-family: "Julius";
   src: url("../js/assets/fonts/Julius/JuliusSansOne-Regular.ttf") format("woff");
@@ -14,69 +191,14 @@
   font-style: normal;
   font-weight: normal;
 }
-button {
-  position: relative;
-  border: none;
-  background-color: var(--darker-color);
-  color: #fff;
-  font-family: var(--font-f-julius);
-  padding: 1rem;
-  font-size: var(--font-size);
-  border-radius: 5px;
-  transition: all 0.2s ease-out;
-  z-index: 1;
-}
-button::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 110%;
-  transition: all 0.2s ease-out;
-  border-radius: 5px;
-  top: 0;
-  left: 0;
-  background: var(--darker-color-a70);
-  z-index: -1;
-}
-
-& input {
-  position: relative;
-  border: none;
-  border-bottom: 2px solid var(--darker-color);
-  padding: 0.5rem 1em;
-  font-size: var(--font-size);
-  width: 100%;
-  outline: none;
-}
-input::placeholder {
-  color: var(--darker-color);
-  filter: opacity(50%);
-}
-
-button:hover {
-  cursor: pointer;
-  background-color: var(--darker-color-big);
-}
-button:hover::after {
-  height: 100%;
-}
-body {
-  line-height: 1;
-  width: 100%;
-  min-height: 100svh;
-  background-color: #fff;
-  font-family: var(--font-f-julius);
-  scroll-behavior: smooth;
-}
 :root {
   --font-f-julius: "Julius";
   --font-f-italian: "Italiana";
-  --burger-icon: "url(../js/assets/images/barre-de-menu.png)";
-  --font-size: clamp(14px, 1.5vw, 17px);
+  --font-size: clamp(14px, 1.5vw, 20px);
   --font-size-bigger: clamp(18px, 3vw, 30px);
   --font-size-h1: clamp(20px, 5vw, 50px);
   --font-size-reg: clamp(15px, 2.5vw, 25px);
-  --font-size-little: clamp(13px, 1.5vw, 14px);
+  --font-size-little: clamp(13px, 2vw, 14px);
   --primary-color: rgb(255, 241, 221);
   --primary-color-a50: rgba(255, 241, 221, 0.5);
   --primary-color-a30: rgba(255, 241, 221, 0.3);
