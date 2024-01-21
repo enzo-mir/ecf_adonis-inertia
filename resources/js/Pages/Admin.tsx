@@ -22,6 +22,7 @@ import { CardDataType, HourDataType, Image } from "../types/dataApiTypes";
 import { connectStore } from "../data/store/connect.store";
 import { Head } from "@inertiajs/inertia-react";
 import Loading from "./Loading";
+import AdminImages from "./components/admin/AdminImages";
 
 const Admin = ({
   hoursData,
@@ -35,10 +36,7 @@ const Admin = ({
   const [displayEditImage, setDisplayEditImage] = useState(false);
   const setCardData = cardStore((state) => state.setCardStore);
   const setHoursData = hourStore((state) => state.setHours);
-  const [setImages, images] = imageStore((state) => [
-    state.setImages,
-    state.images,
-  ]);
+  const setImages = imageStore((state) => state.setImages);
   const [setConnectedAdmin] = connectStore((state) => [
     state.setConnectedAdmin,
   ]);
@@ -74,80 +72,32 @@ const Admin = ({
 
   const [showOption, setShowOption] = useState<string>("image");
 
-  function imageEdit(
-    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
-    title?: string,
-    description?: string
-  ) {
-    const parentElement: ParentNode = (event.target as Node).parentNode!
-      .parentNode!;
-    const imageTargeted: HTMLImageElement = parentElement.querySelector("img")!;
-    setImageEdition({
-      adding: false,
-      url: imageTargeted.getAttribute("src")!,
-      title: title || "",
-      description: description || "",
-    });
-    setDisplayEditImage(true);
-  }
-  async function deleteImage(images: Image) {
-    const response = fetch("/image/delete", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        Connection: "keep-alive",
-        Accept: "*",
-      },
-      body: JSON.stringify({
-        url: images.url,
-      }),
-    });
-
-    if ((await response).ok) {
-      response
-        .then((r) => r.json())
-        .then((data) => {
-          setImages(data.images);
-        });
-    }
-  }
-
-  function imageAdd() {
-    setImageEdition({
-      title: "",
-      description: "",
-      url: "",
-      adding: true,
-    });
-    setDisplayEditImage(true);
-  }
-
   return (
     <Wrapper>
       <Head title="Administration - Le Quai Antique" />
+      <nav>
+        <ul>
+          <li>
+            <button onClick={() => setShowOption("image")}>
+              <span>Image</span>
+              <BsFillImageFill />
+            </button>
+          </li>
+          <li>
+            <button onClick={() => setShowOption("hour")}>
+              <span>Heures</span>
+              <BiSolidTime />
+            </button>
+          </li>
+          <li>
+            <button onClick={() => setShowOption("card")}>
+              <span>Carte</span>
+              <IoFastFood />
+            </button>
+          </li>
+        </ul>
+      </nav>
       <Suspense fallback={<Loading />}>
-        <nav>
-          <ul>
-            <li>
-              <button onClick={() => setShowOption("image")}>
-                <span>Image</span>
-                <BsFillImageFill />
-              </button>
-            </li>
-            <li>
-              <button onClick={() => setShowOption("hour")}>
-                <span>Heures</span>
-                <BiSolidTime />
-              </button>
-            </li>
-            <li>
-              <button onClick={() => setShowOption("card")}>
-                <span>Carte</span>
-                <IoFastFood />
-              </button>
-            </li>
-          </ul>
-        </nav>
         <AnimatePresence>
           {displayEditImage ? (
             <AdminEditImages
@@ -171,35 +121,10 @@ const Admin = ({
               animate={{ x: "0%" }}
               exit={{ x: "20%" }}
             >
-              <h1>Galerie d&#39;images</h1>
-              <div className="imgGalery">
-                {images?.map((images, id) => {
-                  return (
-                    <div key={id}>
-                      <img src={images.url} alt="plats du chef" />
-                      <p>
-                        Titre : {images.title}
-                        <br />
-                        <br />
-                        Description : {images.description}
-                      </p>
-                      <aside>
-                        <button
-                          onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-                            imageEdit(e, images.title, images.description)
-                          }
-                        >
-                          Éditer
-                        </button>
-                        <button onClick={() => deleteImage(images)}>
-                          Supprimer
-                        </button>
-                      </aside>
-                    </div>
-                  );
-                })}
-                <button onClick={imageAdd}>Ajouter +</button>
-              </div>
+              <AdminImages
+                setDisplayModal={setDisplayEditImage}
+                setImageData={setImageEdition}
+              />
             </ImgWrapper>
           ) : showOption === "hour" ? (
             <HoursContainer

@@ -18,8 +18,13 @@ const EditCardContainer = styled.section`
       grid-template-columns: 1fr 1fr;
       justify-items: start;
       place-items: center;
-      gap: 1em;
-      padding-inline: 2em;
+      gap: 2em;
+      width: clamp(300px, 75%, 600px);
+      text-align: left;
+      & p {
+        width: 100%;
+        line-height: 125%;
+      }
       & > input {
         justify-self: start;
         width: fit-content;

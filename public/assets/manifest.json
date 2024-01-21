@@ -1,10 +1,10 @@
 {
-  "assets/app.css": "/assets/app.68f43263.css",
-  "assets/app.js": "/assets/app.7ebc80cd.js",
-  "assets/vendor..pnpm.js": "/assets/vendor..pnpm.2a9015a1.js",
-  "assets/fonts/JuliusSansOne-Regular.ttf": "/assets/fonts/JuliusSansOne-Regular.2de04709.ttf",
-  "assets/fonts/Italiana-Regular.ttf": "/assets/fonts/Italiana-Regular.2d0e370d.ttf",
-  "assets/images/down-arrow.ico": "/assets/images/down-arrow.ec5e46e2.ico",
-  "assets/images/icon.svg": "/assets/images/icon.3ba0aedd.svg",
-  "assets/images/barre-de-menu.png": "/assets/images/barre-de-menu.42b9c112.png"
+  "assets/app.css": "http://localhost:8080/assets/app.css",
+  "assets/app.js": "http://localhost:8080/assets/app.js",
+  "assets/vendor..pnpm.js": "http://localhost:8080/assets/vendor..pnpm.js",
+  "assets/fonts/JuliusSansOne-Regular.ttf": "http://localhost:8080/assets/fonts/JuliusSansOne-Regular.2de04709.ttf",
+  "assets/fonts/Italiana-Regular.ttf": "http://localhost:8080/assets/fonts/Italiana-Regular.2d0e370d.ttf",
+  "assets/images/down-arrow.ico": "http://localhost:8080/assets/images/down-arrow.ec5e46e2.ico",
+  "assets/images/icon.svg": "http://localhost:8080/assets/images/icon.3ba0aedd.svg",
+  "assets/images/barre-de-menu.png": "http://localhost:8080/assets/images/barre-de-menu.42b9c112.png"
 }
