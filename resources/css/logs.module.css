@@ -1,12 +1,8 @@
 .log_section {
   display: grid;
   place-items: center;
-  grid-template-rows: auto auto 1fr auto;
   gap: 30px;
   text-align: center;
-  &:has(> p.validationMessage) {
-    grid-template-rows: auto auto auto 1fr auto;
-  }
 }
 .validationMessage {
   background: var(--primary-color);

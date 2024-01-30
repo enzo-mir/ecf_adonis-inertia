@@ -1,6 +1,4 @@
 import { FormEvent, useEffect, useState } from "react";
-import overlaystyles from "../../../css/overlay.module.css";
-import { ContainerSettings } from "../../assets/style/profilComponentsStyle";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { Cross } from "../../assets/style/cross";
 import { motion } from "framer-motion";
@@ -9,19 +7,17 @@ import { z } from "zod";
 import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import { User } from "../../types/userType.store";
-
+import styles from "../../../css/profil.module.css";
+import overlayStyles from "../../../css/overlay.module.css";
 const ProfilComponent = ({
   setDisplayProfil,
 }: {
   setDisplayProfil(vale: boolean): void;
 }) => {
-  const [editable, setEditable] = useState<boolean>(false);
   const [userData, setuserData] = userDataStore((state) => [
     state.userData,
     state.setUserData,
   ]);
-  const setConnectedUser = connectStore((state) => state.setConnectedUser);
-
   const { post, data, setData, reset, processing } = useForm({
     name: userData.user.name,
     email: userData.user.email,
@@ -29,13 +25,16 @@ const ProfilComponent = ({
     password: null,
     alergy: userData.user.alergy,
   });
+  const setConnectedUser = connectStore((state) => state.setConnectedUser);
 
   const [validationMessage, setValidationMessage] = useState<string>("");
+  const [editable, setEditable] = useState<boolean>(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
       document.body.removeAttribute("style");
+      setEditable(false);
     };
   }, []);
 
@@ -134,14 +133,14 @@ const ProfilComponent = ({
       });
     }
     return (
-      <div className="cta">
+      <div className={styles.ctaProfil}>
         {editable ? (
           <button type="submit" disabled={processing}>
             Édition finit
           </button>
         ) : (
           <button
-            onClick={() => {
+            onMouseDown={() => {
               setEditable(true);
             }}
           >
@@ -149,17 +148,20 @@ const ProfilComponent = ({
           </button>
         )}
 
-        <button onClick={logout}>Déconnection</button>
-        <button onClick={deleteAccount}>supprimer le compte</button>
+        <button onMouseDown={logout}>Déconnection</button>
+        <button onMouseDown={deleteAccount}>supprimer le compte</button>
       </div>
     );
   };
 
   return (
-    <div className={overlaystyles.overlay} onClick={() => setDisplayProfil(false)}>
-      <ContainerSettings
+    <div
+      className={overlayStyles.overlay}
+      onClick={() => setDisplayProfil(false)}
+    >
+      <motion.section
+        className={styles.profil_section}
         onClick={(e) => e.stopPropagation()}
-        as={motion.section}
         initial={{ y: "-20%", opacity: 0 }}
         animate={{ y: "0", opacity: 1 }}
         exit={{ y: "-20%", opacity: 0 }}
@@ -167,7 +169,7 @@ const ProfilComponent = ({
       >
         <Cross onClick={() => setDisplayProfil(false)} />
         {validationMessage ? (
-          <p className="validationMessage">{validationMessage}</p>
+          <p className={styles.validationMessage}>{validationMessage}</p>
         ) : null}
         {editable ? (
           <form onSubmit={validationForm}>
@@ -182,7 +184,7 @@ const ProfilComponent = ({
                 />
               </label>
               <label htmlFor="email">
-                e-mail
+                e-mail :
                 <input
                   type="email"
                   name="email"
@@ -217,7 +219,7 @@ const ProfilComponent = ({
                 />
               </label>
             </div>
-            <div className="passwordField">
+            <div className={styles.passwordField}>
               <label htmlFor="name">
                 Mot de passe :
                 <input
@@ -253,7 +255,7 @@ const ProfilComponent = ({
             <EditableCta />
           </div>
         )}
-      </ContainerSettings>
+      </motion.section>
     </div>
   );
 };

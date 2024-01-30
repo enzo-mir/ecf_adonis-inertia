@@ -82,14 +82,15 @@
   font-size: var(--font-size);
 }
 
-.header_container #profil {
+.profil_btn::after {
+  display: none;
+}
+
+.profil_btn {
   height: clamp(50px, 7vh, 70px);
   aspect-ratio: 1/1;
   border-radius: 50%;
   font-size: var(--font-size-bigger);
-}
-.header_container #profil::after {
-  display: none;
 }
 
 .profil {

@@ -112,7 +112,7 @@ const Header = () => {
               >
                 {userData.user.currentReservation.length}
               </button>
-              <button id="profil" onClick={() => setProfilPage(true)}>
+              <button className={styles.profil_btn} onClick={() => setProfilPage(true)}>
                 {userData ? userData.user.name.charAt(0) : null}
               </button>
             </>

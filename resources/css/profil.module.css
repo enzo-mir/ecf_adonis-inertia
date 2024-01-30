@@ -1,0 +1,97 @@
+.profil_section {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  place-items: start center;
+  gap: 30px;
+}
+.profil_section:has(.validationMessage) {
+  grid-template-rows: auto auto 1fr;
+}
+.validationMessage {
+  background-color: var(--primary-color);
+  padding: 1rem;
+  border-radius: 5px;
+  text-align: center;
+}
+.passwordField {
+  grid-template-columns: 1fr;
+}
+.profil_section form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+  gap: 2.5em;
+  width: 100%;
+
+  & > div {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2em;
+  }
+}
+.profil_section > div:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+  gap: 2.5em;
+  width: 100%;
+  & > label {
+    width: fit-content;
+    display: grid;
+  }
+  & > div:not(:last-child) {
+    display: grid;
+    width: 80%;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    place-items: center;
+    @media screen and (max-width: 600px) {
+      justify-content: center;
+      &:has(label) {
+        grid-template-columns: 50%;
+      }
+      grid-template-columns: 80%;
+      row-gap: 5vh;
+
+      &.passwordField {
+        grid-template-columns: 50%;
+      }
+
+      & > label {
+        width: 100%;
+
+        & > input {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.ctaProfil {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 50px;
+}
+
+.profil_section input {
+  padding-inline: 0;
+  width: clamp(200px, 15cqw, 400px);
+}
+
+@media screen and (max-width: 600px) {
+  .profil_section {
+    justify-content: space-around;
+  }
+  .profil_section form > div {
+    width: 100%;
+  }
+}

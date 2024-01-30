@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useEffect } from "react";
 const AdminCard = lazy(() => import("./components/admin/AdminCard"));
 const HourEditing = lazy(() => import("./components/admin/HourEditing"));
 const Layout = lazy(() => import("./components/Layout"));
@@ -15,6 +15,7 @@ import { Head } from "@inertiajs/inertia-react";
 import Loading from "./Loading";
 import AdminImages from "./components/admin/AdminImages";
 import styles from "../../css/admin.module.css";
+import { connectStore } from "../data/store/connect.store";
 
 const Admin = ({
   hoursData,
@@ -25,6 +26,7 @@ const Admin = ({
   hoursData: HourDataType[];
   imagesData: Image[];
 }) => {
+  const setAdmin = connectStore((state) => state.setConnectedAdmin);
   const [displayEditImage, setDisplayEditImage] = useState(false);
   const [imageEdition, setImageEdition] = useState<{
     title: string;
@@ -37,6 +39,10 @@ const Admin = ({
     url: "",
     adding: false,
   });
+
+  useEffect(() => {
+    setAdmin(true);
+  }, []);
 
   const [displayCardEdition, setDisplayCardEdition] = useState<boolean>(false);
   const [dataCardEdit, setDataCardEdit] = useState({
