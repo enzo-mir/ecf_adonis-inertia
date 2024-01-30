@@ -3,14 +3,6 @@ import React from "react";
 const Reserv = React.lazy(() => import("./components/Reservation"));
 import styles from "../../css/card.module.css";
 import {
-  CarteContainer,
-  MenuContainer,
-  LunchSection,
-  PlatSection,
-  DessertSection,
-  MenuSection,
-} from "../assets/style/cardStyle";
-import {
   CardDataType,
   HourDataType,
   dessertType,

@@ -1,0 +1,187 @@
+.header {
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  transition: all 0.2s ease-out;
+  z-index: 50;
+}
+
+.imgContainer {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  height: 100%;
+}
+.imgContainer img {
+  height: clamp(40px, 5vh, 100px);
+  aspect-ratio: 1/1;
+}
+
+.btn_menu {
+  position: absolute;
+  top: 0;
+  transform: translateY(100%);
+  display: none;
+  height: 3vh;
+  min-height: 20px;
+  background-color: transparent;
+  aspect-ratio: 1/1;
+  background-image: url("../js/assets/images/barre-de-menu.png");
+  background-size: contain;
+  margin-inline: 1em;
+  right: 0px;
+  border-radius: 0px;
+}
+.btn_menu::after {
+  display: none;
+}
+.btn_menu:hover {
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.header_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+}
+.header_container a {
+  position: relative;
+  color: var(--darker-color);
+  text-decoration: none;
+  text-underline-offset: 8px;
+  padding: 1rem;
+}
+.header_container a[aria-current="page"] {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.header_container > button > a {
+  text-decoration: none;
+  color: white;
+}
+.header_container nav {
+  margin-left: auto;
+  width: max-content;
+}
+.header_container > nav > ul {
+  display: flex;
+  justify-content: center;
+  column-gap: 2vw;
+}
+.header_container > nav > ul > li {
+  display: grid;
+  place-items: center;
+  font-size: var(--font-size);
+}
+
+.header_container #profil {
+  height: clamp(50px, 7vh, 70px);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  font-size: var(--font-size-bigger);
+}
+.header_container #profil::after {
+  display: none;
+}
+
+.profil {
+  position: relative;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 2vw;
+  padding-inline: 1em;
+}
+
+.profil > .reservations {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--darker-color);
+  color: white;
+  font-weight: 600;
+  font-size: var(--font-size-little);
+  height: clamp(30px, 4vh, 100px);
+  aspect-ratio: 1/1;
+  z-index: 50;
+  background-color: var(--darker-color-a70);
+  padding: 0;
+}
+.profil > .reservations::after {
+  display: none;
+}
+
+.profil > .reservations:hover {
+  background-color: var(--darker-color);
+}
+
+@media screen and (max-width: 600px) {
+  .profil > .reservations {
+    width: 30px;
+    height: 30px;
+  }
+  .btn_menu {
+    display: block;
+  }
+  .header {
+    height: auto;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+  }
+
+  .header .header_container {
+    top: 0;
+    position: absolute;
+    height: 0vh;
+    align-items: center;
+    background-color: var(--primary-color);
+    flex-direction: column;
+    padding-block: 0em;
+    overflow: hidden;
+    gap: 5vh;
+    transition: all 0.3s ease-out;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+  }
+  .header[data-visible="true"] .header_container {
+    height: clamp(350px, 40vh, 800px);
+  }
+  .header[data-visible="true"] .profil:has(button):has(.reservations) {
+    flex-direction: column-reverse;
+  }
+
+  .header_container > nav {
+    margin-inline: auto;
+  }
+  .header_container > nav > ul {
+    flex-direction: column;
+  }
+  .profil {
+    margin-inline: auto;
+    flex-direction: column;
+    row-gap: 3vh;
+    padding: 0;
+  }
+}
+
+@keyframes anim {
+  from {
+    height: 0vh;
+  }
+  to {
+    height: clamp(350px, 40vh, 800px);
+  }
+}
+@media screen and (min-width: 600px) {
+  .header[data-visible="true"] {
+    height: 0vh;
+    overflow: hidden;
+  }
+}

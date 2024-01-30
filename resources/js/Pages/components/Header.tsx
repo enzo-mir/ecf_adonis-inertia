@@ -13,6 +13,7 @@ import { Overlay } from "../../assets/style/overlay";
 const Reserv = React.lazy(() => import("./Reservation"));
 const PopReservation = React.lazy(() => import("./PopReservation"));
 const ProfilComponent = React.lazy(() => import("./ProfilComponent"));
+import styles from "../../../css/header.module.css";
 const Log = React.lazy(() => import("./Log"));
 
 const Header = () => {
@@ -34,32 +35,34 @@ const Header = () => {
   ]);
   useEffect(() => {
     window.scrollTo(0, 0);
+    setDisplayHeader(false);
   }, [location.pathname]);
   let prevScroll = window.scrollY;
 
   document.addEventListener("scroll", () => {
     const currentScroll = window.scrollY;
-    if (prevScroll > currentScroll) {
-      setDisplayHeader(false);
-    } else {
-      setDisplayHeader(true);
+    if (window.innerWidth >= 600) {
+      if (prevScroll > currentScroll) {
+        setDisplayHeader(false);
+      } else {
+        setDisplayHeader(true);
+      }
+      prevScroll = currentScroll;
     }
-    prevScroll = currentScroll;
   });
 
   document.addEventListener("mousedown", (e: MouseEvent): void => {
     const obj = document.querySelector("header");
     if (obj) {
-      const dropDownContent = obj.children[1];
       if (!obj.contains(e.target as Node)) {
-        dropDownContent.classList.remove("display");
+        setDisplayHeader(false);
       }
     }
   });
 
   const NavMenu = () => {
     return isAdmin ? (
-      <HeaderContainer>
+      <div className={styles.header_container}>
         <button
           onClick={() => {
             post("/profile/logout", {
@@ -82,9 +85,9 @@ const Header = () => {
           Déconnection
         </button>
         <Link href="/admin">Administration</Link>
-      </HeaderContainer>
+      </div>
     ) : (
-      <HeaderContainer>
+      <div className={styles.header_container}>
         <nav>
           <ul>
             <li>
@@ -97,7 +100,7 @@ const Header = () => {
             </li>
           </ul>
         </nav>
-        <div className="profil">
+        <div className={styles.profil}>
           {!connectedUser ? (
             <button
               onClick={() => {
@@ -121,7 +124,7 @@ const Header = () => {
             </>
           )}
         </div>
-      </HeaderContainer>
+      </div>
     );
   };
 
@@ -148,21 +151,23 @@ const Header = () => {
         </AnimatePresence>
       </Suspense>
 
-      <Wrapper className={displayHeader ? "display" : ""}>
-        <div className="imgContainer">
+      <header
+        className={styles.header}
+        data-visible={displayHeader ? "true" : "false"}
+      >
+        <div className={styles.imgContainer}>
           <Link href="/">
             <img src={icon} alt="Icon du site" />
           </Link>
         </div>
         <NavMenu />
-        <BtnMenu
-          onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-            (e.target as Node).parentNode!.children[1].classList.toggle(
-              "display"
-            )
+        <button
+          className={styles.btn_menu}
+          onClick={() =>
+            setDisplayHeader(displayHeader === true ? false : true)
           }
         />
-      </Wrapper>
+      </header>
     </>
   );
 };
