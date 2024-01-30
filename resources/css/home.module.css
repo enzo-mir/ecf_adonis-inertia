@@ -112,6 +112,8 @@
 .imagesGalery > div {
   position: relative;
   text-align: center;
+  background-color: #000;
+  border-radius: 1em;
 }
 
 .imagesGalery > div > span {
@@ -127,7 +129,7 @@
   font-size: var(--font-size-little);
   width: 90%;
 }
-.imagesGalery > img {
+.imagesGalery img {
   width: clamp(220px, 13vw, 200px);
   aspect-ratio: 1/1;
   object-fit: cover;

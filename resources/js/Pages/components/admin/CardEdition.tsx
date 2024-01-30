@@ -1,11 +1,10 @@
 import overlaystyles from "../../../../css/overlay.module.css";
-
-import { EditCardContainer } from "../../../assets/style/adminStyle";
 import { Cross } from "../../../assets/style/cross";
 import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
+import cardStyles from "../../../../css/admin.module.css";
 
 const CardEdition = ({
   cardData,
@@ -54,9 +53,9 @@ const CardEdition = ({
         setErrorEditingCard("");
       }}
     >
-      <EditCardContainer
+      <motion.section
+        className={cardStyles.edit_card_container}
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
-        as={motion.section}
         initial={{ y: "-20%", opacity: 0 }}
         animate={{ y: "0", opacity: 1 }}
         exit={{ y: "-20%", opacity: 0 }}
@@ -72,7 +71,7 @@ const CardEdition = ({
           />
           <h1>Édition de la carte</h1>
           {errorEditingCard ? (
-            <p className="errorTxt">{errorEditingCard}</p>
+            <p className={cardStyles.errorTxt}>{errorEditingCard}</p>
           ) : null}
         </div>
         <form onSubmit={submitEdition}>
@@ -151,7 +150,7 @@ const CardEdition = ({
             Fin de l&lsquo;édition
           </button>
         </form>
-      </EditCardContainer>
+      </motion.section>
     </div>
   );
 };

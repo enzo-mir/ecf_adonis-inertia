@@ -1,12 +1,13 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import overlaystyles from "../../../../css/overlay.module.css";
 import { Cross } from "../../../assets/style/cross";
-import { ContainerWrapperEditImage } from "../../../assets/style/adminStyle";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { motion } from "framer-motion";
 import React from "react";
 import { MdEditSquare } from "react-icons/md";
 import { useForm } from "@inertiajs/inertia-react";
+import styles from "../../../../css/admin.module.css";
+
 const AdminEditImages = ({
   imageEditionData,
   displaying,
@@ -19,8 +20,7 @@ const AdminEditImages = ({
   };
   displaying(val: boolean): void;
 }) => {
-  const [imageEdition, setImageEdition] = useState(imageEditionData);
-  const [validationImage, setValidationImage] = useState<string>("");
+  const [validationMessage, setValidationMessage] = useState<string>("");
   const urlRef = useRef("");
   const { post, data, setData, reset, processing } = useForm({
     image: null,
@@ -37,60 +37,64 @@ const AdminEditImages = ({
   }, []);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setValidationImage("");
+    setValidationMessage("");
     const file = event.target.files![0];
     setData({ ...data, image: file });
     const urlChanging = URL.createObjectURL(file);
     urlRef.current = urlChanging;
     if (file.size > 500000) {
-      setValidationImage("Limite de taille : 500 Ko");
+      setValidationMessage("Limite de taille : 500 Ko");
     }
   }
 
   function imageSubmition(e: FormEvent) {
     e.preventDefault();
-    if (imageEditionData.adding) {
-      delete data.old_url;
-      post("/image/upload", {
-        data,
-        forceFormData: true,
-        onSuccess: () => {
-          displaying(false);
-        },
-        onError: (err) => {
-          setValidationImage(err as unknown as string);
-        },
-      });
+    if (!data.image) {
+      setValidationMessage("Une image doit être séléctionnée");
     } else {
-      post("/image/update", {
-        data: { ...data },
-        forceFormData: true,
-        onSuccess: () => {
-          displaying(false);
-        },
-        onError: (err) => {
-          setValidationImage(err as unknown as string);
-        },
-      });
+      if (imageEditionData.adding) {
+        delete data.old_url;
+        post("/image/upload", {
+          data,
+          forceFormData: true,
+          onSuccess: (e) => {
+            displaying(false);
+          },
+          onError: (err) => {
+            setValidationMessage(err as unknown as string);
+          },
+        });
+      } else {
+        post("/image/update", {
+          data: { ...data },
+          forceFormData: true,
+          onSuccess: () => {
+            displaying(false);
+          },
+          onError: (err) => {
+            setValidationMessage(err as unknown as string);
+          },
+        });
+      }
     }
   }
 
   return (
     <div className={overlaystyles.overlay} onClick={() => displaying(false)}>
-      <ContainerWrapperEditImage
+      <motion.section
+        className={styles.container_edit_image}
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
-        as={motion.section}
         initial={{ y: "-20%", opacity: 0 }}
         animate={{ y: "0", opacity: 1 }}
         exit={{ y: "-20%", opacity: 0 }}
         transition={{ duration: 0.5 }}
       >
         <Cross onClick={() => displaying(false)} />
-        {validationImage && <p className="error">{validationImage}</p>}
-        {imageEdition.adding ? (
-          <label htmlFor="imageAdminChange">
+        {validationMessage && <p className="error">{validationMessage}</p>}
+        {imageEditionData.adding ? (
+          <label htmlFor="imageAdminChange" tabIndex={0}>
             <div
-              className="addImageCase"
+              className={styles.addImageCase}
               style={{
                 background: urlRef.current
                   ? "url(" + urlRef.current + ")"
@@ -101,12 +105,12 @@ const AdminEditImages = ({
             </div>
           </label>
         ) : (
-          <div className="updateImage">
-            <img src={imageEdition.url} alt="plat du chef" />
+          <div className={styles.update_image}>
+            <img src={imageEditionData.url} alt="plat du chef" />
             <AiOutlineArrowRight />
             <label htmlFor="imageAdminChange">
               <div
-                className="addImageCase"
+                className={styles.addImageCase}
                 style={{
                   background: urlRef.current
                     ? "url(" + urlRef.current + ")"
@@ -125,7 +129,6 @@ const AdminEditImages = ({
             id="imageAdminChange"
             name="image"
             onChange={handleChange}
-            required={imageEdition.adding ? true : false}
             accept="image/png, image/jpeg, image/jpg, image/svg"
           />
           <p>Titre</p>
@@ -146,11 +149,11 @@ const AdminEditImages = ({
           />
           {
             <button type="submit" disabled={processing}>
-              {imageEdition.adding ? "Ajouter" : "Envoyer"}
+              {imageEditionData.adding ? "Ajouter" : "Envoyer"}
             </button>
           }
         </form>
-      </ContainerWrapperEditImage>
+      </motion.section>
     </div>
   );
 };

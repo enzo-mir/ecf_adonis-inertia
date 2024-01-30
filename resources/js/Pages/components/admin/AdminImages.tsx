@@ -1,7 +1,7 @@
 import React from "react";
 import { imageStore } from "../../../data/store/apiData.store";
 import { Image } from "../../../types/dataApiTypes";
-
+import styles from "../../../../css/admin.module.css";
 const AdminImages = ({
   setDisplayModal,
   setImageData,
@@ -14,7 +14,7 @@ const AdminImages = ({
     adding: boolean;
   }) => void;
 }) => {
-  const [setImages, images] = imageStore((state) => [
+  const [setImages, image] = imageStore((state) => [
     state.setImages,
     state.images,
   ]);
@@ -39,7 +39,6 @@ const AdminImages = ({
         url: images.url,
       }),
     });
-
     if ((await response).ok) {
       response
         .then((r) => r.json())
@@ -67,8 +66,8 @@ const AdminImages = ({
   return (
     <>
       <h1>Galerie d&#39;images</h1>
-      <div className="imgGalery">
-        {images?.map((images, id) => {
+      <div className={styles.images_galery}>
+        {image?.map((images, id) => {
           return (
             <div key={id}>
               <img src={images.url} alt="plats du chef" />

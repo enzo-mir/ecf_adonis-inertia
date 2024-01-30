@@ -1,10 +1,4 @@
 import { useState, lazy, Suspense } from "react";
-import {
-  HoursContainer,
-  ImgWrapper,
-  CardContainer,
-  Wrapper,
-} from "../assets/style/adminStyle";
 const AdminCard = lazy(() => import("./components/admin/AdminCard"));
 const HourEditing = lazy(() => import("./components/admin/HourEditing"));
 const Layout = lazy(() => import("./components/Layout"));
@@ -20,6 +14,7 @@ import { CardDataType, HourDataType, Image } from "../types/dataApiTypes";
 import { Head } from "@inertiajs/inertia-react";
 import Loading from "./Loading";
 import AdminImages from "./components/admin/AdminImages";
+import styles from "../../css/admin.module.css";
 
 const Admin = ({
   hoursData,
@@ -56,7 +51,7 @@ const Admin = ({
   const [showOption, setShowOption] = useState<string>("image");
 
   return (
-    <Wrapper>
+    <main className={styles.main_wrapper}>
       <Head title="Administration - Le Quai Antique" />
       <nav>
         <ul>
@@ -98,8 +93,8 @@ const Admin = ({
 
         <AnimatePresence>
           {showOption === "image" ? (
-            <ImgWrapper
-              as={motion.article}
+            <motion.article
+              className={styles.images_wrapper}
               initial={{ x: "-20%" }}
               animate={{ x: "0%" }}
               exit={{ x: "20%" }}
@@ -108,19 +103,19 @@ const Admin = ({
                 setDisplayModal={setDisplayEditImage}
                 setImageData={setImageEdition}
               />
-            </ImgWrapper>
+            </motion.article>
           ) : showOption === "hour" ? (
-            <HoursContainer
-              as={motion.article}
+            <motion.article
+              className={styles.hours_conbtainer}
               initial={{ x: "-20%" }}
               animate={{ x: "0%" }}
               exit={{ x: "20%" }}
             >
               <HourEditing />
-            </HoursContainer>
+            </motion.article>
           ) : (
-            <CardContainer
-              as={motion.article}
+            <motion.article
+              className={styles.card_container}
               initial={{ x: "-20%" }}
               animate={{ x: "0%" }}
               exit={{ x: "20%" }}
@@ -130,7 +125,7 @@ const Admin = ({
                 setData={setDataCardEdit}
                 display={displayCardEdition}
               />
-            </CardContainer>
+            </motion.article>
           )}
         </AnimatePresence>
 
@@ -141,7 +136,7 @@ const Admin = ({
           </h1>
         </article>
       </Suspense>
-    </Wrapper>
+    </main>
   );
 };
 Admin.layout = (page: HTMLElement) => <Layout children={page} />;

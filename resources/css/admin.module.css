@@ -1,0 +1,335 @@
+.edit_card_container {
+  position: absolute;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+}
+.edit_card_container form {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+
+  & > label {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: start;
+    place-items: center;
+    gap: 2em;
+    width: clamp(300px, 75%, 600px);
+    text-align: left;
+
+    & p {
+      width: 100%;
+      line-height: 125%;
+    }
+    & > input {
+      justify-self: start;
+    }
+  }
+}
+.edit_card_container button {
+  grid-area: 3 / 1 / 4 / 3;
+  width: fit-content;
+}
+.errorTxt {
+  color: var(--error-txt);
+  font-size: var(--font-size);
+}
+
+.hours_conbtainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+  font-size: var(--font-size);
+}
+.hours_conbtainer > p.format {
+  transition: 0.5s ease-in;
+  color: var(--error-txt);
+  font-size: var(--font-size-reg);
+}
+.hours_conbtainer table {
+  display: grid;
+  border-collapse: separate;
+  gap: 3vh;
+  & > thead {
+    background-color: var(--darker-color);
+    border-radius: 10px;
+    color: #fff;
+    & > tr {
+      text-align: center;
+      & > td {
+        padding: 1em 2em;
+      }
+    }
+  }
+
+  & > tbody {
+    display: grid;
+    gap: 3vh;
+    & > tr {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 15% 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  & > tbody > tr input {
+    border: 1px solid var(--darker-color-a30);
+    padding: 0.7em;
+    font-size: var(--font-size-little);
+    border-radius: 10px;
+  }
+  & > tbody > tr > td:nth-child(n + 2):hover {
+    cursor: pointer;
+  }
+}
+.ctaEditHours {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ctaEditHours button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.images_wrapper {
+  position: relative;
+  display: grid;
+  place-items: center;
+  grid-template-rows: auto 1fr;
+  gap: 50px;
+  width: 90%;
+  padding-inline: 1rem;
+}
+.images_galery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: fit-content;
+  gap: 50px;
+  text-align: center;
+}
+.images_galery > div {
+  font-size: var(--font-size-reg);
+  display: flex;
+  border-radius: 10px;
+  width: 100%;
+
+  & p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-size);
+    width: 100%;
+    padding-inline: 2em;
+  }
+  & img {
+    width: clamp(150px, 13vw, 200px);
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  & aside {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.card_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  font-size: var(--font-size);
+  width: 100%;
+  text-align: center;
+}
+.card_container h2 {
+  font-size: var(--font-size-bigger);
+}
+.content_card {
+  display: flex;
+  gap: 50px;
+
+  & > div {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, 1fr);
+    gap: 20px;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 1em;
+      & h3 {
+        grid-area: 1 / 1 / 2 / 2;
+      }
+      & > p:nth-child(2) {
+        grid-area: 2 / 1 / 3 / 2;
+        color: var(--darker-color);
+      }
+      & > p:nth-child(3) {
+        grid-area: 1 / 2 / 3 / 3;
+      }
+    }
+  }
+}
+
+.main_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: clamp(20px, 10vh, 100px);
+  padding-block: 150px;
+  text-align: center;
+  overflow-x: hidden;
+  & h1 {
+    font-size: var(--font-size-h1);
+  }
+
+  & h2 {
+    font-size: var(--font-size-reg);
+  }
+}
+
+.main_wrapper > nav > ul {
+  display: flex;
+  gap: 20px;
+
+  & > li > button {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0.5em;
+    gap: 20px;
+    width: clamp(100px, 10vw, 200px);
+  }
+}
+
+.container_edit_image {
+  display: grid;
+  place-items: center;
+}
+
+.update_image {
+  display: flex;
+  gap: 1.5em;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.container_edit_image p.error {
+  color: var(--error-txt);
+  font-weight: bold;
+}
+
+.container_edit_image label {
+  position: relative;
+
+  @media (pointer: coarse) {
+    &:not(:hover),
+    &:hover {
+      cursor: pointer;
+      & img {
+        filter: brightness(50%);
+      }
+
+      & svg {
+        opacity: 1;
+      }
+    }
+  }
+  &:hover {
+    cursor: pointer;
+    & img {
+      filter: brightness(50%);
+    }
+
+    & svg {
+      opacity: 1;
+    }
+  }
+}
+.addImageCase {
+  position: relative;
+  width: clamp(150px, 13vw, 200px);
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  transition: 0.15s ease-out;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  & svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    opacity: 0;
+    transition: 0.15s ease-out;
+    z-index: 50;
+  }
+}
+.container_edit_image img {
+  width: clamp(150px, 13vw, 200px);
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: 0.15s ease-out;
+}
+
+.container_edit_image form {
+  display: grid;
+  place-items: center;
+  flex-basis: 70%;
+  gap: 15px;
+  grid-template-columns: repeat(2, 1fr);
+  & button {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+  & input {
+    font-size: var(--font-size);
+    width: 75%;
+    &[type="file"] {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container_edit_image form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 500px) {
+  .images_galery div {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  .images_galery div aside {
+    gap: 20px;
+    flex-direction: row;
+  }
+}

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { cardStore } from "../../../data/store/apiData.store";
 import React from "react";
 import { MdEditSquare } from "react-icons/md";
+import styles from "../../../../css/admin.module.css";
 
 const AdminCard = ({
   display,
@@ -45,7 +46,7 @@ const AdminCard = ({
     <>
       <h1>Carte du restaurant</h1>
       <h2>Entrées</h2>
-      <div className="content">
+      <div className={styles.content_card}>
         <>
           <div className="seul">
             <h2>Seul</h2>
@@ -102,7 +103,7 @@ const AdminCard = ({
         </>
       </div>
       <h2>Plats</h2>
-      <div className="content">
+      <div className={styles.content_card}>
         <>
           <div className="seul">
             <h2>Seul</h2>
@@ -159,7 +160,7 @@ const AdminCard = ({
         </>
       </div>
       <h2>Desserts</h2>
-      <div className="content">
+      <div className={styles.content_card}>
         <div>
           {desserts.map((food) => {
             return (
@@ -187,7 +188,7 @@ const AdminCard = ({
         </div>
       </div>
       <h2>Menus</h2>
-      <div className="content">
+      <div className={styles.content_card}>
         <div>
           {menus.map((food, id) => {
             return (

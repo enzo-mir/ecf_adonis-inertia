@@ -3,8 +3,12 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { usePage } from "@inertiajs/inertia-react";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
-import { cardStore, hourStore } from "../../data/store/apiData.store";
-import { CardDataType, HourDataType } from "../../types/dataApiTypes";
+import {
+  cardStore,
+  hourStore,
+  imageStore,
+} from "../../data/store/apiData.store";
+import { CardDataType, HourDataType, Image } from "../../types/dataApiTypes";
 import { User } from "../../types/userType.store";
 
 const Layout = ({ children }) => {
@@ -13,6 +17,7 @@ const Layout = ({ children }) => {
       hours: Array<HourDataType>;
       userData?: User;
       cardData?: CardDataType;
+      imagesData?: Image[];
     };
   };
 
@@ -24,10 +29,12 @@ const Layout = ({ children }) => {
     state.setConnectedUser,
     state.setConnectedAdmin,
   ]);
+  const setImages = imageStore((state) => state.setImages);
 
   useEffect(() => {
     setHours(props.hours);
     props.cardData && setCardData(props.cardData);
+    props.imagesData && setImages(props.imagesData);
 
     if (props.userData?.user) {
       setUserData(props.userData);

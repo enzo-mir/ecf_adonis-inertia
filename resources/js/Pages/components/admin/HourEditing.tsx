@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { hourStore } from "../../../data/store/apiData.store";
 import { MdEditSquare } from "react-icons/md";
-
-import { useForm } from "@inertiajs/inertia-react";
+import styles from "../../../../css/admin.module.css";
 
 export default function HourEditing() {
   const [errorHour, setErrorHour] = useState(false);
   const [hoursEdit, setHoursEdit] = useState(false);
 
   const [hours, setHour] = hourStore((state) => [state.hours, state.setHours]);
-  const { post } = useForm();
 
   function editionFinished() {
     setHoursEdit(false);
@@ -155,7 +153,7 @@ export default function HourEditing() {
         </tbody>
       </table>
       {hoursEdit ? (
-        <div className="ctaEdit">
+        <div className={styles.ctaEditHours}>
           <button
             onClick={() =>
               submitHourEdition(
