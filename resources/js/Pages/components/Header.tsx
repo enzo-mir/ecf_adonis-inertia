@@ -3,7 +3,7 @@ import icon from "../../assets/images/icon.svg";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { AnimatePresence } from "framer-motion";
 import { Link, useForm } from "@inertiajs/inertia-react";
-import { Overlay } from "../../assets/style/overlay";
+import overlayStyles from "../../../css/overlay.module.css";
 const Reserv = React.lazy(() => import("./Reservation"));
 const PopReservation = React.lazy(() => import("./PopReservation"));
 const ProfilComponent = React.lazy(() => import("./ProfilComponent"));
@@ -124,7 +124,7 @@ const Header = () => {
 
   return (
     <>
-      <Suspense fallback={<Overlay />}>
+      <Suspense fallback={<div className={overlayStyles.overlay} />}>
         <AnimatePresence>
           {logPage ? (
             <Log displayPage={setLogPage} togglePage={togglePage} />

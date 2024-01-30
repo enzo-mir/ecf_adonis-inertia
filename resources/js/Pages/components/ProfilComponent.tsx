@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { Overlay } from "../../assets/style/overlay";
+import overlaystyles from "../../../css/overlay.module.css";
 import { ContainerSettings } from "../../assets/style/profilComponentsStyle";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { Cross } from "../../assets/style/cross";
@@ -156,7 +156,7 @@ const ProfilComponent = ({
   };
 
   return (
-    <Overlay onClick={() => setDisplayProfil(false)}>
+    <div className={overlaystyles.overlay} onClick={() => setDisplayProfil(false)}>
       <ContainerSettings
         onClick={(e) => e.stopPropagation()}
         as={motion.section}
@@ -254,7 +254,7 @@ const ProfilComponent = ({
           </div>
         )}
       </ContainerSettings>
-    </Overlay>
+    </div>
   );
 };
 export default ProfilComponent;

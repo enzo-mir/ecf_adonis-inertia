@@ -1,5 +1,4 @@
 import { ChangeEvent, Suspense, useEffect, useState } from "react";
-import { Overlay } from "../../assets/style/overlay";
 import { Cross } from "../../assets/style/cross";
 import { useRef } from "react";
 import { userDataStore } from "../../data/store/connect.store";
@@ -14,6 +13,7 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { MdAlternateEmail } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import styles from "../../../css/reservation.module.css";
+import overlayStyles from "../../../css/overlay.module.css"
 
 export default function Reserv({
   res: displayReservation,
@@ -202,7 +202,7 @@ export default function Reserv({
   }
 
   return (
-    <Overlay onClick={() => displayReservation(false)}>
+    <div className={overlayStyles.overlay} onClick={() => displayReservation(false)}>
       <motion.section
         className={styles.reservation_section}
         onClick={(e) => e.stopPropagation()}
@@ -350,6 +350,6 @@ export default function Reserv({
           </button>
         </div>
       </motion.section>
-    </Overlay>
+    </div>
   );
 }

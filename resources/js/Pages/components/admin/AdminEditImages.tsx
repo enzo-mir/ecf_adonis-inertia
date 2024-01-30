@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { Overlay } from "../../../assets/style/overlay";
+import overlaystyles from "../../../../css/overlay.module.css";
 import { Cross } from "../../../assets/style/cross";
 import { ContainerWrapperEditImage } from "../../../assets/style/adminStyle";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -76,7 +76,7 @@ const AdminEditImages = ({
   }
 
   return (
-    <Overlay onClick={() => displaying(false)}>
+    <div className={overlaystyles.overlay} onClick={() => displaying(false)}>
       <ContainerWrapperEditImage
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
         as={motion.section}
@@ -151,7 +151,7 @@ const AdminEditImages = ({
           }
         </form>
       </ContainerWrapperEditImage>
-    </Overlay>
+    </div>
   );
 };
 

@@ -4,9 +4,9 @@ const Reserv = React.lazy(() => import("./components/Reservation"));
 const Layout = React.lazy(() => import("./components/Layout"));
 import { AnimatePresence, motion } from "framer-motion";
 import { Head } from "@inertiajs/inertia-react";
-import { Overlay } from "../assets/style/overlay";
 import { Image } from "../types/dataApiTypes";
 import styles from "../../css/home.module.css";
+import overlayStyles from "../../css/overlay.module.css";
 
 const Home = ({ userData, hours, images }) => {
   const [res, setRes] = useState(false);
@@ -41,7 +41,7 @@ const Home = ({ userData, hours, images }) => {
       <Head title="Accueil - Le Quai Antique" />
       <AnimatePresence>
         {res && (
-          <Suspense fallback={<Overlay />}>
+          <Suspense fallback={<div className={overlayStyles.overlay} />}>
             <Reserv res={setRes} />
           </Suspense>
         )}

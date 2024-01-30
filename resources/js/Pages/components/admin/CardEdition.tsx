@@ -1,4 +1,5 @@
-import { Overlay } from "../../../assets/style/overlay";
+import overlaystyles from "../../../../css/overlay.module.css";
+
 import { EditCardContainer } from "../../../assets/style/adminStyle";
 import { Cross } from "../../../assets/style/cross";
 import { FormEvent, useState } from "react";
@@ -46,14 +47,15 @@ const CardEdition = ({
   }
 
   return (
-    <Overlay
+    <div
+      className={overlaystyles.overlay}
       onClick={() => {
         setDisplayEditCard(false);
         setErrorEditingCard("");
       }}
     >
       <EditCardContainer
-        onClick={(e : React.MouseEvent) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
         as={motion.section}
         initial={{ y: "-20%", opacity: 0 }}
         animate={{ y: "0", opacity: 1 }}
@@ -150,7 +152,7 @@ const CardEdition = ({
           </button>
         </form>
       </EditCardContainer>
-    </Overlay>
+    </div>
   );
 };
 

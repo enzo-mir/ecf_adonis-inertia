@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Overlay } from "../../assets/style/overlay";
 import { FiDelete } from "react-icons/fi";
 import { useState } from "react";
 import { userDataStore } from "../../data/store/connect.store";
@@ -7,6 +6,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import { currentReservationType } from "../../types/userType.store";
+import overlaystyles from "../../../css/overlay.module.css";
 
 const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,7 +21,7 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
     email: "",
   });
   return (
-    <Overlay onClick={() => setDisplay(false)}>
+    <div className={overlaystyles.overlay} onClick={() => setDisplay(false)}>
       <Container
         onClick={(e) => e.stopPropagation()}
         as={motion.table}
@@ -109,7 +109,7 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
           })}
         </tbody>
       </Container>
-    </Overlay>
+    </div>
   );
 };
 

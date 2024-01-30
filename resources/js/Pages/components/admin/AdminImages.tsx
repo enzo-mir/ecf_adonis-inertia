@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { imageStore } from "../../../data/store/apiData.store";
 import { Image } from "../../../types/dataApiTypes";
 

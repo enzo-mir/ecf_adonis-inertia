@@ -1,10 +1,4 @@
 import { FormEvent, useState } from "react";
-import { Overlay } from "../../assets/style/overlay";
-import {
-  LogContainer,
-  ContentSignIn,
-  ContentLogIn,
-} from "../../assets/style/logStyle";
 import { Cross } from "../../assets/style/cross";
 import { LoginDataType, signinType } from "../../types/userManagmentType";
 import { motion } from "framer-motion";
@@ -12,6 +6,7 @@ import { useForm } from "@inertiajs/inertia-react";
 import React from "react";
 import { z } from "zod";
 import styles from "../../../css/logs.module.css";
+import overlayStyles from "../../../css/overlay.module.css";
 
 const Log = ({
   displayPage,
@@ -88,7 +83,7 @@ const Log = ({
   };
 
   return (
-    <Overlay onClick={() => displayPage(false)}>
+    <div className={overlayStyles.overlay} onClick={() => displayPage(false)}>
       <motion.section
         className={styles.log_section}
         onClick={(e) => e.stopPropagation()}
@@ -215,7 +210,7 @@ const Log = ({
           </div>
         </form>
       </motion.section>
-    </Overlay>
+    </div>
   );
 };
 

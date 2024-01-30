@@ -1,0 +1,23 @@
+.overlay {
+  position: fixed;
+  display: grid;
+  place-items: center;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-blackless);
+  z-index: 100;
+}
+.overlay section {
+  position: absolute;
+  padding-block: 25px;
+  width: 1000px;
+  max-height: 80%;
+  min-height: 500px;
+  max-width: 100%;
+  z-index: 150;
+  background-color: #fff;
+  font-size: var(--font-size);
+  overflow: auto;
+  scroll-behavior: smooth;
+}
