@@ -124,10 +124,15 @@
     display: none;
   }
 
-  &:hover,
-  &.selected {
+  &:hover {
     filter: brightness(70%);
   }
+}
+.hours_list button[data-selected="true"] {
+  filter: brightness(70%);
+}
+.hours_list button[data-selected="false"] {
+  filter: brightness(100%);
 }
 
 .alergy_container {

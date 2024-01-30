@@ -1,7 +1,7 @@
 import { ChangeEvent, Suspense, useEffect, useState } from "react";
 import { Cross } from "../../assets/style/cross";
 import { useRef } from "react";
-import { userDataStore } from "../../data/store/connect.store";
+import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { hourStore } from "../../data/store/apiData.store";
 import { motion } from "framer-motion";
 import React from "react";
@@ -13,7 +13,7 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { MdAlternateEmail } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import styles from "../../../css/reservation.module.css";
-import overlayStyles from "../../../css/overlay.module.css"
+import overlayStyles from "../../../css/overlay.module.css";
 
 export default function Reserv({
   res: displayReservation,
@@ -24,12 +24,13 @@ export default function Reserv({
     state.userData as User,
     state.setUserData,
   ]);
+  const connected = connectStore((state) => state.connectedUser);
   const hours = hourStore((state) => state.hours);
   const { data, setData, processing, post } = useForm({
-    name: userData?.user.name || "",
-    email: userData?.user.email || "",
-    guests: userData?.user.guests || 1,
-    alergy: userData?.user.alergy || "",
+    name: connected ? userData?.user.name : "",
+    email: connected ? userData?.user.email : "",
+    guests: connected ? userData?.user.guests : 1,
+    alergy: connected ? userData?.user.alergy : "",
     date: new Date().toLocaleDateString("fr-CA"),
     hourTargeted: null,
     timeTargeted: null,
@@ -146,13 +147,15 @@ export default function Reserv({
 
   function unselectHours() {
     document.onmouseup = (e) => {
-      const obj = document.querySelector(".selected");
+      const obj: HTMLElement = document.querySelector(
+        "button[data-selected='true']"
+      );
       if (obj !== null) {
         if (
           obj !== e.target &&
           document.getElementById("submitRes") !== e.target
         ) {
-          obj.classList.remove("selected");
+          obj.dataset.selected = "false";
           setData({ ...data, hourTargeted: null });
         }
       }
@@ -167,9 +170,11 @@ export default function Reserv({
     });
 
     unselectHours();
-    const oldTarget = document.querySelector(".selected");
-    if (oldTarget) oldTarget.removeAttribute("class");
-    (e.target as HTMLElement).classList.add("selected");
+    const oldTarget: HTMLElement = document.querySelector(
+      "button[data-selected='true']"
+    );
+    if (oldTarget) oldTarget.dataset.selected = "false";
+    (e.target as HTMLElement).dataset.selected = "true";
   }
 
   async function submitReservation() {
@@ -202,7 +207,10 @@ export default function Reserv({
   }
 
   return (
-    <div className={overlayStyles.overlay} onClick={() => displayReservation(false)}>
+    <div
+      className={overlayStyles.overlay}
+      onClick={() => displayReservation(false)}
+    >
       <motion.section
         className={styles.reservation_section}
         onClick={(e) => e.stopPropagation()}

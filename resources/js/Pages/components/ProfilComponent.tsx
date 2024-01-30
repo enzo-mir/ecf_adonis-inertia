@@ -101,6 +101,17 @@ const ProfilComponent = ({
           setTimeout(() => {
             setDisplayProfil(false);
             setConnectedUser(false);
+            setuserData({
+              user: {
+                name: "",
+                email: "",
+                password: "",
+                guests: 0,
+                alergy: "",
+                currentReservation: [],
+              },
+            });
+            setDisplayProfil(false);
             reset();
           }, 1500);
         },
@@ -125,6 +136,7 @@ const ProfilComponent = ({
                 currentReservation: [],
               },
             });
+            setDisplayProfil(false);
           }, 1500);
         },
         onError: (err) => {

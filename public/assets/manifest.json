@@ -1,10 +1,9 @@
 {
-  "assets/app.css": "http://localhost:8080/assets/app.css",
-  "assets/app.js": "http://localhost:8080/assets/app.js",
-  "assets/defaultVendors-node_modules_pnpm_webpack-dev-server_4_15_1_webpack-cli_4_10_0_webpack_5_89_0_-116c7f.js": "http://localhost:8080/assets/defaultVendors-node_modules_pnpm_webpack-dev-server_4_15_1_webpack-cli_4_10_0_webpack_5_89_0_-116c7f.js",
-  "assets/fonts/JuliusSansOne-Regular.ttf": "http://localhost:8080/assets/fonts/JuliusSansOne-Regular.2de04709.ttf",
-  "assets/fonts/Italiana-Regular.ttf": "http://localhost:8080/assets/fonts/Italiana-Regular.2d0e370d.ttf",
-  "assets/images/down-arrow.ico": "http://localhost:8080/assets/images/down-arrow.ec5e46e2.ico",
-  "assets/images/icon.svg": "http://localhost:8080/assets/images/icon.3ba0aedd.svg",
-  "assets/images/barre-de-menu.png": "http://localhost:8080/assets/images/barre-de-menu.42b9c112.png"
+  "assets/app.css": "/assets/app.e284e97b.css",
+  "assets/app.js": "/assets/app.b955b2bb.js",
+  "assets/fonts/JuliusSansOne-Regular.ttf": "/assets/fonts/JuliusSansOne-Regular.2de04709.ttf",
+  "assets/fonts/Italiana-Regular.ttf": "/assets/fonts/Italiana-Regular.2d0e370d.ttf",
+  "assets/images/down-arrow.ico": "/assets/images/down-arrow.ec5e46e2.ico",
+  "assets/images/icon.svg": "/assets/images/icon.3ba0aedd.svg",
+  "assets/images/barre-de-menu.png": "/assets/images/barre-de-menu.42b9c112.png"
 }

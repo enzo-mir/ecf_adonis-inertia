@@ -1,12 +1,11 @@
 {
   "entrypoints": {
     "app": {
-      "js": [
-        "http://localhost:8080/assets/defaultVendors-node_modules_pnpm_webpack-dev-server_4_15_1_webpack-cli_4_10_0_webpack_5_89_0_-116c7f.js",
-        "http://localhost:8080/assets/app.js"
-      ],
       "css": [
-        "http://localhost:8080/assets/app.css"
+        "/assets/app.e284e97b.css"
+      ],
+      "js": [
+        "/assets/app.b955b2bb.js"
       ]
     }
   }
