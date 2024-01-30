@@ -2,11 +2,11 @@ import { Suspense, useEffect, useState } from "react";
 import React from "react";
 const Reserv = React.lazy(() => import("./components/Reservation"));
 const Layout = React.lazy(() => import("./components/Layout"));
-import { Wrapper, HeroSection, SectionPlats } from "../assets/style/homeStyle";
 import { AnimatePresence, motion } from "framer-motion";
 import { Head } from "@inertiajs/inertia-react";
 import { Overlay } from "../assets/style/overlay";
 import { Image } from "../types/dataApiTypes";
+import styles from "../../css/home.module.css";
 
 const Home = ({ userData, hours, images }) => {
   const [res, setRes] = useState(false);
@@ -37,7 +37,7 @@ const Home = ({ userData, hours, images }) => {
   };
 
   return (
-    <Wrapper>
+    <main className={styles.main_wrapper}>
       <Head title="Accueil - Le Quai Antique" />
       <AnimatePresence>
         {res && (
@@ -46,34 +46,32 @@ const Home = ({ userData, hours, images }) => {
           </Suspense>
         )}
       </AnimatePresence>
-      <HeroSection>
-        <div className="headerPage">
-          <img
-            src="https://images.unsplash.com/photo-1520209268518-aec60b8bb5ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80"
-            alt="restaurant teinté marron conviviale"
-            srcSet="https://images.unsplash.com/photo-1520209268518-aec60b8bb5ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80 500w,
+      <section className={styles.hero_section}>
+        <img
+          src="https://images.unsplash.com/photo-1520209268518-aec60b8bb5ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80"
+          alt="restaurant teinté marron conviviale"
+          srcSet="https://images.unsplash.com/photo-1520209268518-aec60b8bb5ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80 500w,
             https://images.unsplash.com/photo-1520209268518-aec60b8bb5ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80 700w,
             https://images.unsplash.com/photo-1520209268518-aec60b8bb5ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=900&q=80 900w,
             https://images.unsplash.com/photo-1520209268518-aec60b8bb5ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80 1200w"
-          />
-          <motion.aside
-            variants={containerVariant}
-            initial="hiddenHeader"
-            animate="showHeader"
-          >
-            <motion.h1 variants={itemVariant}>Le Quai Antique</motion.h1>
-            <motion.h2 variants={itemVariant}>
-              Votre restaurant de la savoie
-            </motion.h2>
-            <motion.button variants={itemVariant}>
-              <a href="#contextText">Découvrir</a>
-            </motion.button>
-          </motion.aside>
-        </div>
-      </HeroSection>
+        />
+        <motion.aside
+          variants={containerVariant}
+          initial="hiddenHeader"
+          animate="showHeader"
+        >
+          <motion.h1 variants={itemVariant}>Le Quai Antique</motion.h1>
+          <motion.h2 variants={itemVariant}>
+            Votre restaurant de la savoie
+          </motion.h2>
+          <motion.button variants={itemVariant}>
+            <a href="#contextText">Découvrir</a>
+          </motion.button>
+        </motion.aside>
+      </section>
 
-      <SectionPlats>
-        <div className="textContent" id="contextText">
+      <section className={styles.context_section}>
+        <div className={styles.textContent} id="contextText">
           <p>
             Venez découvrir la Savoie à travers une expérience gastronomique,
             installé à Chambéry, Le Quai Antique saura vous satisfaire tout au
@@ -90,7 +88,7 @@ const Home = ({ userData, hours, images }) => {
           Réservez une table
         </button>
         {images?.length ? (
-          <div className="imagesGalery">
+          <div className={styles.imagesGalery}>
             {images?.map((images: Image, id: number) => {
               return (
                 <div key={id}>
@@ -104,8 +102,8 @@ const Home = ({ userData, hours, images }) => {
             })}
           </div>
         ) : null}
-      </SectionPlats>
-    </Wrapper>
+      </section>
+    </main>
   );
 };
 Home.layout = (page: HTMLElement) => <Layout children={page} />;
