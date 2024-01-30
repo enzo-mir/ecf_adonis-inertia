@@ -1,6 +1,7 @@
 import { useState } from "react";
 import React from "react";
 const Reserv = React.lazy(() => import("./components/Reservation"));
+import styles from "../../css/card.module.css";
 import {
   CarteContainer,
   MenuContainer,
@@ -46,7 +47,7 @@ const Card = ({
               <div key={element.id}>
                 <div>
                   <p>{element.name}</p>
-                  <p className="desc">{element.description}</p>
+                  <p className={styles.desc}>{element.description}</p>
                 </div>
                 <p>{element.price}€</p>
               </div>
@@ -60,7 +61,7 @@ const Card = ({
               <div key={id}>
                 <div>
                   <p>{element.name}</p>
-                  <p className="desc">{element.description}</p>
+                  <p className={styles.desc}>{element.description}</p>
                 </div>
                 <p>{element.price}€</p>
               </div>
@@ -76,7 +77,7 @@ const Card = ({
             <div key={element.id}>
               <div>
                 <p>{element.name}</p>
-                <p className="desc">{element.description}</p>
+                <p className={styles.desc}>{element.description}</p>
               </div>
               <p>{element.price}€</p>
             </div>
@@ -111,24 +112,24 @@ const Card = ({
     <>
       {res ? <Reserv res={setRes} /> : null}
       {cardData ? (
-        <CarteContainer>
+        <main className={styles.main_content}>
           <Head title="La carte - Le Quai Antique" />
           <h1>La carte</h1>
-          <MenuContainer>
-            <LunchSection>
+          <section className={styles.card_container}>
+            <div className={styles.lunch_container}>
               {mapingSimilarityFood(starters, "les entrées")}
-            </LunchSection>
-            <PlatSection>
+            </div>
+            <div className={styles.plat_container}>
               {mapingSimilarityFood(dishs, "les plats")}
-            </PlatSection>
-            <DessertSection>
+            </div>
+            <div className={styles.dessert_container}>
               {mapingSimilarityFood(desserts, "les desserts")}
-            </DessertSection>
-            <MenuSection>
+            </div>
+            <div className={styles.menu_container}>
               {mapingSimilarityFood(menus, "les menus")}
-            </MenuSection>
-          </MenuContainer>
-        </CarteContainer>
+            </div>
+          </section>
+        </main>
       ) : null}
     </>
   );
