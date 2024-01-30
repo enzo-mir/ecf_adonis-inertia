@@ -1,11 +1,5 @@
 import { ChangeEvent, Suspense, useEffect, useState } from "react";
 import { Overlay } from "../../assets/style/overlay";
-import {
-  OptionsReserv,
-  ReservationContainer,
-  HoursList,
-  AlergyWrapper,
-} from "../../assets/style/reserveStyle";
 import { Cross } from "../../assets/style/cross";
 import { useRef } from "react";
 import { userDataStore } from "../../data/store/connect.store";
