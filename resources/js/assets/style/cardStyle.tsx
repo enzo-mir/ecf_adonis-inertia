@@ -19,7 +19,7 @@ const CarteContainer = styled.main`
     position: relative;
     font-size: var(--font-size-h1);
     color: black;
-    padding: .5em;
+    padding: 0.5em;
 
     ::after,
     ::before {
@@ -56,12 +56,14 @@ const MenuContainer = styled.div`
   width: 100vw;
   min-height: max-content;
   display: grid;
-  gap: 25px;
+  gap: 3em;
   grid-template-columns: repeat(2, 1fr);
 
   & > div {
     height: 100%;
-    margin-block: 50px;
+    background-color: #fff;
+    margin-block: 2em;
+    border-radius: 0.25em;
 
     & p {
       text-align: left;
@@ -94,7 +96,6 @@ const MenuContainer = styled.div`
 
 const LunchSection = styled.div`
   width: 100%;
-  background-color: #fff;
   grid-area: 1 / 1 / 2 / 2;
   display: flex;
   flex-direction: column;
@@ -115,7 +116,6 @@ const LunchSection = styled.div`
 `;
 const PlatSection = styled.div`
   width: 100%;
-  background-color: #fff;
   grid-area: 1 / 2 / 2 / 3;
   display: flex;
   flex-direction: column;
@@ -154,7 +154,6 @@ const DessertSection = styled.div`
   grid-template-rows: repeat(3, 1fr);
   column-gap: 50px;
   place-items: center;
-  background-color: #fff;
 
   h2 {
     grid-area: 1 / 1 / 2 / 3;
@@ -163,6 +162,8 @@ const DessertSection = styled.div`
   & > div {
     display: grid;
     grid-template-columns: 1fr auto;
+  place-items: center;
+
     column-gap: 20px;
     width: 60%;
   }
@@ -181,7 +182,6 @@ const DessertSection = styled.div`
 `;
 const MenuSection = styled.div`
   width: 100%;
-  background-color: #fff;
   grid-area: 3 / 1 / 4 / 3;
   display: flex;
   flex-direction: column;

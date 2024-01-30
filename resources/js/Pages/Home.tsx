@@ -3,34 +3,13 @@ import React from "react";
 const Reserv = React.lazy(() => import("./components/Reservation"));
 const Layout = React.lazy(() => import("./components/Layout"));
 import { Wrapper, HeroSection, SectionPlats } from "../assets/style/homeStyle";
-import { hourStore } from "../data/store/apiData.store";
 import { AnimatePresence, motion } from "framer-motion";
-import { connectStore, userDataStore } from "../data/store/connect.store";
 import { Head } from "@inertiajs/inertia-react";
 import { Overlay } from "../assets/style/overlay";
 import { Image } from "../types/dataApiTypes";
 
 const Home = ({ userData, hours, images }) => {
   const [res, setRes] = useState(false);
-  const setHours = hourStore((state) => state.setHours);
-  const setUserData = userDataStore((state) => state.setUserData);
-  const [setConnectedUser, setConnectedAdmin] = connectStore((state) => [
-    state.setConnectedUser,
-    state.setConnectedAdmin,
-  ]);
-
-  useEffect(() => {
-    setHours(hours);
-
-    if (userData?.user) {
-      setUserData(userData);
-      setConnectedUser(true);
-    }
-
-    if (userData?.admin) {
-      setConnectedAdmin(true);
-    }
-  }, [userData, hours]);
 
   const containerVariant = {
     hiddenHeader: { opacity: 0 },

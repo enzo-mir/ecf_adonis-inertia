@@ -1,8 +1,6 @@
 const { join } = require("path");
 const Encore = require("@symfony/webpack-encore");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-
+const CssNanoPlugin = require("cssnano");
 /*
 |--------------------------------------------------------------------------
 | Encore runtime environment
@@ -152,27 +150,7 @@ Encore.configureDevServerOptions((options) => {
     watch: true,
   });
 });
-Encore.configureSplitChunks((splitChunks) => {
-  (splitChunks.chunks = "async"),
-    (splitChunks.minSize = 20000),
-    (splitChunks.minRemainingSize = 0),
-    (splitChunks.minChunks = 2),
-    (splitChunks.maxAsyncRequests = 30),
-    (splitChunks.maxInitialRequests = 30),
-    (splitChunks.enforceSizeThreshold = 50000),
-    (splitChunks.cacheGroups = {
-      defaultVendors: {
-        test: /[\\/]node_modules[\\/]/,
-        priority: -10,
-        reuseExistingChunk: true,
-      },
-      default: {
-        minChunks: 2,
-        priority: -20,
-        reuseExistingChunk: true,
-      },
-    });
-});
+
 /*
 |--------------------------------------------------------------------------
 | CSS precompilers support
@@ -182,10 +160,13 @@ Encore.configureSplitChunks((splitChunks) => {
 | favorite CSS precompiler
 |
 */
-// Encore.enableSassLoader()
+
+//Encore.enableSassLoader()
 // Encore.enableLessLoader()
 // Encore.enableStylusLoader()
-
+Encore.configureCssLoader((options) => {
+  options.modules = true; // Enable CSS Modules
+});
 /*
 |--------------------------------------------------------------------------
 | CSS loaders
@@ -232,18 +213,28 @@ Encore.configureSplitChunks((splitChunks) => {
 |
 */
 
+Encore.enablePostCssLoader();
 Encore.configureSplitChunks((splitChunks) => {
   (splitChunks.chunks = "all"),
     (splitChunks.maxInitialRequests = Infinity),
+    (splitChunks.minSize = 20000),
+    (splitChunks.minRemainingSize = 0),
+    (splitChunks.minChunks = 2),
+    (splitChunks.maxAsyncRequests = 30),
+    (splitChunks.enforceSizeThreshold = 50000),
     (splitChunks.cacheGroups = {
-      vendor: {
+      defaultVendors: {
         test: /[\\/]node_modules[\\/]/,
-        name: (module) =>
-          `vendor.${
-            module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
-          }`,
+        priority: -10,
+        reuseExistingChunk: true,
+      },
+      default: {
+        minChunks: 2,
+        priority: -20,
+        reuseExistingChunk: true,
       },
     });
 });
 
-module.exports = Encore.getWebpackConfig();
+const config = Encore.getWebpackConfig();
+module.exports = config;

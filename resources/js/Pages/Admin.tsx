@@ -1,11 +1,10 @@
-import { useState, MouseEvent, useEffect, lazy, Suspense } from "react";
+import { useState, lazy, Suspense } from "react";
 import {
   HoursContainer,
   ImgWrapper,
   CardContainer,
   Wrapper,
 } from "../assets/style/adminStyle";
-import { cardStore, hourStore, imageStore } from "../data/store/apiData.store";
 const AdminCard = lazy(() => import("./components/admin/AdminCard"));
 const HourEditing = lazy(() => import("./components/admin/HourEditing"));
 const Layout = lazy(() => import("./components/Layout"));
@@ -17,9 +16,7 @@ import { BsFillImageFill } from "react-icons/bs";
 import { BiSolidTime } from "react-icons/bi";
 import { IoFastFood } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
-import React from "react";
 import { CardDataType, HourDataType, Image } from "../types/dataApiTypes";
-import { connectStore } from "../data/store/connect.store";
 import { Head } from "@inertiajs/inertia-react";
 import Loading from "./Loading";
 import AdminImages from "./components/admin/AdminImages";
@@ -34,20 +31,6 @@ const Admin = ({
   imagesData: Image[];
 }) => {
   const [displayEditImage, setDisplayEditImage] = useState(false);
-  const setCardData = cardStore((state) => state.setCardStore);
-  const setHoursData = hourStore((state) => state.setHours);
-  const setImages = imageStore((state) => state.setImages);
-  const [setConnectedAdmin] = connectStore((state) => [
-    state.setConnectedAdmin,
-  ]);
-
-  useEffect(() => {
-    setCardData(cardData);
-    setHoursData(hoursData);
-    setImages(imagesData);
-    setConnectedAdmin(true);
-  }, [cardData, hoursData, imagesData]);
-
   const [imageEdition, setImageEdition] = useState<{
     title: string;
     description: string;

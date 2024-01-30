@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 const Reserv = React.lazy(() => import("./components/Reservation"));
 import {
@@ -18,8 +18,6 @@ import {
   platType,
 } from "../types/dataApiTypes";
 const Layout = React.lazy(() => import("./components/Layout"));
-import { hourStore } from "../data/store/apiData.store";
-import { connectStore, userDataStore } from "../data/store/connect.store";
 import { User } from "../types/userType.store";
 import { Head } from "@inertiajs/inertia-react";
 
@@ -32,27 +30,8 @@ const Card = ({
   hours: Array<HourDataType>;
   userData: User;
 }) => {
-  const setHours = hourStore((state) => state.setHours);
   const [res, setRes] = useState(false);
   const { starters, dishs, desserts, menus } = cardData;
-
-  const setUserData = userDataStore((state) => state.setUserData);
-  const [setConnectedUser, setConnectedAdmin] = connectStore((state) => [
-    state.setConnectedUser,
-    state.setConnectedAdmin,
-  ]);
-  useEffect(() => {
-    setHours(hours);
-
-    if (userData?.user) {
-      setUserData(userData);
-      setConnectedUser(true);
-    }
-
-    if (userData?.admin) {
-      setConnectedAdmin(true);
-    }
-  }, [userData, hours]);
 
   function mapingSimilarityFood(
     food: entreeType | platType | dessertType | menuType,
