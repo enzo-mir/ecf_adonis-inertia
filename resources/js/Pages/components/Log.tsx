@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { useForm } from "@inertiajs/inertia-react";
 import React from "react";
 import { z } from "zod";
+import styles from "../../../css/logs.module.css";
 
 const Log = ({
   displayPage,
@@ -88,9 +89,9 @@ const Log = ({
 
   return (
     <Overlay onClick={() => displayPage(false)}>
-      <LogContainer
+      <motion.section
+        className={styles.log_section}
         onClick={(e) => e.stopPropagation()}
-        as={motion.section}
         initial={{ y: "-20%", opacity: 0 }}
         animate={{ y: "0", opacity: 1 }}
         exit={{ y: "-20%", opacity: 0 }}
@@ -103,12 +104,13 @@ const Log = ({
           <p className="validationMessage">{fromConfirmation}</p>
         )}
         <form
+          className={styles.form}
           onSubmit={(e) => {
             page === "signin" ? submitSignin(e) : submitLogin(e);
           }}
         >
           {page === "signin" ? (
-            <ContentSignIn>
+            <div className={styles.signin}>
               <div className="profil">
                 <input
                   type="text"
@@ -171,9 +173,9 @@ const Log = ({
                   placeholder="Alergies (ex : tomates, carotte)"
                 />
               </div>
-            </ContentSignIn>
+            </div>
           ) : page === "login" ? (
-            <ContentLogIn>
+            <div className={styles.login}>
               <input
                 type="text"
                 placeholder="Adresse e-mail"
@@ -193,9 +195,9 @@ const Log = ({
                   setData({ ...data, password: e.target.value });
                 }}
               />
-            </ContentLogIn>
+            </div>
           ) : null}
-          <div className="ctaLog">
+          <div className={styles.ctaLog}>
             <button type="submit" disabled={processing}>
               {page === "signin" ? "Créer un compte" : "Connection"}
             </button>
@@ -212,7 +214,7 @@ const Log = ({
             </p>
           </div>
         </form>
-      </LogContainer>
+      </motion.section>
     </Overlay>
   );
 };
