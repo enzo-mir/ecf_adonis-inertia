@@ -1,14 +1,8 @@
 import React, { Suspense, useEffect, useState } from "react";
 import icon from "../../assets/images/icon.svg";
-import {
-  Wrapper,
-  HeaderContainer,
-  BtnMenu,
-} from "../../assets/style/headerStyle";
 import { connectStore, userDataStore } from "../../data/store/connect.store";
 import { AnimatePresence } from "framer-motion";
 import { Link, useForm } from "@inertiajs/inertia-react";
-import Loading from "../Loading";
 import { Overlay } from "../../assets/style/overlay";
 const Reserv = React.lazy(() => import("./Reservation"));
 const PopReservation = React.lazy(() => import("./PopReservation"));

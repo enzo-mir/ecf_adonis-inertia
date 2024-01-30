@@ -13,8 +13,7 @@ export const Overlay = styled.div`
     position: absolute;
     padding-block: 25px;
     width: 1000px;
-    max-height: 75%;
-    height: 60%;
+    max-height: 80%;
     min-height: 500px;
     max-width: 100%;
     z-index: 150;

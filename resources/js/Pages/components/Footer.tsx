@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Link } from "@inertiajs/inertia-react";
-import { Wrapper } from "../../assets/style/footerStyle";
 import Reserv from "./Reservation";
 import { hourStore } from "../../data/store/apiData.store";
 import { AnimatePresence } from "framer-motion";
 import React from "react";
+import styles from "../../../css/footer.module.css";
 
 const Footer = () => {
   const hoursStore = hourStore((state) => state.hours);
   const [res, setRes] = useState(false);
 
   return (
-    <Wrapper>
+    <footer className={styles.footer}>
       <AnimatePresence>{res ? <Reserv res={setRes} /> : null}</AnimatePresence>
-      <table id="horaires">
+      <table className={styles.hours}>
         <thead>
           <tr>
             <th>Horaires d&#39;ouvertures</th>
@@ -47,7 +47,7 @@ const Footer = () => {
         </ul>
       </nav>
       <p>Tous droits réservés</p>
-    </Wrapper>
+    </footer>
   );
 };
 

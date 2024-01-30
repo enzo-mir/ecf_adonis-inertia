@@ -19,6 +19,7 @@ import { TbUsersPlus } from "react-icons/tb";
 import { MdOutlineDateRange } from "react-icons/md";
 import { MdAlternateEmail } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
+import styles from "../../../css/reservation.module.css";
 
 export default function Reserv({
   res: displayReservation,
@@ -208,9 +209,9 @@ export default function Reserv({
 
   return (
     <Overlay onClick={() => displayReservation(false)}>
-      <ReservationContainer
+      <motion.section
+        className={styles.reservation_section}
         onClick={(e) => e.stopPropagation()}
-        as={motion.section}
         initial={{ y: "-20%", opacity: 0 }}
         animate={{ y: "0", opacity: 1 }}
         exit={{ y: "-20%", opacity: 0 }}
@@ -220,7 +221,7 @@ export default function Reserv({
         <Cross onClick={() => displayReservation(false)} />
         <h1>Réservez votre table</h1>
         {resError ? <p className="validationReservation">{resError}</p> : null}
-        <OptionsReserv>
+        <div className={styles.option_reservation}>
           <label htmlFor="persons">
             <TbUsersPlus color="#fff" />
             <input
@@ -241,7 +242,7 @@ export default function Reserv({
             <MdOutlineDateRange color="#fff" />
             <input
               type="date"
-              id="date"
+              className={styles.date_calendar}
               onChange={(e: ChangeEvent) => handleChangeDate(e)}
               min={new Date().toLocaleDateString("fr-CA")}
               value={data.date}
@@ -278,11 +279,11 @@ export default function Reserv({
               disabled={userData.user?.name ? true : false}
             />
           </label>
-        </OptionsReserv>
-        <div id="lunchHours">
+        </div>
+        <div className={styles.lunch_hours}>
           <h2>MIDI</h2>
-          <div className="hours">
-            <HoursList>
+          <div>
+            <ul className={styles.hours_list}>
               {typeof LTable === "object" ? (
                 LTable.map((lunch, id) => {
                   return (
@@ -299,13 +300,13 @@ export default function Reserv({
               ) : (
                 <p>{LTable}</p>
               )}
-            </HoursList>
+            </ul>
           </div>
         </div>
-        <div id="dinnerHours">
+        <div className={styles.dinner_hours}>
           <h2>SOIR</h2>
-          <div className="hours">
-            <HoursList>
+          <div>
+            <ul className={styles.hours_list}>
               {typeof DTable === "object" ? (
                 DTable.map((dinner, id) => {
                   return (
@@ -322,10 +323,10 @@ export default function Reserv({
               ) : (
                 <p>{DTable}</p>
               )}
-            </HoursList>
+            </ul>
           </div>
         </div>
-        <div id="finalCase">
+        <div className={styles.final_case}>
           <p
             onClick={() => {
               setShowAllergy(!showAllergy);
@@ -334,7 +335,7 @@ export default function Reserv({
             Allergie(s) ?
           </p>
           {showAllergy && (
-            <AlergyWrapper>
+            <div className={styles.alergy_container}>
               <input
                 type="texte"
                 placeholder="Entrez vos allergies"
@@ -343,7 +344,7 @@ export default function Reserv({
                   setData({ ...data, alergy: e.target.value })
                 }
               />
-            </AlergyWrapper>
+            </div>
           )}
           <button
             id="submitRes"
@@ -354,7 +355,7 @@ export default function Reserv({
             Réservez la table
           </button>
         </div>
-      </ReservationContainer>
+      </motion.section>
     </Overlay>
   );
 }
