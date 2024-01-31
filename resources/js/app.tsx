@@ -10,8 +10,8 @@ InertiaProgress.init({ color: "#4a3f30" });
 root.render(
   <InertiaApp
     initialPage={JSON.parse(app.dataset.page)}
-    resolveComponent={async (name) =>
-      await import(`./Pages/${name}.tsx`).then((module) => module.default)
+    resolveComponent={(name) =>
+      import(`./Pages/${name}.tsx`).then((module) => module.default)
     }
     initialComponent={""}
   />

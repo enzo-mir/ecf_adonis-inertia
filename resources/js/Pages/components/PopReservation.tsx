@@ -5,7 +5,7 @@ import { userDataStore } from "../../data/store/connect.store";
 import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
-import { currentReservationType } from "../../types/userType.store";
+import { currentReservationType, User } from "../../types/userType.store";
 import overlaystyles from "../../../css/overlay.module.css";
 
 const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
@@ -60,6 +60,7 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
                     <div className="deleteOption">
                       <p>êtes-vous sûr ?</p>
                       <button
+                        disabled={processing}
                         onClick={() => {
                           post("/reservation/delete", {
                             data,
@@ -67,14 +68,15 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
                               setErrorMessage(err as unknown as string);
                             },
                             onSuccess: (success) => {
-                              setErrorMessage(""),
-                                setUserData({
-                                  user: {
-                                    ...userData.user,
-                                    currentReservation: success.props
-                                      .valid as currentReservationType[],
-                                  },
-                                });
+                              setErrorMessage("");
+                              setUserData({
+                                user: {
+                                  ...userData.user,
+                                  currentReservation: (
+                                    success.props.userData as User
+                                  ).user.currentReservation,
+                                },
+                              });
                             },
                           });
                         }}
