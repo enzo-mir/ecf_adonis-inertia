@@ -15,7 +15,8 @@ export default class AuthentificationsController {
       );
       await Hash.verify(getDatabsePwd[0][0].password, userinfo.password);
       await ctx.auth.attempt(userinfo.email, userinfo.password);
-      return ctx.inertia.redirectBack();
+
+      return ctx.response.redirect().back();
     } catch (error) {
       ctx.session.flash({
         errors:
@@ -34,13 +35,13 @@ export default class AuthentificationsController {
         alergy: ctx.request.only(["alergy"]).alergy || "",
       });
 
-      const hashedPassword = await Hash.make(registerData.password);
+      const hashedPassword = await Hash.make(registerData.password!);
 
       const insertionQuery = await Database.rawQuery(
         `INSERT INTO users(name, email, password, guests, alergy) VALUES ("${registerData.name}","${registerData.email}","${hashedPassword}",${registerData.guests},"${registerData.alergy}")`
       );
       if (insertionQuery[0].affectedRows > 0) {
-        await ctx.auth.attempt(registerData.email, registerData.password);
+        await ctx.auth.attempt(registerData.email, registerData.password!);
         ctx.session.flash({
           valid: {
             user: {

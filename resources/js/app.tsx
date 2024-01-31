@@ -1,7 +1,7 @@
+import "../css/App.css";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { InertiaApp } from "@inertiajs/inertia-react";
-import "../css/App.css";
 import { InertiaProgress } from "@inertiajs/progress";
 
 const app = document.getElementById("app");
