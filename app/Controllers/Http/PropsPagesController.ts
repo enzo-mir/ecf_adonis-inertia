@@ -28,18 +28,13 @@ export default class PropsPagesController {
         : {};
       delete userData.user?.id;
       delete userData.user?.password;
-      delete userData.user?.role;
 
       return ctx.inertia.render("Home", {
-        userData: userData,
         images: (await allImages)[0],
-        hours: (await allHours)[0],
       });
     } else {
       return ctx.inertia.render("Home", {
-        userData: undefined,
         images: (await allImages)[0],
-        hours: (await allHours)[0],
       });
     }
   }
