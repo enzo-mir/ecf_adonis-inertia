@@ -3,7 +3,7 @@ import Database from "@ioc:Adonis/Lucid/Database";
 import { updateZodType } from "../../../utils/types/user";
 import { z } from "zod";
 import Hash from "@ioc:Adonis/Core/Hash";
-import { getUserData } from "../getUserData";
+import { getUserData } from "../../functions/get_user_data";
 
 export default class ProfilesController {
   public async update(ctx: HttpContextContract) {

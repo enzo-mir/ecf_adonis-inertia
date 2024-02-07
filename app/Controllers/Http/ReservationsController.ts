@@ -4,7 +4,7 @@ import {
   ReservationFromBodySheama,
 } from "../../../utils/types/reservationScheama";
 import Database from "@ioc:Adonis/Lucid/Database";
-import { getReservation } from "../getUserData";
+import { getReservation } from "../../functions/get_user_data";
 
 export default class ReservationsController {
   private guestsLimit = 35;

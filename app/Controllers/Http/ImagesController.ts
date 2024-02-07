@@ -7,7 +7,7 @@ import Application from "@ioc:Adonis/Core/Application";
 import Database from "@ioc:Adonis/Lucid/Database";
 import { z } from "zod";
 import fs from "fs";
-import { allImages } from "../getPropsData";
+import { allImages } from "../../functions/get_props_data";
 
 export default class ImagesController {
   public async upload(ctx: HttpContextContract) {

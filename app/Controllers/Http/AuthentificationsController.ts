@@ -1,7 +1,7 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { CreateUserScheama, LoginUserScheama } from "../../../utils/types/user";
 import { z } from "zod";
-import { getReservation, getUserData } from "../getUserData";
+import { getReservation, getUserData } from "../../functions/get_user_data";
 import Database from "@ioc:Adonis/Lucid/Database";
 import Hash from "@ioc:Adonis/Core/Hash";
 

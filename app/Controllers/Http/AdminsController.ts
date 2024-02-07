@@ -1,5 +1,5 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import { allHours, allImages, getCardData } from "../getPropsData";
+import { allHours, allImages, getCardData } from "../../functions/get_props_data";
 import { HourType } from "../../../utils/types/hoursType";
 import Database from "@ioc:Adonis/Lucid/Database";
 import { z } from "zod";
