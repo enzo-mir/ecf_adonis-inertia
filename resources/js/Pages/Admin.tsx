@@ -9,6 +9,7 @@ const AdminEditImages = lazy(
 import { BsFillImageFill } from "react-icons/bs";
 import { BiSolidTime } from "react-icons/bi";
 import { IoFastFood } from "react-icons/io5";
+import { FaUser } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { CardDataType, HourDataType, Image } from "../types/dataApiTypes";
 import { Head } from "@inertiajs/inertia-react";
@@ -16,6 +17,7 @@ import Loading from "./Loading";
 import AdminImages from "./components/admin/AdminImages";
 import styles from "../../css/admin.module.css";
 import { connectStore } from "../data/store/connect.store";
+import AdminUser from "./components/admin/AdminUser";
 
 const Admin = ({
   hoursData,
@@ -39,10 +41,6 @@ const Admin = ({
     url: "",
     adding: false,
   });
-
-  useEffect(() => {
-    setAdmin(true);
-  }, []);
 
   const [displayCardEdition, setDisplayCardEdition] = useState<boolean>(false);
   const [dataCardEdit, setDataCardEdit] = useState({
@@ -77,6 +75,13 @@ const Admin = ({
             <button onClick={() => setShowOption("card")}>
               <span>Carte</span>
               <IoFastFood />
+            </button>
+          </li>
+
+          <li>
+            <button onClick={() => setShowOption("user")}>
+              <span>Utilisateur</span>
+              <FaUser />
             </button>
           </li>
         </ul>
@@ -119,7 +124,7 @@ const Admin = ({
             >
               <HourEditing />
             </motion.article>
-          ) : (
+          ) : showOption === "card" ? (
             <motion.article
               className={styles.card_container}
               initial={{ x: "-20%" }}
@@ -132,6 +137,10 @@ const Admin = ({
                 display={displayCardEdition}
               />
             </motion.article>
+          ) : (
+            <article>
+              <AdminUser />
+            </article>
           )}
         </AnimatePresence>
 
