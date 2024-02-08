@@ -1,6 +1,6 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import {
-  allHours,
+  getUsersInformation,
   allImages,
   getCardData,
 } from "../../functions/get_props_data";
@@ -15,6 +15,7 @@ export default class AdminsController {
       return ctx.inertia.render("Admin", {
         cardData: getCardData(),
         imagesData: await allImages(),
+        usersInformation: await getUsersInformation(),
       });
     } else {
       return ctx.inertia.render("UndefinedPage");

@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense, useEffect } from "react";
+import React, { useState, lazy, Suspense } from "react";
 const AdminCard = lazy(() => import("./components/admin/AdminCard"));
 const HourEditing = lazy(() => import("./components/admin/HourEditing"));
 const Layout = lazy(() => import("./components/Layout"));
@@ -16,19 +16,20 @@ import { Head } from "@inertiajs/inertia-react";
 import Loading from "./Loading";
 import AdminImages from "./components/admin/AdminImages";
 import styles from "../../css/admin.module.css";
-import { connectStore } from "../data/store/connect.store";
 import AdminUser from "./components/admin/AdminUser";
-
+import { usersInformationType } from "../types/userType.store";
+interface adminProps {
+  cardData: CardDataType;
+  hoursData: HourDataType[];
+  imagesData: Image[];
+  usersInformation: Array<usersInformationType>;
+}
 const Admin = ({
   hoursData,
   cardData,
   imagesData,
-}: {
-  cardData: CardDataType;
-  hoursData: HourDataType[];
-  imagesData: Image[];
-}) => {
-  const setAdmin = connectStore((state) => state.setConnectedAdmin);
+  usersInformation,
+}: adminProps) => {
   const [displayEditImage, setDisplayEditImage] = useState(false);
   const [imageEdition, setImageEdition] = useState<{
     title: string;
@@ -138,7 +139,7 @@ const Admin = ({
           </motion.article>
         ) : (
           <article>
-            <AdminUser />
+            <AdminUser usersInfo={usersInformation} />
           </article>
         )}
 

@@ -1,5 +1,4 @@
 import Database from "@ioc:Adonis/Lucid/Database";
-import { HourType } from "utils/types/hoursType";
 import { imagesAddType } from "utils/types/imageEditType";
 import { z } from "zod";
 
@@ -25,4 +24,11 @@ async function allImages() {
 const allHours = async () =>
   await Database.rawQuery("SELECT * FROM `hours` WHERE 1");
 
-export { getCardData, allImages, allHours };
+const getUsersInformation = async () => {
+  const allUsers = await Database.rawQuery(
+    "SELECT `id`,`name`,`email`,`role` FROM users "
+  );
+  return allUsers[0];
+};
+
+export { getCardData, allImages, allHours, getUsersInformation };
