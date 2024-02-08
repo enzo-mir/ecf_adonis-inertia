@@ -1,0 +1,22 @@
+.table {
+  border-collapse: separate;
+  border-spacing: 1em;
+}
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.table > tbody > tr > td:has(button) {
+  display: grid;
+  place-items: center;
+  gap: 0.5em;
+}
+
+.table > tbody > tr > td > input {
+  padding: 0;
+  width: 80%;
+}
+.table > tbody > tr > td > button {
+  font-size: var(--font-size-little);
+  width: 100%;
+}

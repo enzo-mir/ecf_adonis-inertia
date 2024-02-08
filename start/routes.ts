@@ -23,10 +23,10 @@ Route.group(() => {
 Route.group(() => {
   Route.get("", "AdminsController.index");
   Route.post("/hoursEdition", "AdminsController.hours");
+  Route.post("/userUpdate", "AdminsController.userUpdate");
 }).prefix("/admin");
 
 Route.post("/card/update", "AdminsController.cardUpdate");
-
 
 Route.group(() => {
   Route.post("/upload", "ImagesController.upload");

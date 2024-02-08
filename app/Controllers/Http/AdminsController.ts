@@ -8,6 +8,7 @@ import { HourType } from "../../../utils/types/hoursType";
 import Database from "@ioc:Adonis/Lucid/Database";
 import { z } from "zod";
 import { cardUpdateType } from "../../../utils/types/cardManagmentType";
+import { usersConfigScheama } from "utils/types/user";
 
 export default class AdminsController {
   public async index(ctx: HttpContextContract) {
@@ -98,6 +99,21 @@ export default class AdminsController {
           return ctx.response.redirect().back();
         }
       }
+    } catch (error) {
+      ctx.session.flash({
+        errors:
+          error instanceof z.ZodError
+            ? JSON.parse(error.message)[0]?.message
+            : error.message,
+      });
+      return ctx.response.redirect().back();
+    }
+  }
+
+  public async userUpdate(ctx: HttpContextContract) {
+    try {
+      const usersInfo = usersConfigScheama.parse(ctx.request.all());
+      console.log(usersInfo);
     } catch (error) {
       ctx.session.flash({
         errors:

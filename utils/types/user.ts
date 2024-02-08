@@ -75,6 +75,28 @@ export const CreateUserScheama = z
       path: ["confirmPassword"],
     }
   );
+export const usersConfigScheama = z.object({
+  id: z.number(),
+  role: z.number().refine((val) => val === 0 || 1, {
+    message: "Le rôle n'est pas bien définit",
+  }),
+  email: z.string().email({ message: "email invalide" }),
+  name: z.string().refine((value) => /^[a-zA-Z]+$/.test(value), {
+    message: "Le champs nom doit contenir uniquement des lettres",
+  }),
+  password: z
+    .string()
+    .refine(
+      (value) =>
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(value) ||
+        value === "",
+      {
+        message:
+          "Le mot de passe doit être composé d'une majuscule, minuscule, d'un chiffre et avoir une longueur de 8 charactères",
+      }
+    ),
+});
+
 export const LoginUserScheama = z.object({
   email: z.string().email(),
   password: z.string(),
