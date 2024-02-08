@@ -8,7 +8,7 @@ import { HourType } from "../../../utils/types/hoursType";
 import Database from "@ioc:Adonis/Lucid/Database";
 import { z } from "zod";
 import { cardUpdateType } from "../../../utils/types/cardManagmentType";
-import { usersConfigScheama } from "utils/types/user";
+import { usersConfigScheama } from "../../../utils/types/user";
 
 export default class AdminsController {
   public async index(ctx: HttpContextContract) {

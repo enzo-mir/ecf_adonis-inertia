@@ -2,6 +2,7 @@ import { useForm } from "@inertiajs/inertia-react";
 import React, { useState } from "react";
 import { usersInformationType } from "../../../types/userType.store";
 import styles from "../../../../css/admin_user.module.css";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const AdminUser = ({
   usersInfo,
@@ -9,7 +10,19 @@ const AdminUser = ({
   usersInfo: Array<usersInformationType>;
 }) => {
   const [currentId, setCurrentId] = useState<number>(null);
-
+  const [rolefilter, setRoleFilter] = useState<boolean>(false);
+  function filteredByRole() {
+    const filterByRole = usersInfo.sort((a, b) => {
+      if (a.role > b.role) {
+        return rolefilter ? 1 : -1;
+      }
+      if (a.role < b.role) {
+        return rolefilter ? -1 : 1;
+      }
+      return 0;
+    });
+    return filterByRole;
+  }
   function FormComponent({ id, role, email, name }: usersInformationType) {
     const { post, processing, data, setData, reset } = useForm<
       usersInformationType & { password: string }
@@ -99,15 +112,24 @@ const AdminUser = ({
           <td>Nom</td>
           <td>Email</td>
           <td>Mot de passe</td>
-          <td>Rôle</td>
+          <td
+            onClick={() => {
+              setRoleFilter(rolefilter === true ? false : true);
+            }}
+          >
+            Rôle
+            <MdOutlineKeyboardArrowDown
+              className={rolefilter ? styles.filteredArrow : ""}
+            />
+          </td>
           <td></td>
         </tr>
       </thead>
       <tbody>
-        {usersInfo.map((users, index) => {
+        {filteredByRole().map((users, index) => {
           return (
             <tr key={index}>
-              {currentId === index ? (
+              {currentId === users.id ? (
                 <FormComponent
                   id={users.id}
                   name={users.name}
@@ -121,7 +143,7 @@ const AdminUser = ({
                   <td>*********</td>
                   <td>{users.role === 0 ? "client" : "admin"}</td>
                   <td>
-                    <button onClick={() => setCurrentId(index)}>
+                    <button onClick={() => setCurrentId(users.id)}>
                       Modifier
                     </button>
                     <button>Supprimer</button>

@@ -2,6 +2,17 @@
   border-collapse: separate;
   border-spacing: 1em;
 }
+.table > thead > tr > td:nth-child(4) {
+  display: flex;
+  gap: 0.5em;
+}
+.filteredArrow {
+  rotate: 180deg;
+}
+.table > thead > tr > td:nth-child(4):hover {
+  cursor: pointer;
+}
+
 .table > tbody > tr > td {
   vertical-align: middle;
 }
