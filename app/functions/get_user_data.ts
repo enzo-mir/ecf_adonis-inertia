@@ -14,7 +14,7 @@ async function getUserData(ctx: HttpContextContract) {
 async function sendUserData(ctx: HttpContextContract) {
   if (ctx.auth.user && (await getCurrentReservation(ctx))) {
     const currentReservation = await getCurrentReservation(ctx);
-    const userObject = ctx.auth.use("web").user;
+    const userObject = ctx.auth.user;
     const response = {
       id: userObject!.id,
       email: userObject!.email,

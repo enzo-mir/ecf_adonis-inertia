@@ -37,11 +37,11 @@ const Layout = ({ children }) => {
     props.imagesData && setImages(props.imagesData);
 
     if (props.user) {
+      setUserData(props.user);
       if (props.user.role === 1) {
         setConnectedAdmin(true);
         setConnectedUser(false);
       } else {
-        setUserData(props.user);
         setConnectedAdmin(false);
         setConnectedUser(true);
       }

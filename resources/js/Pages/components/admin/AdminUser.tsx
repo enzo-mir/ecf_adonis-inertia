@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { usersInformationType } from "../../../types/userType.store";
 import styles from "../../../../css/admin_user.module.css";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { userDataStore } from "../../../data/store/connect.store";
 
 const AdminUser = ({
   usersInfo,
@@ -10,9 +11,17 @@ const AdminUser = ({
   usersInfo: Array<usersInformationType>;
 }) => {
   const [currentId, setCurrentId] = useState<number>(null);
+  const [deleteId, setDeleteId] = useState<number>(null);
   const [rolefilter, setRoleFilter] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const { post: postDeleteAcc } = useForm();
+  const {
+    post: postDeleteAcc,
+    data: deleteAccData,
+    setData: setDeleteAccData,
+  } = useForm<{ id: number }>({
+    id: null,
+  });
+  const userData = userDataStore((state) => state.userData);
   function filteredByRole() {
     const filterByRole = usersInfo.sort((a, b) => {
       if (a.role > b.role) {
@@ -166,11 +175,54 @@ const AdminUser = ({
                     <td>*********</td>
                     <td>{users.role === 0 ? "client" : "admin"}</td>
                     <td>
-                      <button onClick={() => setCurrentId(users.id)}>
-                        Modifier
-                      </button>
-                      <button onClick={() => {}}>Supprimer</button>
+                      {deleteId === users.id ? (
+                        <>
+                          <p>êtes vous sûr ?</p>
+                          <button
+                            onClick={() => {
+                              postDeleteAcc("/admin/deleteAcc", {
+                                data: deleteAccData,
+                              });
+                            }}
+                          >
+                            Oui
+                          </button>
+                          <button
+                            onClick={() => {
+                              setDeleteId(null);
+                              setDeleteAccData({ id: null });
+                            }}
+                          >
+                            Non
+                          </button>
+                        </>
+                      ) : userData.email === users.email ? (
+                        <button onClick={() => setCurrentId(users.id)}>
+                          Modifier
+                        </button>
+                      ) : (
+                        <>
+                          <button onClick={() => setCurrentId(users.id)}>
+                            Modifier
+                          </button>
+                          <button
+                            onClick={() => {
+                              setDeleteId(users.id);
+                              setDeleteAccData({ id: users.id });
+                            }}
+                          >
+                            Supprimer
+                          </button>
+                        </>
+                      )}
                     </td>
+                    {userData.email === users.email ? (
+                      <td>
+                        compte en cours
+                        <br />
+                        d'utilisation
+                      </td>
+                    ) : null}
                   </>
                 )}
               </tr>
