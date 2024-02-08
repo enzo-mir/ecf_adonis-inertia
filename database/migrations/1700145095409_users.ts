@@ -19,7 +19,7 @@ export default class extends BaseSchema {
       await db.table(this.tableName).multiInsert([
         {
           id: null,
-          name: "",
+          name: "admin",
           email: "admin@admin.com",
           password: await Hash.make("admin"),
           guests: 0,

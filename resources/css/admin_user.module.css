@@ -6,6 +6,12 @@
   display: flex;
   gap: 0.5em;
 }
+.errorMessage {
+  color: var(--error-txt);
+  padding: 1em;
+  font-weight: bold;
+}
+
 .filteredArrow {
   rotate: 180deg;
 }

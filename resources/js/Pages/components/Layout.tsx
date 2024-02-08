@@ -39,8 +39,10 @@ const Layout = ({ children }) => {
     if (props.user) {
       if (props.user.role === 1) {
         setConnectedAdmin(true);
+        setConnectedUser(false);
       } else {
         setUserData(props.user);
+        setConnectedAdmin(false);
         setConnectedUser(true);
       }
     }

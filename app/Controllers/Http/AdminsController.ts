@@ -5,7 +5,7 @@ import {
   getCardData,
 } from "../../functions/get_props_data";
 import { HourType } from "../../../utils/types/hoursType";
-import Database from "@ioc:Adonis/Lucid/Database";
+import Database, { RawQuery } from "@ioc:Adonis/Lucid/Database";
 import { z } from "zod";
 import { cardUpdateType } from "../../../utils/types/cardManagmentType";
 import { usersConfigScheama } from "../../../utils/types/user";
@@ -113,12 +113,57 @@ export default class AdminsController {
   public async userUpdate(ctx: HttpContextContract) {
     try {
       const usersInfo = usersConfigScheama.parse(ctx.request.all());
-      console.log(usersInfo);
+
+      if (usersInfo.password === "") {
+        let updateUser: RawQuery;
+        if (usersInfo.emailChange) {
+          updateUser = await Database.rawQuery(
+            "UPDATE `users` SET name = ?, email = ?, role = ? WHERE id = ?",
+            [usersInfo.name, usersInfo.email, usersInfo.role, usersInfo.id]
+          );
+        } else {
+          updateUser = await Database.rawQuery(
+            "UPDATE `users` SET name = ?, role = ? WHERE id = ?",
+            [usersInfo.name, usersInfo.role, usersInfo.id]
+          );
+        }
+        if (updateUser[0].changedRows > 0) {
+          ctx.response.redirect().back();
+        } else {
+          throw new Error("Echec lors de la mise à jour des données");
+        }
+      } else {
+        let updateUser: RawQuery;
+        if (usersInfo.emailChange) {
+          updateUser = await Database.rawQuery(
+            "UPDATE `users` SET name = ?, role = ?, password = ? WHERE id = ?",
+            [usersInfo.name, usersInfo.role, usersInfo.password, usersInfo.id]
+          );
+        } else {
+          updateUser = await Database.rawQuery(
+            "UPDATE `users` SET name = ?, email = ?, role = ?, password = ? WHERE id = ?",
+            [
+              usersInfo.name,
+              usersInfo.email,
+              usersInfo.role,
+              usersInfo.password,
+              usersInfo.id,
+            ]
+          );
+        }
+        if (updateUser[0].changedRows > 0) {
+          ctx.response.redirect().back();
+        } else {
+          throw new Error("Echec lors de la mise à jour des données");
+        }
+      }
     } catch (error) {
       ctx.session.flash({
         errors:
           error instanceof z.ZodError
             ? JSON.parse(error.message)[0]?.message
+            : error.code === "ER_DUP_ENTRY"
+            ? "L'email est déja utilisé"
             : error.message,
       });
       return ctx.response.redirect().back();

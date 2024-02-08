@@ -11,6 +11,8 @@ const AdminUser = ({
 }) => {
   const [currentId, setCurrentId] = useState<number>(null);
   const [rolefilter, setRoleFilter] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const { post: postDeleteAcc } = useForm();
   function filteredByRole() {
     const filterByRole = usersInfo.sort((a, b) => {
       if (a.role > b.role) {
@@ -25,23 +27,40 @@ const AdminUser = ({
   }
   function FormComponent({ id, role, email, name }: usersInformationType) {
     const { post, processing, data, setData, reset } = useForm<
-      usersInformationType & { password: string }
+      usersInformationType & { password: string; emailChange: boolean }
     >({
       id,
       role,
       email,
       name,
       password: "",
+      emailChange: false,
     });
+    const defaultEmail = data.email;
     function handleChangeValues(
       e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) {
-      setData({ ...data, [e.target.name]: e.target.value });
+      setData({
+        ...data,
+        [e.target.name]: Number.isNaN(e.target.value)
+          ? e.target.value
+          : parseInt(e.target.value),
+      });
     }
 
     function handlSubmitEdition(e: React.MouseEvent) {
       e.preventDefault();
-      post("/admin/userUpdate", { data });
+      post("/admin/userUpdate", {
+        data: { ...data, emailChange: defaultEmail !== data.email },
+        onSuccess: () => {
+          setCurrentId(null);
+          setErrorMessage("");
+        },
+
+        onError: (message) => {
+          setErrorMessage(message as unknown as string);
+        },
+      });
     }
     return (
       <>
@@ -105,56 +124,61 @@ const AdminUser = ({
   }
 
   return (
-    <table className={styles.table}>
-      <caption>Gestionnaire des utilisateurs</caption>
-      <thead>
-        <tr>
-          <td>Nom</td>
-          <td>Email</td>
-          <td>Mot de passe</td>
-          <td
-            onClick={() => {
-              setRoleFilter(rolefilter === true ? false : true);
-            }}
-          >
-            Rôle
-            <MdOutlineKeyboardArrowDown
-              className={rolefilter ? styles.filteredArrow : ""}
-            />
-          </td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredByRole().map((users, index) => {
-          return (
-            <tr key={index}>
-              {currentId === users.id ? (
-                <FormComponent
-                  id={users.id}
-                  name={users.name}
-                  email={users.email}
-                  role={users.role}
-                />
-              ) : (
-                <>
-                  <td>{users.name}</td>
-                  <td>{users.email}</td>
-                  <td>*********</td>
-                  <td>{users.role === 0 ? "client" : "admin"}</td>
-                  <td>
-                    <button onClick={() => setCurrentId(users.id)}>
-                      Modifier
-                    </button>
-                    <button>Supprimer</button>
-                  </td>
-                </>
-              )}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <>
+      {errorMessage ? (
+        <p className={styles.errorMessage}>{errorMessage}</p>
+      ) : null}
+      <table className={styles.table}>
+        <caption>Gestionnaire des utilisateurs</caption>
+        <thead>
+          <tr>
+            <td>Nom</td>
+            <td>Email</td>
+            <td>Mot de passe</td>
+            <td
+              onClick={() => {
+                setRoleFilter(rolefilter === true ? false : true);
+              }}
+            >
+              Rôle
+              <MdOutlineKeyboardArrowDown
+                className={rolefilter ? styles.filteredArrow : ""}
+              />
+            </td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredByRole().map((users, index) => {
+            return (
+              <tr key={index}>
+                {currentId === users.id ? (
+                  <FormComponent
+                    id={users.id}
+                    name={users.name}
+                    email={users.email}
+                    role={users.role}
+                  />
+                ) : (
+                  <>
+                    <td>{users.name}</td>
+                    <td>{users.email}</td>
+                    <td>*********</td>
+                    <td>{users.role === 0 ? "client" : "admin"}</td>
+                    <td>
+                      <button onClick={() => setCurrentId(users.id)}>
+                        Modifier
+                      </button>
+                      <button onClick={() => {}}>Supprimer</button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 };
 
