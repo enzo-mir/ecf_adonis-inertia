@@ -1,5 +1,9 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import { allHours, allImages, getCardData } from "../../functions/get_props_data";
+import {
+  allHours,
+  allImages,
+  getCardData,
+} from "../../functions/get_props_data";
 import { HourType } from "../../../utils/types/hoursType";
 import Database from "@ioc:Adonis/Lucid/Database";
 import { z } from "zod";
@@ -10,7 +14,7 @@ export default class AdminsController {
     if (ctx.auth.user?.role === 1) {
       return ctx.inertia.render("Admin", {
         cardData: getCardData(),
-        imagesData: (await allImages)[0],
+        imagesData: await allImages(),
       });
     } else {
       return ctx.inertia.render("UndefinedPage");

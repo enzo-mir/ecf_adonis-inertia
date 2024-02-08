@@ -4,7 +4,6 @@ import {
   ReservationFromBodySheama,
 } from "../../../utils/types/reservationScheama";
 import Database from "@ioc:Adonis/Lucid/Database";
-import { getReservation } from "../../functions/get_user_data";
 
 export default class ReservationsController {
   private guestsLimit = 35;
@@ -54,10 +53,7 @@ export default class ReservationsController {
         }","${requestData.alergy}")`
       );
 
-      if (reservationInsertion.length && ctx.auth.user) {
-        ctx.session.flash({ valid: await getReservation(ctx) });
-        return ctx.response.redirect().back();
-      } else if (reservationInsertion.length) {
+      if (reservationInsertion.length) {
         return ctx.response.redirect().back();
       } else {
         throw new Error("Echec de la réservation");

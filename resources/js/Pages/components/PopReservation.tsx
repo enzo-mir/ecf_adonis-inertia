@@ -42,7 +42,7 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
           </tr>
         </thead>
         <tbody>
-          {userData.user.currentReservation.map((reservation, id) => {
+          {userData.currentReservation.map((reservation, id) => {
             return (
               <tr key={id} className="reservationSettings">
                 <td>{reservation.guests}</td>
@@ -69,14 +69,6 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
                             },
                             onSuccess: (success) => {
                               setErrorMessage("");
-                              setUserData({
-                                user: {
-                                  ...userData.user,
-                                  currentReservation: (
-                                    success.props.userData as User
-                                  ).user.currentReservation,
-                                },
-                              });
                             },
                           });
                         }}

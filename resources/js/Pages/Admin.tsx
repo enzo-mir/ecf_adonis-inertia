@@ -102,47 +102,45 @@ const Admin = ({
           ) : null}
         </AnimatePresence>
 
-        <AnimatePresence>
-          {showOption === "image" ? (
-            <motion.article
-              className={styles.images_wrapper}
-              initial={{ x: "-20%" }}
-              animate={{ x: "0%" }}
-              exit={{ x: "20%" }}
-            >
-              <AdminImages
-                setDisplayModal={setDisplayEditImage}
-                setImageData={setImageEdition}
-              />
-            </motion.article>
-          ) : showOption === "hour" ? (
-            <motion.article
-              className={styles.hours_conbtainer}
-              initial={{ x: "-20%" }}
-              animate={{ x: "0%" }}
-              exit={{ x: "20%" }}
-            >
-              <HourEditing />
-            </motion.article>
-          ) : showOption === "card" ? (
-            <motion.article
-              className={styles.card_container}
-              initial={{ x: "-20%" }}
-              animate={{ x: "0%" }}
-              exit={{ x: "20%" }}
-            >
-              <AdminCard
-                setDisplay={setDisplayCardEdition}
-                setData={setDataCardEdit}
-                display={displayCardEdition}
-              />
-            </motion.article>
-          ) : (
-            <article>
-              <AdminUser />
-            </article>
-          )}
-        </AnimatePresence>
+        {showOption === "image" ? (
+          <motion.article
+            className={styles.images_wrapper}
+            initial={{ x: "-20%" }}
+            animate={{ x: "0%" }}
+            exit={{ x: "20%" }}
+          >
+            <AdminImages
+              setDisplayModal={setDisplayEditImage}
+              setImageData={setImageEdition}
+            />
+          </motion.article>
+        ) : showOption === "hour" ? (
+          <motion.article
+            className={styles.hours_conbtainer}
+            initial={{ x: "-20%" }}
+            animate={{ x: "0%" }}
+            exit={{ x: "20%" }}
+          >
+            <HourEditing />
+          </motion.article>
+        ) : showOption === "card" ? (
+          <motion.article
+            className={styles.card_container}
+            initial={{ x: "-20%" }}
+            animate={{ x: "0%" }}
+            exit={{ x: "20%" }}
+          >
+            <AdminCard
+              setDisplay={setDisplayCardEdition}
+              setData={setDataCardEdit}
+              display={displayCardEdition}
+            />
+          </motion.article>
+        ) : (
+          <article>
+            <AdminUser />
+          </article>
+        )}
 
         <article>
           <h1>

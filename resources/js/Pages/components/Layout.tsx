@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   type propsType = {
     props: {
       hours: Array<HourDataType>;
-      userData?: User;
+      user?: User;
       cardData?: CardDataType;
       imagesData?: Image[];
     };
@@ -36,13 +36,13 @@ const Layout = ({ children }) => {
     props.cardData && setCardData(props.cardData);
     props.imagesData && setImages(props.imagesData);
 
-    if (props.userData?.user) {
-      setUserData(props.userData);
-      setConnectedUser(true);
-    }
-
-    if (props.userData?.admin) {
-      setConnectedAdmin(true);
+    if (props.user) {
+      if (props.user.role === 1) {
+        setConnectedAdmin(true);
+      } else {
+        setUserData(props.user);
+        setConnectedUser(true);
+      }
     }
   }, [props]);
   return (

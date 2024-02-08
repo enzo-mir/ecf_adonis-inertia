@@ -27,10 +27,10 @@ export default function Reserv({
   const connected = connectStore((state) => state.connectedUser);
   const hours = hourStore((state) => state.hours);
   const { data, setData, processing, post } = useForm({
-    name: connected ? userData?.user.name : "",
-    email: connected ? userData?.user.email : "",
-    guests: connected ? userData?.user.guests : 1,
-    alergy: connected ? userData?.user.alergy : "",
+    name: connected ? userData?.name : "",
+    email: connected ? userData?.email : "",
+    guests: connected ? userData?.guests : 1,
+    alergy: connected ? userData?.alergy : "",
     date: new Date().toLocaleDateString("fr-CA"),
     hourTargeted: null,
     timeTargeted: null,
@@ -38,7 +38,7 @@ export default function Reserv({
 
   const [resError, setResError] = useState("");
   const [showAllergy, setShowAllergy] = useState(
-    userData?.user.alergy ? true : false
+    userData?.alergy ? true : false
   );
   const [DTable, setDTable] = useState<Array<string> | string>([]);
   const [LTable, setLTable] = useState<Array<string> | string>([]);
@@ -188,15 +188,6 @@ export default function Reserv({
           setResError(err as unknown as string);
         },
         onSuccess: (success) => {
-          if (success.props.valid) {
-            setUserData({
-              user: {
-                ...userData.user,
-                currentReservation: success.props
-                  .valid as currentReservationType[],
-              },
-            });
-          }
           setResError("Table réservée !");
           displayReservation(false);
         },
@@ -258,12 +249,11 @@ export default function Reserv({
               id="email"
               required
               placeholder="Entrez votre e-mail"
-              value={userData.user?.email || data.email}
+              value={userData?.email || data.email}
               onChange={(e) =>
-                userData.user?.email ||
-                setData({ ...data, email: e.target.value })
+                userData?.email || setData({ ...data, email: e.target.value })
               }
-              disabled={userData.user?.email ? true : false}
+              disabled={userData?.email ? true : false}
             />
           </label>
           <label htmlFor="name">
@@ -273,12 +263,11 @@ export default function Reserv({
               id="name"
               required
               placeholder="Entrez votre nom"
-              value={userData.user?.name || data.name}
+              value={userData?.name || data.name}
               onChange={(e) =>
-                userData.user?.name ||
-                setData({ ...data, name: e.target.value })
+                userData?.name || setData({ ...data, name: e.target.value })
               }
-              disabled={userData.user?.name ? true : false}
+              disabled={userData?.name ? true : false}
             />
           </label>
         </div>

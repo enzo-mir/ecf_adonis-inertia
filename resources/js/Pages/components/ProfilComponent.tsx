@@ -19,11 +19,11 @@ const ProfilComponent = ({
     state.setUserData,
   ]);
   const { post, data, setData, reset, processing } = useForm({
-    name: userData.user.name,
-    email: userData.user.email,
-    guests: userData.user.guests,
+    name: userData.name,
+    email: userData.email,
+    guests: userData.guests,
     password: null,
-    alergy: userData.user.alergy,
+    alergy: userData.alergy,
   });
   const setConnectedUser = connectStore((state) => state.setConnectedUser);
 
@@ -45,14 +45,14 @@ const ProfilComponent = ({
     var objectComparaison: boolean = true;
     const objectToCompare = { ...data };
     Object.assign(objectToCompare, {
-      currentReservation: userData.user.currentReservation,
+      currentReservation: userData.currentReservation,
     });
     function areObjectsEqual() {
       for (const key in objectToCompare) {
         if (Object.prototype.hasOwnProperty.call(objectToCompare, key)) {
           if (
             objectToCompare[key] !==
-            { ...userData.user, password: data.password }[key]
+            { ...userData, password: data.password }[key]
           )
             return false;
         }
@@ -78,7 +78,8 @@ const ProfilComponent = ({
           },
           onSuccess: (success) => {
             setuserData({
-              user: { ...userData.user, ...(success.props.valid as User) },
+              ...userData,
+              ...(success.props.valid as User),
             });
             setEditable(false);
           },
@@ -101,17 +102,6 @@ const ProfilComponent = ({
           setTimeout(() => {
             setDisplayProfil(false);
             setConnectedUser(false);
-            setuserData({
-              user: {
-                name: "",
-                email: "",
-                password: "",
-                guests: 0,
-                alergy: "",
-                currentReservation: [],
-              },
-            });
-            setDisplayProfil(false);
             reset();
           }, 1500);
         },
@@ -126,17 +116,6 @@ const ProfilComponent = ({
             setDisplayProfil(false);
             setConnectedUser(false);
             reset();
-            setuserData({
-              user: {
-                name: "",
-                email: "",
-                password: "",
-                guests: 0,
-                alergy: "",
-                currentReservation: [],
-              },
-            });
-            setDisplayProfil(false);
           }, 1500);
         },
         onError: (err) => {

@@ -1,13 +1,18 @@
 export type User = {
-  user?: {
-    name: string;
-    email: string;
-    password: string;
-    guests: number | null;
-    alergy: string;
-    currentReservation: Array<currentReservationType | null>;
-  };
-  admin?: {};
+  id: number;
+  name: string;
+  email: string;
+  guests: number | null;
+  alergy: string;
+  role: 0 | 1;
+  currentReservation: Array<currentReservationType>;
+};
+
+export type usersInformationType = {
+  id: number;
+  name: string;
+  email: string;
+  role: 0 | 1;
 };
 
 export type currentReservationType = {

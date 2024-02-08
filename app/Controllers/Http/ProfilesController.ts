@@ -3,7 +3,6 @@ import Database from "@ioc:Adonis/Lucid/Database";
 import { updateZodType } from "../../../utils/types/user";
 import { z } from "zod";
 import Hash from "@ioc:Adonis/Core/Hash";
-import { getUserData } from "../../functions/get_user_data";
 
 export default class ProfilesController {
   public async update(ctx: HttpContextContract) {
@@ -15,7 +14,6 @@ export default class ProfilesController {
         );
 
         if (updateQuery[0].changedRows > 0) {
-          ctx.session.flash({ valid: await getUserData(ctx) });
           return ctx.response.redirect().back();
         } else {
           throw new Error("Echec lors de la mise à jour des données");
@@ -28,7 +26,6 @@ export default class ProfilesController {
         );
 
         if (updateQuery[0].changedRows > 0) {
-          ctx.session.flash({ valid: await getUserData(ctx) });
           return ctx.response.redirect().back();
         } else {
           throw new Error("Echec lors de la mise à jour des données");
@@ -48,7 +45,7 @@ export default class ProfilesController {
   public async logout(ctx: HttpContextContract) {
     try {
       await ctx.auth.logout();
-      return ctx.inertia.redirectBack();
+      return ctx.inertia.location("/");
     } catch (error) {
       return ctx.response.status(400).redirect().back();
     }

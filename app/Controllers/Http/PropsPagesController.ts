@@ -1,46 +1,11 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import Database from "@ioc:Adonis/Lucid/Database";
-import {
-  allHours,
-  allImages,
-  getCardData,
-} from "../../functions/get_props_data";
+import { allImages, getCardData } from "../../functions/get_props_data";
 
 export default class PropsPagesController {
-  private async getUserData(ctx: HttpContextContract) {
-    return await Database.rawQuery(
-      `SELECT * FROM users WHERE email = "${ctx.auth.user?.email}"`
-    );
-  }
-
   public async home(ctx: HttpContextContract) {
-    if (ctx.auth.user) {
-      const currentReservation = await Database.rawQuery(
-        "SELECT guests, date, hours, email FROM reservations WHERE email = ?",
-        [ctx.auth.user.email]
-      );
-
-      const userData = ctx.auth.user
-        ? (await this.getUserData(ctx))[0][0].role === 0
-          ? {
-              user: {
-                ...(await this.getUserData(ctx))[0][0],
-                currentReservation: currentReservation[0],
-              },
-            }
-          : { admin: {} }
-        : {};
-      delete userData.user?.id;
-      delete userData.user?.password;
-
-      return ctx.inertia.render("Home", {
-        images: (await allImages)[0],
-      });
-    } else {
-      return ctx.inertia.render("Home", {
-        images: (await allImages)[0],
-      });
-    }
+    return ctx.inertia.render("Home", {
+      images: await allImages(),
+    });
   }
 
   public async card(ctx: HttpContextContract) {

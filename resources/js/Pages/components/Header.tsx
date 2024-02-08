@@ -61,16 +61,6 @@ const Header = () => {
           onClick={() => {
             post("/profile/logout", {
               onSuccess: () => {
-                setuserData({
-                  user: {
-                    name: "",
-                    email: "",
-                    password: "",
-                    guests: 0,
-                    alergy: "",
-                    currentReservation: [],
-                  },
-                });
                 setIsAdmin(false);
               },
             });
@@ -110,10 +100,13 @@ const Header = () => {
                 className="reservations"
                 onClick={() => setDisplayModalReservation(true)}
               >
-                {userData.user.currentReservation.length}
+                {userData.currentReservation.length}
               </button>
-              <button className={styles.profil_btn} onClick={() => setProfilPage(true)}>
-                {userData ? userData.user.name.charAt(0) : null}
+              <button
+                className={styles.profil_btn}
+                onClick={() => setProfilPage(true)}
+              >
+                {userData ? userData.name.charAt(0) : null}
               </button>
             </>
           )}

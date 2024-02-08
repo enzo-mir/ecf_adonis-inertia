@@ -11,15 +11,14 @@ export const connectStore = create<connectionType>((set) => ({
 
 export const userDataStore = create<userDataType>((set) => ({
   userData: {
-    user: {
-      id: 0,
-      name: "",
-      email: "",
-      password: "",
-      guests: 0,
-      alergy: "",
-      currentReservation: [],
-    },
+    id: 0,
+    name: "",
+    email: "",
+    password: "",
+    guests: 0,
+    alergy: "",
+    role: 0,
+    currentReservation: [],
   },
   setUserData: (val) => set(() => ({ userData: val })),
 }));
