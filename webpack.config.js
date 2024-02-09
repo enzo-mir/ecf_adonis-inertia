@@ -216,12 +216,12 @@ Encore.configureCssLoader((options) => {
 
 Encore.enablePostCssLoader();
 Encore.configureSplitChunks((splitChunks) => {
-  (splitChunks.chunks = "async"),
+  (splitChunks.chunks = "all"),
     (splitChunks.minSize = 0),
     (splitChunks.cacheGroups = {
       reactVendor: {
-        test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
-        name: "vender_react.js",
+        test: /[\\/]node_modules[\\/](react|react-icons)[\\/]/,
+        name: "vendor_react.js",
         chunks: "all",
       },
     });

@@ -2,8 +2,9 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/assets/vender_react.js.a65d8ee1.js",
-        "/assets/app.6f01e458.js"
+        "/assets/vendor_react.js.5d89c79d.js",
+        "/assets/504.8617f7ab.js",
+        "/assets/app.5bfec8ca.js"
       ],
       "css": [
         "/assets/app.971369b9.css"
