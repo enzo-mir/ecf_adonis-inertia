@@ -97,6 +97,24 @@ export const usersConfigScheama = z.object({
     ),
   emailChange: z.boolean(),
 });
+export const userconfigCreateUser = usersConfigScheama
+  .omit({
+    password: true,
+    id: true,
+    emailChange: true,
+  })
+  .extend({
+    password: z
+      .string()
+      .refine(
+        (value) => /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(value),
+        {
+          message:
+            "Le mot de passe doit être composé d'une majuscule, minuscule, d'un chiffre et avoir une longueur de 8 charactères",
+        }
+      ),
+    id: z.null(),
+  });
 
 export const LoginUserScheama = z.object({
   email: z.string().email(),

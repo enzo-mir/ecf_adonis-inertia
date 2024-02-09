@@ -8,7 +8,10 @@ import { HourType } from "../../../utils/types/hoursType";
 import Database, { RawQuery } from "@ioc:Adonis/Lucid/Database";
 import { z } from "zod";
 import { cardUpdateType } from "../../../utils/types/cardManagmentType";
-import { usersConfigScheama } from "../../../utils/types/user";
+import {
+  userconfigCreateUser,
+  usersConfigScheama,
+} from "../../../utils/types/user";
 
 export default class AdminsController {
   public async index(ctx: HttpContextContract) {
@@ -187,6 +190,34 @@ export default class AdminsController {
     } catch (error) {
       ctx.session.flash({
         errors: error.message,
+      });
+      return ctx.response.redirect().back();
+    }
+  }
+  public async createUser(ctx: HttpContextContract) {
+    try {
+      const userInfos = userconfigCreateUser.parse(ctx.request.all());
+      try {
+        await Database.rawQuery(
+          `INSERT INTO users (name, email, password, role) VALUES ("${
+            userInfos.name
+          }", "${userInfos.email}", "${userInfos.password}", ${1})`
+        );
+
+        ctx.response.redirect().back();
+      } catch (error) {
+        throw new Error(
+          "Une erreur est survenus lors de la création du compte"
+        );
+      }
+    } catch (error) {
+      ctx.session.flash({
+        errors:
+          error instanceof z.ZodError
+            ? JSON.parse(error.message)[0]?.message
+            : error.code === "ER_DUP_ENTRY"
+            ? "L'email est déja utilisé"
+            : error.message,
       });
       return ctx.response.redirect().back();
     }

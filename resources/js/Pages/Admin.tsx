@@ -138,7 +138,7 @@ const Admin = ({
             />
           </motion.article>
         ) : (
-          <article>
+          <article className={styles.card_container}>
             <AdminUser usersInfo={usersInformation} />
           </article>
         )}

@@ -4,6 +4,7 @@ import { usersInformationType } from "../../../types/userType.store";
 import styles from "../../../../css/admin_user.module.css";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { userDataStore } from "../../../data/store/connect.store";
+import FormComponent from "./FormUserUpdate";
 
 const AdminUser = ({
   usersInfo,
@@ -22,6 +23,19 @@ const AdminUser = ({
   } = useForm<{ id: number }>({
     id: null,
   });
+  const {
+    post: postCreateAccount,
+    data: accountInfos,
+    processing: processingAccountCreate,
+    setData: setAccountInfos,
+    reset,
+  } = useForm<usersInformationType & { password: string }>({
+    id: null,
+    name: "",
+    email: "",
+    role: 1,
+    password: "",
+  });
   const userData = userDataStore((state) => state.userData);
   function filteredByRole() {
     const filterByRole = usersInfo.sort((a, b) => {
@@ -35,101 +49,26 @@ const AdminUser = ({
     });
     return filterByRole;
   }
-  function FormComponent({ id, role, email, name }: usersInformationType) {
-    const { post, processing, data, setData, reset } = useForm<
-      usersInformationType & { password: string; emailChange: boolean }
-    >({
-      id,
-      role,
-      email,
-      name,
-      password: "",
-      emailChange: false,
+
+  function handleChangeCreateUserInfos(e: React.ChangeEvent<HTMLInputElement>) {
+    setAccountInfos({
+      ...accountInfos,
+      [e.target.name]: e.target.value,
     });
-    const defaultEmail = data.email;
-    function handleChangeValues(
-      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) {
-      setData({
-        ...data,
-        [e.target.name]:
-          e.target.name === "role" ? parseInt(e.target.value) : e.target.value,
-      });
-    }
+  }
 
-    function handlSubmitEdition(e: React.MouseEvent) {
-      e.preventDefault();
-      post("/admin/userUpdate", {
-        data: { ...data, emailChange: defaultEmail !== data.email },
-        onSuccess: () => {
-          setCurrentId(null);
-          setErrorMessage("");
-        },
-
-        onError: (message) => {
-          setErrorMessage(message as unknown as string);
-        },
-      });
-    }
-    return (
-      <>
-        <td>
-          <input
-            type="text"
-            name="name"
-            value={data.name}
-            onChange={handleChangeValues}
-          />
-        </td>
-        <td>
-          <input
-            type="email"
-            name="email"
-            value={data.email}
-            onChange={handleChangeValues}
-          />
-        </td>
-
-        <td>
-          <input
-            type="text"
-            name="password"
-            value={data.password}
-            onChange={handleChangeValues}
-          />
-        </td>
-
-        <td>
-          <select name="role" onChange={handleChangeValues}>
-            {role === 0 ? (
-              <>
-                <option value={0}>Client</option>
-                <option value={1}>Admin</option>
-              </>
-            ) : (
-              <>
-                <option value={1}>Admin</option>
-                <option value={0}>Client</option>
-              </>
-            )}
-          </select>
-        </td>
-
-        <td>
-          <button onClick={handlSubmitEdition} disabled={processing}>
-            Confirmer
-          </button>
-          <button
-            onClick={() => {
-              setCurrentId(null);
-              reset();
-            }}
-          >
-            Annuler
-          </button>
-        </td>
-      </>
-    );
+  function createUser(e: React.FormEvent) {
+    e.preventDefault();
+    postCreateAccount("/admin/createUser", {
+      data: accountInfos,
+      onSuccess: () => {
+        setErrorMessage("");
+        reset();
+      },
+      onError: (err) => {
+        setErrorMessage(err as unknown as string);
+      },
+    });
   }
 
   return (
@@ -163,6 +102,8 @@ const AdminUser = ({
               <tr key={index}>
                 {currentId === users.id ? (
                   <FormComponent
+                    setCurrentId={setCurrentId}
+                    setErrorMessage={setErrorMessage}
                     id={users.id}
                     name={users.name}
                     email={users.email}
@@ -240,6 +181,37 @@ const AdminUser = ({
           })}
         </tbody>
       </table>
+      <form className={styles.form_create} onSubmit={createUser}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Entrer le nom"
+          onChange={handleChangeCreateUserInfos}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Entrer l'email"
+          onChange={handleChangeCreateUserInfos}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Entrer le mot de passe"
+          onChange={handleChangeCreateUserInfos}
+          required
+        />
+        <select name="role">
+          <option value={1}>Admin</option>
+        </select>
+        <input
+          type="submit"
+          value="Créer un compte admin"
+          disabled={processingAccountCreate}
+        />
+      </form>
     </>
   );
 };
