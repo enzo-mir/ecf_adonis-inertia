@@ -169,4 +169,26 @@ export default class AdminsController {
       return ctx.response.redirect().back();
     }
   }
+
+  public async deletUser(ctx: HttpContextContract) {
+    const params: number = ctx.request.param("id");
+    try {
+      const lineDeleted = await Database.rawQuery(
+        "DELETE FROM `users` WHERE `id` = ?",
+        [params]
+      );
+      if (lineDeleted[0].affectedRows) {
+        ctx.response.redirect().back();
+      } else {
+        throw new Error(
+          "Une erreur est survenus lors de la suppression du compte"
+        );
+      }
+    } catch (error) {
+      ctx.session.flash({
+        errors: error.message,
+      });
+      return ctx.response.redirect().back();
+    }
+  }
 }

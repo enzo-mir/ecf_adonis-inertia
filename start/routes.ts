@@ -24,6 +24,7 @@ Route.group(() => {
   Route.get("", "AdminsController.index");
   Route.post("/hoursEdition", "AdminsController.hours");
   Route.post("/userUpdate", "AdminsController.userUpdate");
+  Route.post("/deletUser/:id", "AdminsController.deletUser");
 }).prefix("/admin");
 
 Route.post("/card/update", "AdminsController.cardUpdate");

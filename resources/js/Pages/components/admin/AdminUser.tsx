@@ -17,6 +17,7 @@ const AdminUser = ({
   const {
     post: postDeleteAcc,
     data: deleteAccData,
+    processing,
     setData: setDeleteAccData,
   } = useForm<{ id: number }>({
     id: null,
@@ -51,9 +52,8 @@ const AdminUser = ({
     ) {
       setData({
         ...data,
-        [e.target.name]: Number.isNaN(e.target.value)
-          ? e.target.value
-          : parseInt(e.target.value),
+        [e.target.name]:
+          e.target.name === "role" ? parseInt(e.target.value) : e.target.value,
       });
     }
 
@@ -179,10 +179,20 @@ const AdminUser = ({
                         <>
                           <p>êtes vous sûr ?</p>
                           <button
+                            disabled={processing}
                             onClick={() => {
-                              postDeleteAcc("/admin/deleteAcc", {
-                                data: deleteAccData,
-                              });
+                              postDeleteAcc(
+                                `/admin/deletUser/${deleteAccData.id}`,
+                                {
+                                  onSuccess: () => {
+                                    setDeleteId(null);
+                                    setErrorMessage("");
+                                  },
+                                  onError: (err) => {
+                                    setErrorMessage(err as unknown as string);
+                                  },
+                                }
+                              );
                             }}
                           >
                             Oui
