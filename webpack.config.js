@@ -1,6 +1,7 @@
 const { join } = require("path");
 const Encore = require("@symfony/webpack-encore");
 const CssNanoPlugin = require("cssnano");
+const webpackAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 /*
 |--------------------------------------------------------------------------
 | Encore runtime environment
@@ -9,7 +10,7 @@ const CssNanoPlugin = require("cssnano");
 if (!Encore.isRuntimeEnvironmentConfigured()) {
   Encore.configureRuntimeEnvironment(process.env.NODE_ENV || "dev");
 }
-
+//Encore.addPlugin(new webpackAnalyzer());
 /*
 |--------------------------------------------------------------------------
 | Output path
@@ -215,23 +216,13 @@ Encore.configureCssLoader((options) => {
 
 Encore.enablePostCssLoader();
 Encore.configureSplitChunks((splitChunks) => {
-  (splitChunks.chunks = "all"),
-    (splitChunks.maxInitialRequests = Infinity),
-    (splitChunks.minSize = 20000),
-    (splitChunks.minRemainingSize = 0),
-    (splitChunks.minChunks = 2),
-    (splitChunks.maxAsyncRequests = 30),
-    (splitChunks.enforceSizeThreshold = 50000),
+  (splitChunks.chunks = "async"),
+    (splitChunks.minSize = 0),
     (splitChunks.cacheGroups = {
-      defaultVendors: {
-        test: /[\\/]node_modules[\\/]/,
-        priority: -10,
-        reuseExistingChunk: true,
-      },
-      default: {
-        minChunks: 2,
-        priority: -20,
-        reuseExistingChunk: true,
+      reactVendor: {
+        test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+        name: "vender_react.js",
+        chunks: "all",
       },
     });
 });
