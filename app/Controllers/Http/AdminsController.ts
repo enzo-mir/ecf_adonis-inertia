@@ -130,7 +130,8 @@ export default class AdminsController {
             [usersInfo.name, usersInfo.role, usersInfo.id]
           );
         }
-        if (updateUser[0].changedRows > 0) {
+
+        if (updateUser[0].affectedRows > 0) {
           ctx.response.redirect().back();
         } else {
           throw new Error("Echec lors de la mise à jour des données");
@@ -154,7 +155,7 @@ export default class AdminsController {
             ]
           );
         }
-        if (updateUser[0].changedRows > 0) {
+        if (updateUser[0].affectedRows > 0) {
           ctx.response.redirect().back();
         } else {
           throw new Error("Echec lors de la mise à jour des données");

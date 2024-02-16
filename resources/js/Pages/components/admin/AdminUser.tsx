@@ -1,8 +1,7 @@
-import { useForm } from "@inertiajs/inertia-react";
-import React, { useState } from "react";
+import { useForm, usePage } from "@inertiajs/inertia-react";
+import React, { useEffect, useState } from "react";
 import { usersInformationType } from "../../../types/userType.store";
 import styles from "../../../../css/admin_user.module.css";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { userDataStore } from "../../../data/store/connect.store";
 import FormComponent from "./FormUserUpdate";
 
@@ -37,6 +36,11 @@ const AdminUser = ({
     password: "",
   });
   const userData = userDataStore((state) => state.userData);
+  useEffect(() => {
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 3000);
+  }, [usePage().props]);
   function filteredByRole() {
     const filterByRole = usersInfo.sort((a, b) => {
       if (a.role > b.role) {
@@ -89,9 +93,19 @@ const AdminUser = ({
               }}
             >
               Rôle
-              <MdOutlineKeyboardArrowDown
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                stroke-width="0"
+                viewBox="0 0 24 24"
+                height="1em"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
                 className={rolefilter ? styles.filteredArrow : ""}
-              />
+              >
+                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+              </svg>
             </td>
             <td></td>
           </tr>

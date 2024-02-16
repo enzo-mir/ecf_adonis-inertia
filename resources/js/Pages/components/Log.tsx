@@ -205,7 +205,7 @@ const Log = ({
             </button>
             <p
               tabIndex={0}
-              onClick={() => {
+              onMouseDown={() => {
                 setPage(page === "signin" ? "login" : "signin");
                 setFormConfirmation("");
                 reset();
