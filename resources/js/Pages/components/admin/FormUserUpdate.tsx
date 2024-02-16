@@ -34,8 +34,8 @@ function FormComponent({
     });
   }
 
-  function handlSubmitEdition(e: React.MouseEvent) {
-    e.preventDefault();
+  function handlSubmitEdition(e: React.MouseEvent | null) {
+    e instanceof MouseEvent ? e.preventDefault() : null;
     post("/admin/userUpdate", {
       data: { ...data, emailChange: defaultEmail !== data.email },
       onSuccess: () => {
@@ -48,6 +48,7 @@ function FormComponent({
       },
     });
   }
+
   return (
     <>
       <td>
@@ -56,6 +57,9 @@ function FormComponent({
           name="name"
           value={data.name}
           onChange={handleChangeValues}
+          onKeyDown={(e) =>
+            e.code === "Enter" ? handlSubmitEdition(null) : null
+          }
         />
       </td>
       <td>
@@ -64,6 +68,9 @@ function FormComponent({
           name="email"
           value={data.email}
           onChange={handleChangeValues}
+          onKeyDown={(e) =>
+            e.code === "Enter" ? handlSubmitEdition(null) : null
+          }
         />
       </td>
 
@@ -73,6 +80,9 @@ function FormComponent({
           name="password"
           value={data.password}
           onChange={handleChangeValues}
+          onKeyDown={(e) =>
+            e.code === "Enter" ? handlSubmitEdition(null) : null
+          }
         />
       </td>
 

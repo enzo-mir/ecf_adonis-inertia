@@ -221,6 +221,29 @@
     gap: 20px;
     width: clamp(100px, 10vw, 200px);
   }
+  & > li > button:hover svg {
+    cursor: pointer;
+    animation: bounce 1s forwards;
+  }
+}
+
+@keyframes bounce {
+  30% {
+    transform: scale(1.2);
+  }
+  40%,
+  60% {
+    transform: rotate(-20deg) scale(1.2);
+  }
+  50% {
+    transform: rotate(20deg) scale(1.2);
+  }
+  70% {
+    transform: rotate(0deg) scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .container_edit_image {
@@ -234,7 +257,6 @@
   justify-content: center;
   align-items: center;
 }
-
 
 .container_edit_image p.error {
   color: var(--error-txt);
