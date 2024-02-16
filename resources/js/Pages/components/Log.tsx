@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Cross } from "../../assets/style/cross";
 import { LoginDataType, signinType } from "../../types/userManagmentType";
 import { motion } from "framer-motion";
@@ -18,6 +18,13 @@ const Log = ({
   const [page, setPage] = useState(togglePage);
   const [fromConfirmation, setFormConfirmation] = useState("");
   const { data, setData, post, reset, processing } = useForm();
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.removeAttribute("style");
+    };
+  }, []);
 
   const submitSignin = async (e: FormEvent) => {
     e.preventDefault();
@@ -197,10 +204,18 @@ const Log = ({
               {page === "signin" ? "Créer un compte" : "Connection"}
             </button>
             <p
+              tabIndex={0}
               onClick={() => {
                 setPage(page === "signin" ? "login" : "signin");
                 setFormConfirmation("");
                 reset();
+              }}
+              onKeyDown={(e) => {
+                if (e.code === "Enter") {
+                  setPage(page === "signin" ? "login" : "signin");
+                  setFormConfirmation("");
+                  reset();
+                }
               }}
             >
               {page === "signin"

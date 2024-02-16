@@ -2,6 +2,7 @@ const { join } = require("path");
 const Encore = require("@symfony/webpack-encore");
 const CssNanoPlugin = require("cssnano");
 const webpackAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+
 /*
 |--------------------------------------------------------------------------
 | Encore runtime environment
@@ -77,9 +78,9 @@ Encore.copyFiles({
 | https://webpack.js.org/plugins/split-chunks-plugin/
 |
 */
-Encore.splitEntryChunks();
+//Encore.splitEntryChunks();
 
-Encore.enableBuildNotifications();
+//Encore.enableBuildNotifications();
 /*
 |--------------------------------------------------------------------------
 | Isolated entrypoints
@@ -147,7 +148,7 @@ Encore.configureDevServerOptions((options) => {
    */
   options.liveReload = true;
   options.static.push({
-    directory: join(__dirname, "./resources/views"),
+    directory: join(__dirname, "./resources/*"),
     watch: true,
   });
 });
@@ -213,7 +214,6 @@ Encore.configureCssLoader((options) => {
 | Export config for webpack to do its job
 |
 */
-
 Encore.enablePostCssLoader();
 Encore.configureSplitChunks((splitChunks) => {
   (splitChunks.chunks = "all"),
@@ -228,4 +228,9 @@ Encore.configureSplitChunks((splitChunks) => {
 });
 
 const config = Encore.getWebpackConfig();
+config.infrastructureLogging = {
+  level: "warn",
+};
+config.stats = "errors-warnings";
+
 module.exports = config;

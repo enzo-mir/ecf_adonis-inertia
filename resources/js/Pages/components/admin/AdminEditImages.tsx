@@ -1,10 +1,8 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import overlaystyles from "../../../../css/overlay.module.css";
 import { Cross } from "../../../assets/style/cross";
-import { AiOutlineArrowRight } from "react-icons/ai";
 import { motion } from "framer-motion";
 import React from "react";
-import { MdEditSquare } from "react-icons/md";
 import { useForm } from "@inertiajs/inertia-react";
 import styles from "../../../../css/admin.module.css";
 
@@ -101,13 +99,37 @@ const AdminEditImages = ({
                   : "black",
               }}
             >
-              <MdEditSquare color="#fff" />
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                stroke-width="0"
+                viewBox="0 0 24 24"
+                color="#fff"
+                height="1em"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ color: "rgb(255, 255, 255)" }}
+              >
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <path d="M7 17V9.93L13.93 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-8.93L14.07 17H7z"></path>
+                <path d="M9 15h4.24l7.2-7.2-4.24-4.24-7.2 7.2zM22.91 2.49L21.5 1.08c-.78-.78-2.05-.78-2.83 0l-1.06 1.06 4.24 4.24 1.06-1.06c.79-.78.79-2.05 0-2.83z"></path>
+              </svg>
             </div>
           </label>
         ) : (
           <div className={styles.update_image}>
             <img src={imageEditionData.url} alt="plat du chef" />
-            <AiOutlineArrowRight />
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 1024 1024"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M869 487.8L491.2 159.9c-2.9-2.5-6.6-3.9-10.5-3.9h-88.5c-7.4 0-10.8 9.2-5.2 14l350.2 304H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h585.1L386.9 854c-5.6 4.9-2.2 14 5.2 14h91.5c1.9 0 3.8-.7 5.2-2L869 536.2a32.07 32.07 0 0 0 0-48.4z"></path>
+            </svg>
             <label htmlFor="imageAdminChange">
               <div
                 className={styles.addImageCase}
@@ -117,7 +139,21 @@ const AdminEditImages = ({
                     : "black",
                 }}
               >
-                <MdEditSquare color="#fff" />
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 24 24"
+                  color="#fff"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{ color: "rgb(255, 255, 255)" }}
+                >
+                  <path fill="none" d="M0 0h24v24H0z"></path>
+                  <path d="M7 17V9.93L13.93 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-8.93L14.07 17H7z"></path>
+                  <path d="M9 15h4.24l7.2-7.2-4.24-4.24-7.2 7.2zM22.91 2.49L21.5 1.08c-.78-.78-2.05-.78-2.83 0l-1.06 1.06 4.24 4.24 1.06-1.06c.79-.78.79-2.05 0-2.83z"></path>
+                </svg>
               </div>
             </label>
           </div>

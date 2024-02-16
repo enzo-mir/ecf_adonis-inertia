@@ -8,10 +8,6 @@ import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import { reservationScheama } from "../../types/reservationData.scheama";
 import { User, currentReservationType } from "../../types/userType.store";
-import { TbUsersPlus } from "react-icons/tb";
-import { MdOutlineDateRange } from "react-icons/md";
-import { MdAlternateEmail } from "react-icons/md";
-import { FaUserAlt } from "react-icons/fa";
 import styles from "../../../css/reservation.module.css";
 import overlayStyles from "../../../css/overlay.module.css";
 
@@ -216,7 +212,26 @@ export default function Reserv({
         {resError ? <p className="validationReservation">{resError}</p> : null}
         <div className={styles.option_reservation}>
           <label htmlFor="persons">
-            <TbUsersPlus color="#fff" />
+            <svg
+              stroke="currentColor"
+              fill="none"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              color="#fff"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ color: "rgb(255, 255, 255)" }}
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M5 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+              <path d="M3 21v-2a4 4 0 0 1 4 -4h4c.96 0 1.84 .338 2.53 .901"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              <path d="M16 19h6"></path>
+              <path d="M19 16v6"></path>
+            </svg>
             <input
               type="number"
               id="persons"
@@ -232,7 +247,20 @@ export default function Reserv({
             />
           </label>
           <label htmlFor="date">
-            <MdOutlineDateRange color="#fff" />
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              color="#fff"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ color: "rgb(255, 255, 255)" }}
+            >
+              <path fill="none" d="M0 0h24v24H0V0z"></path>
+              <path d="M7 11h2v2H7v-2zm14-5v14c0 1.1-.9 2-2 2H5a2 2 0 01-2-2l.01-14c0-1.1.88-2 1.99-2h1V2h2v2h8V2h2v2h1c1.1 0 2 .9 2 2zM5 8h14V6H5v2zm14 12V10H5v10h14zm-4-7h2v-2h-2v2zm-4 0h2v-2h-2v2z"></path>
+            </svg>
             <input
               type="date"
               className={styles.date_calendar}
@@ -243,7 +271,20 @@ export default function Reserv({
             />
           </label>
           <label htmlFor="email">
-            <MdAlternateEmail color="#fff" />
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              color="#fff"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ color: "rgb(255, 255, 255)" }}
+            >
+              <path fill="none" d="M0 0h24v24H0z"></path>
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10h5v-2h-5c-4.34 0-8-3.66-8-8s3.66-8 8-8 8 3.66 8 8v1.43c0 .79-.71 1.57-1.5 1.57s-1.5-.78-1.5-1.57V12c0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c1.38 0 2.64-.56 3.54-1.47.65.89 1.77 1.47 2.96 1.47 1.97 0 3.5-1.6 3.5-3.57V12c0-5.52-4.48-10-10-10zm0 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"></path>
+            </svg>
             <input
               type="email"
               id="email"
@@ -257,7 +298,19 @@ export default function Reserv({
             />
           </label>
           <label htmlFor="name">
-            <FaUserAlt color="#fff" />
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 512 512"
+              color="#fff"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ color: "rgb(255, 255, 255)" }}
+            >
+              <path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path>
+            </svg>
             <input
               type="text"
               id="name"

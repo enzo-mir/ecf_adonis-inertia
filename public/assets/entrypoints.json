@@ -2,12 +2,13 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/assets/vendor_react.js.5d89c79d.js",
-        "/assets/504.8617f7ab.js",
-        "/assets/app.5bfec8ca.js"
+        "http://localhost:8080/assets/vendor_react.js.js",
+        "http://localhost:8080/assets/vendors-node_modules_pnpm_webpack-dev-server_4_15_1_webpack-cli_4_10_0_webpack_5_90_2_node_mo-385c2d.js",
+        "http://localhost:8080/assets/vendors-node_modules_pnpm_inertiajs_inertia-react_0_8_1__inertiajs_inertia_0_11_1_react_18_2_-b6ba15.js",
+        "http://localhost:8080/assets/app.js"
       ],
       "css": [
-        "/assets/app.971369b9.css"
+        "http://localhost:8080/assets/app.css"
       ]
     }
   }

@@ -1,29 +1,39 @@
 import styled from "styled-components";
-import { FiDelete } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { userDataStore } from "../../data/store/connect.store";
 import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
-import { currentReservationType, User } from "../../types/userType.store";
 import overlaystyles from "../../../css/overlay.module.css";
 
 const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
   const [errorMessage, setErrorMessage] = useState("");
-  const [userData, setUserData] = userDataStore((state) => [
-    state.userData,
-    state.setUserData,
-  ]);
+  const userData = userDataStore((state) => state.userData);
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.removeAttribute("style");
+    };
+  }, []);
   const { post, processing, data, setData, reset } = useForm({
     guests: 0,
     date: "",
     hours: "",
     email: "",
   });
+
+  function splitEmail() {
+    return (
+      userData.email.slice(0, 3) +
+      "**" +
+      userData.email.slice(userData.email.indexOf("@"), userData.email.length)
+    );
+  }
+
   return (
     <div className={overlaystyles.overlay} onClick={() => setDisplay(false)}>
       <Container
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
         as={motion.table}
         initial={{ y: "-20%", opacity: 0 }}
         animate={{ y: "0", opacity: 1 }}
@@ -48,13 +58,7 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
                 <td>{reservation.guests}</td>
                 <td>{new Date(reservation.date).toLocaleDateString()}</td>
                 <td>{reservation.hours}</td>
-                <td>
-                  {reservation.email.slice(0, 3)}**
-                  {reservation.email.slice(
-                    reservation.email.indexOf("@"),
-                    reservation.email.length
-                  )}
-                </td>
+                <td>{splitEmail()}</td>
                 <td>
                   {data.date === reservation.date ? (
                     <div className="deleteOption">
@@ -94,7 +98,21 @@ const PopReservation = ({ setDisplay }: { setDisplay(val: boolean): void }) => {
                         });
                       }}
                     >
-                      <FiDelete />
+                      <svg
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                        <line x1="18" y1="9" x2="12" y2="15"></line>
+                        <line x1="12" y1="9" x2="18" y2="15"></line>
+                      </svg>
                     </button>
                   )}
                 </td>

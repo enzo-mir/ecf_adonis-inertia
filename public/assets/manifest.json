@@ -1,11 +1,12 @@
 {
-  "assets/app.css": "/assets/app.971369b9.css",
-  "assets/app.js": "/assets/app.5bfec8ca.js",
-  "assets/vendor_react.js.js": "/assets/vendor_react.js.5d89c79d.js",
-  "assets/504.8617f7ab.js": "/assets/504.8617f7ab.js",
-  "assets/fonts/JuliusSansOne-Regular.ttf": "/assets/fonts/JuliusSansOne-Regular.2de04709.ttf",
-  "assets/fonts/Italiana-Regular.ttf": "/assets/fonts/Italiana-Regular.2d0e370d.ttf",
-  "assets/images/down-arrow.ico": "/assets/images/down-arrow.ec5e46e2.ico",
-  "assets/images/icon.svg": "/assets/images/icon.3ba0aedd.svg",
-  "assets/images/barre-de-menu.png": "/assets/images/barre-de-menu.42b9c112.png"
+  "assets/app.css": "http://localhost:8080/assets/app.css",
+  "assets/app.js": "http://localhost:8080/assets/app.js",
+  "assets/vendor_react.js.js": "http://localhost:8080/assets/vendor_react.js.js",
+  "assets/vendors-node_modules_pnpm_webpack-dev-server_4_15_1_webpack-cli_4_10_0_webpack_5_90_2_node_mo-385c2d.js": "http://localhost:8080/assets/vendors-node_modules_pnpm_webpack-dev-server_4_15_1_webpack-cli_4_10_0_webpack_5_90_2_node_mo-385c2d.js",
+  "assets/vendors-node_modules_pnpm_inertiajs_inertia-react_0_8_1__inertiajs_inertia_0_11_1_react_18_2_-b6ba15.js": "http://localhost:8080/assets/vendors-node_modules_pnpm_inertiajs_inertia-react_0_8_1__inertiajs_inertia_0_11_1_react_18_2_-b6ba15.js",
+  "assets/fonts/JuliusSansOne-Regular.ttf": "http://localhost:8080/assets/fonts/JuliusSansOne-Regular.2de04709.ttf",
+  "assets/fonts/Italiana-Regular.ttf": "http://localhost:8080/assets/fonts/Italiana-Regular.2d0e370d.ttf",
+  "assets/images/down-arrow.ico": "http://localhost:8080/assets/images/down-arrow.ec5e46e2.ico",
+  "assets/images/icon.svg": "http://localhost:8080/assets/images/icon.3ba0aedd.svg",
+  "assets/images/barre-de-menu.png": "http://localhost:8080/assets/images/barre-de-menu.42b9c112.png"
 }
